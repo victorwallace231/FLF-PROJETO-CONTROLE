@@ -1,3 +1,5 @@
+/*Configurações Gerais*/
+
 * {
     margin: 0px;
     padding: 0px;
@@ -17,6 +19,8 @@ img {
     height: 60px;
 }
 
+/*Configurações da Telinha de Login e Cadastro*/
+
 .container {
     background-color: white;
     display: flex;
@@ -28,6 +32,21 @@ img {
     height: 350px;
     padding: 30px;
     border: 5px solid #042e5f;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: aparecer 1s ease-out forwards;
+}
+
+@keyframes aparecer {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#tela-cadastro {
+    width: 650px;
+    height: 500px;
 }
 
 form {

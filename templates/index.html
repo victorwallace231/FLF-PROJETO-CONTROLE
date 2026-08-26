@@ -6,7 +6,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Controle de Estoque - FLF</title>
-        <link rel="stylesheet" href="../css/index.css">
+        <link rel="stylesheet" href="../static/css/index.css">
+        <script>
+            const usuarioLogado = localStorage.getItem("usuarioLogado");
+
+            if (!usuarioLogado) {
+                window.location.href = "login.html";
+            }
+        </script>
     </head>
 
     <body>
@@ -54,6 +61,7 @@
                     
                 </div>
             </div>
+
         </main>
 
     </body>
