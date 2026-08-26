@@ -11,14 +11,14 @@ def login():
     if request.method =='POST':
         email = request.form['email']
         password = request.form['senha']
-    conexao = conectar_banco()
-    cursor = conexao.cursor()
-
-    cursor.execute("SELECT * FROM usuario WHERE email = ?", (email,))
-    usuario = cursor.fetchone()
-    conexao.close()
-
-    if usuario and check_password_hash(usuario[2], password):
-        return redirect('/dashboard')
-    else:
-        return render_template('login.html', error='Email ou senha incorretos')
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
+        
+        cursor.execute("SELECT * FROM usuario WHERE email = ?", (email,))
+        usuario = cursor.fetchone()
+        conexao.close()
+        
+        if usuario and check_password_hash(usuario[2], password):
+            return redirect('/dashboard')
+        else:
+            return render_template('login.html', error='Email ou senha incorretos')

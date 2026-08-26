@@ -4,11 +4,13 @@ app = Flask(__name__)
 
 from routes.login import route_login
 from routes.cadastro import route_cadastro
+from routes.dashboard import route_dashboard
 
 app.register_blueprint(route_login)
+app.register_blueprint(route_dashboard)
 app.register_blueprint(route_cadastro)
 @app.route('/')
 def index():
-    return render_template('cadastro.html')
+    return render_template('login.html')
 if __name__ == "__main__":
     app.run(debug=True) 
