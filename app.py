@@ -1,31 +1,14 @@
-from flask import Flask, request, redirect, render_template
-from banco import conectar_banco
-from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask import Flask, render_template
 
 app = Flask(__name__)
-@app.route("/", methods=["GET","POST"])
-def cadastrar():
-    #Carregar o arquivo html para a pagina web
-    if request.method == "GET":
-        return render_template("login.html")
 
-    #conexão com o banco de dados
-    conexao = conectar_banco()
-    cursor = conexao.cursor()
+from routes.login import route_login
+from routes.cadastro import route_cadastro
 
-    #recebendo do formulario html os valores de cadastro do usuário
-    name = request.form ["name"]
-    email = request.form ["email"]
-    number = request.form ["number"]
-    password = request.form ["password"]
-
-    #convertendo a senha digitada em hash
-    password_hash = generate_password_hash(password)
-
-    #salvando os dados do usuário no banco
-    cursor.execute("INSERT INTO usuario (nome, email, telefone, senha) VALUES (?, ?, ?, ?)", (name,email,number,password_hash))
-    conexao.commit()
-
-    #Redireciona para a pagina de login
-    return redirect("/login")
+app.register_blueprint(route_login)
+app.register_blueprint(route_cadastro)
+@app.route('/')
+def index():
+    return render_template('login.html')
+if '__name__' == '__main__':
+    app.run(debug=True) 
