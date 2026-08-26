@@ -8,17 +8,17 @@ route_cadastro = Blueprint('cadastro', __name__)
 def cadastrar():
     #Carregar o arquivo html para a pagina web
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("cadastro.html")
 
     #conexão com o banco de dados
     conexao = conectar_banco()
     cursor = conexao.cursor()
 
     #recebendo do formulario html os valores de cadastro do usuário
-    name = request.form ["name"]
+    name = request.form ["nome"]
     email = request.form ["email"]
-    number = request.form ["number"]
-    password = request.form ["password"]
+    number = request.form ["telefone"]
+    password = request.form ["senha"]
 
     #convertendo a senha digitada em hash
     password_hash = generate_password_hash(password)

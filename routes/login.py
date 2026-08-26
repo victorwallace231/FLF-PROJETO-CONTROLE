@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect
 from banco import conectar_banco
 from werkzeug.security import generate_password_hash, check_password_hash
 
-route_login = Blueprint ('Login', __name__)
+route_login = Blueprint ('login', __name__)
 @route_login.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method =='GET':
@@ -10,7 +10,7 @@ def login():
     
     if request.method =='POST':
         email = request.form['email']
-        password = request.form['password']
+        password = request.form['senha']
     conexao = conectar_banco()
     cursor = conexao.cursor()
 
