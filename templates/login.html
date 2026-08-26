@@ -6,7 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Controle de Estoque - FLF</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="../static/css/login.css">
+=======
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+>>>>>>> 804d3b7de95c2479870c05cf05902db345aaa62b
 
 </head>
 
@@ -14,9 +18,11 @@
 
     <main class="container">
 
-        <img src="../img/logoflf.png">
 
-        <form action="login.php" method="POST" id="form-login">
+        <img src="{{url_for('static', filename='img/logoflf.png')}}">
+
+
+        <form action="/login" method="POST" id="form-login">
 
             <h2>Acessar a conta</h2>
 

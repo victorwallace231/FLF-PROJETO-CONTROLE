@@ -1,4 +1,4 @@
 import sqlite3
 def conectar_banco():
-    conexao=sqlite.connect("Controle.db")
+    conexao= sqlite3.connect("Controle.db")
     return conexao

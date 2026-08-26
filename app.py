@@ -8,7 +8,7 @@ app = Flask(__name__)
 def cadastrar():
     #Carregar o arquivo html para a pagina web
     if request.method == "GET":
-        return render_template("cadastro.html")
+        return render_template("login.html")
 
     #conexão com o banco de dados
     conexao = conectar_banco()
