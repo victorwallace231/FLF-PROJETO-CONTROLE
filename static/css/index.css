@@ -5,52 +5,105 @@
     padding: 0px;
 }
 
-.butao {
-    height: 40px;
-}
-
-#butaoright {
+body {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+    height: 100vh;
+    background-color: #f4f6f8
 }
 
-header {
-    background-color: rgb(172, 172, 172);
-    border-bottom: 4px solid #1746c9;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/*Menu Lateral*/
 
-h1 {
-    font-family: "Roboto", sans-serif;
-}
-
-main {
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.grade-container {
-    margin-top: 80px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Cria 3 colunas com o mesmo tamanho */
-    gap: 15px; /* Espaço entre os itens */
-}
-
-.item {
-    width: 150px;
-    height: 150px;
-    background-color: #3498db;
+.sidebar {
+    width: 220px;
+    background-color: #043a81;
     color: white;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    font-family: sans-serif;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px; 
+    background: none; 
+    color: white; 
+    border: none; 
+    text-align: left; 
+    cursor: pointer; 
+}
+
+.sidebar button:hover {
+    background: #334155;
+}
+
+.content { 
+    flex: 1;
+    padding: 30px; 
+}
+
+.page { 
+    display: none; 
+}
+.page.active {
+     display: block; 
+}
+
+.cards { 
+    display: flex; 
+    gap: 15px;
+    margin-top: 20px; 
+}
+
+.card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    flex: 1; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+}
+
+table { 
+    width: 100%; 
+    margin-top: 20px; 
+    border-collapse: collapse; 
+    background: white; 
+}
+
+th, td { 
+    padding: 12px; 
+    border-bottom: 1px solid #ddd; 
+    text-align: left; 
+}
+
+.disponivel { 
+    background: #d1fae5;
+    color: #065f46; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+}
+
+/* Modal Flutuante */
+.modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.5); 
+    justify-content: center; 
+    align-items: center; }
+
+.modal.open { 
+    display: flex; 
+}
+
+.modal-content { 
+    background: white; 
+    padding: 25px; 
+    border-radius: 8px; 
+    width: 350px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
 }
