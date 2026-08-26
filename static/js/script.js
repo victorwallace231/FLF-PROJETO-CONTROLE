@@ -12,12 +12,14 @@ function fazerLogout() {
     window.location.href = "login.html";
 }
 
+/*CADASTRO*/
+
 document.getElementById('form-cad').addEventListener('submit', function(e) {
     e.preventDefault();
     const nome = document.getElementbyId('cadNome').value;
     const email = document.getElementById('cadEmail').value;
     const senha = document.getElementById('cadSenha').value;
-    const telefone = document.getElementById('cadTelefone');
+    const telefone = document.getElementById('cadTelefone').value;
 
 
     /*TESTE TESTE TESTE BANCO DE DADOS É AQUI!!!!*/
@@ -25,7 +27,11 @@ document.getElementById('form-cad').addEventListener('submit', function(e) {
     alert('Conta criada com sucesso!');
     this.reset();
 
+    window.location.href = 'login.html';
+
 });
+
+/*LOGIN*/
 
 document.getElementById('form-login').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -43,4 +49,5 @@ document.getElementById('form-login').addEventListener('submit', function(e) {
     } else {
         alert('Usuário ou senha incorretos.');
     }
+
 });
