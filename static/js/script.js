@@ -30,5 +30,17 @@ document.getElementById('form-cad').addEventListener('submit', function(e) {
 document.getElementById('form-login').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const email = document.getElementById('')
-})
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+
+    const senhaSalva = localStorage.getItem('user_' + email);
+
+    if (senhaSalva && senhaSalva === senha) {
+
+        localStorage.setitem('usuarioLogado', email);
+
+        window.location.href = 'index.html';
+    } else {
+        alert('Usuário ou senha incorretos.');
+    }
+});
