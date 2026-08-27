@@ -21,9 +21,12 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
     border-bottom: 4px solid #033b77;
     color: white;
+}
+
+.part-header h1 {
+    font-weight: normal;
 }
 
 main {
@@ -34,6 +37,16 @@ main {
     height: 30px;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+
+/* Estilo do botão de ícone */
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .part-header {
@@ -43,3 +56,37 @@ main {
     align-items: center;
     gap: 20px;
 }
+
+/*Corpo*/
+.site-body {
+    display: flex;
+    flex: 1;
+}
+
+/*Menu Lateral*/
+.sidebar {
+    width: 200px;
+    background-color: #1f85eb;
+    height:550px;
+    padding: 20px;
+}
+
+.sidebar ul{
+    list-style: none;
+}
+
+.sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+  color: #000000;
+}
+
+
+/**/
