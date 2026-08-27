@@ -7,11 +7,21 @@ app.secret_key = '14082017'
 from routes.login import route_login
 from routes.cadastro import route_cadastro
 from routes.dashboard import route_dashboard
+from routes.updateuser import route_update
+from routes.deleteuser import route_delete
+from routes.createitem import route_createitem
+from routes.deleteitem import route_deleteitem
+from routes.updateitem import route_updateitem
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
 app.register_blueprint(route_dashboard)
 app.register_blueprint(route_cadastro)
+app.register_blueprint(route_update)
+app.register_blueprint(route_delete)
+app.register_blueprint(route_createitem)
+app.register_blueprint(route_deleteitem)
+app.register_blueprint(route_updateitem)
 
 #Rota principal do sistema
 @app.route('/')
