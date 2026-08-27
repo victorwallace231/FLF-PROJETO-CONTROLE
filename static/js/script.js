@@ -1,16 +1,14 @@
-function navegarPara(paginaId) {
+const btnIcon = document.getElementById('btn-icon');
+const modal = document.getElementById('modal-suspensao');
 
-  const paginas = document.querySelectorAll('.page');
-  paginas.forEach(p => p.classList.remove('active'));
+// Abre/Fecha o modal ao clicar no ícone
+btnIcon.addEventListener('click', (event) => {
+    event.stopPropagation();
+    modal.classList.toggle('active');
+});
 
-  document.getElementById(paginaId).classList.add('active');
-}
-
-
-function abrirModal() {
-  document.getElementById('modal-checkout').classList.add('open');
-}
-
-function fecharModal() {
-  document.getElementById('modal-checkout').classList.remove('open');
-}
+document.addEventListener('click', (event) => {
+    if (!modal.contains(event.target) && event.target !== btnIcon) {
+      modal.classList.remove('active');
+    }
+});
