@@ -12,4 +12,4 @@ def delete():
     cursor.execute("DELETE FROM perifericos WHERE id = ?", (request.form['item_id'],))
     conexao.commit()
     conexao.close()
-    return redirect('/dashboard')  # Redireciona para a página do dashboard após a exclusão do item
+    return redirect('/deleteitem')  # Redireciona para a página do dashboard após a exclusão do item

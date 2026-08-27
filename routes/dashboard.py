@@ -15,4 +15,8 @@ def dashboard():
     email = session.get('usuario_email')  # Obtém o email do usuário da sessão
     telefone = session.get('usuario_telefone')  # Obtém o telefone do usuário da sessão
     # Renderiza o template do dashboard com os dados do usuário
-    return render_template('dashboard.html', name=name, email=email, telefone=telefone)
+
+    cursor.execute("SELECT * FROM perifericos")
+    perifericos = cursor.fetchall()
+    conexao.close()
+    return render_template('dashboard.html', name=name, email=email, telefone=telefone, perifericos=perifericos)

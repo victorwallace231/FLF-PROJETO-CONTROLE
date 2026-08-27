@@ -20,7 +20,7 @@
             </div>
 
             <div class="part-header">
-                <p>Marcelito</p>
+                <p>usuário: {{ name }}</p>
                 <span class="material-symbols-outlined">
                     account_circle
                 </span>
@@ -29,7 +29,26 @@
         </header>
 
         <main>
-
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for periferico in perifericos %}
+                    <tr>
+                        <td><p>{{ periferico[0] }}</p></td>
+                        <td><p>{{ periferico[1] }}</p></td>
+                        <td><p>{{ periferico[2] }}</p></td>
+                        <td><p>{{ periferico[3] }}</p></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
         </main>
 
