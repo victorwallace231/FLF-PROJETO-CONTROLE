@@ -2,7 +2,7 @@
 
 Sistema web para gestão e controle de entrada, saída e empréstimo de periféricos da sala do N.T.I.
 
-## ✨ Funcionalidades
+# ✨ Funcionalidades
 * **Autenticação:** Login de acesso para supervisores.
 * **Gestão de Periféricos:** Consulta e verificação de status dos equipamentos.
 * **Controle de Empréstimos:** Registro de saídas e devoluções no banco de dados.
