@@ -12,6 +12,8 @@ from routes.deleteuser import route_deleteuser
 from routes.createitem import route_createitem
 from routes.deleteitem import route_deleteitem
 from routes.updateitem import route_updateitem
+from routes.emprestimo import route_emprestimo
+from routes.devolucao import route_devolucao
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -22,6 +24,8 @@ app.register_blueprint(route_deleteuser)
 app.register_blueprint(route_createitem)
 app.register_blueprint(route_deleteitem)
 app.register_blueprint(route_updateitem)
+app.register_blueprint(route_emprestimo)
+app.register_blueprint(route_devolucao)
 
 #Rota principal do sistema
 @app.route('/')
