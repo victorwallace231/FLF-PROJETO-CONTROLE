@@ -23,7 +23,7 @@ def login():
             # cria um cursor para executar comandos SQL
             cursor = conexao.cursor()
             # executa uma consulta SQL para buscar o usuário pelo email fornecido
-            cursor.execute("SELECT * FROM usuario WHERE email = ?", (email,))
+            cursor.execute("SELECT * FROM usuario WHERE email_user = ?", (email,))
             # busca o primeiro resultado da consulta
             usuario = cursor.fetchone()
             conexao.close()
