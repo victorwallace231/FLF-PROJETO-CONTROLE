@@ -85,10 +85,11 @@ main {
 
 /*Menu Lateral*/
 .sidebar {
-    width: 200px;
+    width: 175px;
     background-color: #1f85eb;
-    height:550px;
-    padding: 20px;
+    height: 88.4vh;
+    padding: 5px;
+    border-right: 5px solid #033b77;
 }
 
 .sidebar ul{
@@ -108,5 +109,54 @@ main {
   color: #000000;
 }
 
+.sidebar li {
+    border-bottom: 1px solid #ccc;
+}
 
-/*Conteúdo Principal*/
+
+/*Conteúdo Principal (todas as pages)*/
+.main-content {
+    padding: 5px;
+    display: flex;
+}
+
+/*Conteúdo do Dashboard*/
+.ballons-box {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 100%;
+    height: fit-content;
+}
+
+.ballons-all h2 {
+    font-size: 40px;
+}
+
+.ballons-all {
+    display: block;
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+    margin: 10px;
+    color: white;
+    padding: 10px;
+}
+
+#ballon1 {
+    background-color: #033b77;
+}
+
+#ballon2 {
+    background-color: #24a344;
+}
+
+#ballon3 {
+    background-color: goldenrod;
+}
+
+#ballon4 {
+    background-color: #b11818;
+}

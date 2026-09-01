@@ -20,12 +20,6 @@
             </div>
 
             <div class="part-header">
-<<<<<<< HEAD
-                <p>usuário: {{ name }}</p>
-                <span class="material-symbols-outlined">
-                    account_circle
-                </span>
-=======
                 <p>{{ name }}</p>
                 <div class="icon-container">
                     <button id="btn-icon" class="icon-btn">
@@ -38,78 +32,60 @@
                         <p>Alguma coisa para testar.</p>
                     </div>
                 </div>
->>>>>>> 0169e8d2e2418e36a5bc4374b7746ec5de2f2289
             </div>
 
         </header>
 
         <main>
-<<<<<<< HEAD
-            <table>
-=======
-            
-        <div class="site-body">
 
-            <nav class="sidebar">
+            <section>
+                <aside id="classbar" class="sidebar">
+                    <nav>
+                        <ul>
+                            <li><a href="#">Início</a></li>
+                            <li><a href="equipamentos.html">Equipamentos</a></li>
+                            <li><a href="movimentacao.html">Movimentações</a></li>
+                            <li><a href="relatorios.html">Relatórios</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+            </section>
 
-                <ul>
-                    <li>
-                        <a href="#">
-                            Início
-                        </a>
-                    </li>
-                    <li>
-                        <a href="equipamentos.html">
-                            Equipamentos
-                        </a>
-                    </li>
-                    <li>
-                        <a href="movimentacao.html">
-                            Movimentações
-                        </a>
-                    </li>
-                    <li>
-                        <a href="relatorios.html">
-                            Relatórios
-                        </a>
-                    </li>
-                </ul>
-                
-            </nav>
+            <section class="main-content">
 
-            <main>
-                <!-- 
-                // Comando para escrever a tabela de equipamentos
-                // Porem tem um espaço muito grande entre o cabeçalho da tabela e o corpo da tabela, e não sei como resolver isso.
-                -->
-                <table>
->>>>>>> 0169e8d2e2418e36a5bc4374b7746ec5de2f2289
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Tipo</th>
-                        <th>Quantidade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for periferico in perifericos %}
-                    <tr>
-                        <td><p>{{ periferico[0] }}</p></td>
-                        <td><p>{{ periferico[1] }}</p></td>
-                        <td><p>{{ periferico[2] }}</p></td>
-                        <td><p>{{ periferico[3] }}</p></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-<<<<<<< HEAD
-=======
+                <div class="ballons-box">
 
-            </main>
->>>>>>> 0169e8d2e2418e36a5bc4374b7746ec5de2f2289
+                    <div id="ballon1" class="ballons-all">
+                        <h3>Total: </h3>
+                        <h2>50</h2>
+                    </div>
 
-        </div>
+                    <div id="ballon2" class="ballons-all">
+                        <h3>Disponiveís: </h3>
+                        <h2>50</h2>
+                    </div>
+
+                    <div id="ballon3" class="ballons-all">
+                        <h3>Em Uso: </h3>
+                        <h2>50</h2>
+                    </div>
+
+                    <div id="ballon4" class="ballons-all">
+                        <h3>Em Manutenção: </h3>
+                        <h2>50</h2>
+                    </div>
+
+                </div>
+
+                <div class="tabela-rela">
+                    <table>
+                        <thead></thead>
+                    </table>
+                </div>
+
+            </section>
+
+        </main>
 
     </body>
 </html>
