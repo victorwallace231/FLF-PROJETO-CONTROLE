@@ -5,6 +5,8 @@ route_emprestimo = Blueprint('emprestimo', __name__)
 
 @route_emprestimo.route('/emprestimo', methods = ['GET', 'POST'])
 def emprestimo():
+    if not session.get("usuario_email"):
+           return redirect ('/login')
     #Testa se o metodo é GET ou POST para carregar a página ou executar o codigo
     if request.method == 'GET':
         return render_template('emprestimo.html')
@@ -25,6 +27,6 @@ def emprestimo():
         #Salva as informações executadas pelo cursor e fecha a conexão com banco
         conexao.commit()
         conexao.close()
-        
+
         # Recarrega a página para um novo empréstimo se necessário
         return redirect('/emprestimo')
