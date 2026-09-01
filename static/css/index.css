@@ -7,6 +7,8 @@
 
 :root {
     --cor-primaria: #2277E5;
+    --cor-escura: #10386B;
+    --cor-primaria-escura: #1C5FB8;
 }
 
 body {
@@ -201,6 +203,7 @@ li:last-child {
 }
 
 .cards-dash button {
+    text-decoration: none;
     cursor: pointer;
     max-width: 100%;
     height: 40px;
