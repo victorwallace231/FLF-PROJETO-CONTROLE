@@ -194,6 +194,8 @@ li:last-child {
 }
 
 .cards-dash {
+    display: flex;
+    flex-direction: column;
     border: 5px solid #033b77;
     width: 300px;
     height: 350px;
@@ -203,7 +205,6 @@ li:last-child {
 }
 
 .cards-dash button {
-    text-decoration: none;
     cursor: pointer;
     max-width: 100%;
     height: 40px;
@@ -215,6 +216,10 @@ li:last-child {
     font-weight: bold;
 }
 
+.cards-dash button a {
+    text-decoration: none;
+}
+
 .cards-dash button:hover {
     color: #0A2242;
     background-color: white;
@@ -223,7 +228,9 @@ li:last-child {
 }
 
 #card-acoes {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
+}
+
+#card-relatorio, #card-movimentacao {
+    justify-content: space-between;
 }
