@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,request, redirect, session
+from flask import Blueprint, request, redirect, session
 from banco import conectar_banco
 
 route_devolucao = Blueprint('devolucao', __name__)
@@ -7,8 +7,6 @@ route_devolucao = Blueprint('devolucao', __name__)
 def devolucao():
     if not session.get("usuario_email"):
         return redirect ('/login')
-    if request.method == 'GET':
-        return render_template("devolucao.html")
     if request.method == 'POST':
         id_emprestimo = request.form.get("id_emprestimo")
 

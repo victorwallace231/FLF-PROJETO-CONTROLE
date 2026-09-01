@@ -24,7 +24,7 @@ def cadastrar():
         password_hash = generate_password_hash(password)
 
         #salvando os dados do usuário no banco
-        cursor.execute("INSERT INTO usuario (nome, email, telefone, senha) VALUES (?, ?, ?, ?)", (name,email,number,password_hash))
+        cursor.execute("INSERT INTO usuario (name_user, email_user, senha_user, tel_user) VALUES (?, ?, ?, ?)", (name,email,password_hash,number))
         conexao.commit()
         conexao.close()
 

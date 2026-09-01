@@ -9,7 +9,7 @@ def emprestimo():
            return redirect ('/login')
     #Testa se o metodo é GET ou POST para carregar a página ou executar o codigo
     if request.method == 'GET':
-        return render_template('emprestimo.html')
+        return render_template('movimentacao.html')
     if request.method == 'POST':
         #Conexão com o banco e criação do objeto cursor
         conexao = conectar_banco()
