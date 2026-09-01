@@ -1,10 +1,12 @@
-from flask import  Blueprint ,render_template, request, redirect
+from flask import  Blueprint ,render_template, request, redirect, session
 from banco import conectar_banco
 
 route_deleteitem = Blueprint('deleteitem', __name__)
 
 @route_deleteitem.route('/deleteitem', methods=['POST'])
 def delete():
+    if not session.get("usuario_email"):
+           return redirect ('/login')
     conexao = conectar_banco()
     cursor = conexao.cursor()
 

@@ -5,6 +5,8 @@ route_deleteuser = Blueprint('deleteuser', __name__)
 
 @route_deleteuser.route('/deleteuser', methods=['POST'])
 def delete():
+    if not session.get("usuario_email"):
+            return redirect ('/login')
     conexao = conectar_banco()
     cursor = conexao.cursor()
 

@@ -5,6 +5,8 @@ route_updateuser = Blueprint('updateuser', __name__)
 
 @route_updateuser.route('/updateuser', methods=['GET', 'POST'])
 def update():
+    if not session.get("usuario_email"):
+           return redirect ('/login')
     if request.method == 'GET':
         return render_template('update.html')
     if request.method == 'POST':

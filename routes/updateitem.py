@@ -1,10 +1,12 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, session
 from banco import conectar_banco
 
 route_updateitem = Blueprint('updateitem', __name__)
 
 @route_updateitem.route('/updateitem', methods=['GET', 'POST'])
 def update():
+    if not session.get("usuario_email"):
+           return redirect ('/login')
     if request.method =='GET':
         return render_template('updateitem.html')
     if request.method == 'POST':
