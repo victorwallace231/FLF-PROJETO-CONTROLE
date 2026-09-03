@@ -120,3 +120,59 @@ tbody tr:hover {
     background-color: #e2e8f0;
     color: #1e293b;
 }
+
+.action-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    width: 160px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 6px 0;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Itens da lista */
+.dropdown-item {
+    width: 100%;
+    padding: 8px 14px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #334155;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dropdown-item:hover {
+    background-color: #f8fafc;
+}
+
+
+.dropdown-item.danger {
+    color: #ef4444;
+}
+
+.dropdown-item.danger:hover {
+    background-color: #fef2f2;
+}
+
+/* Linha divisória opcional */
+.dropdown-divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 4px 0;
+}
