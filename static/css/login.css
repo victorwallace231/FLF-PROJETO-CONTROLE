@@ -5,7 +5,7 @@
     padding: 0px;
 }
 
-body {
+.cadastro-login-corpo {
     background-image: linear-gradient(to right, #1e64b4, #4ef9ff);
     display: flex;
     justify-content: center;
