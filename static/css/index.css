@@ -24,6 +24,8 @@ body {
     background-color: #f4f6f8;
     font-family: var(--font);
     flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
 
