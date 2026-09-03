@@ -80,11 +80,10 @@
                         <thead>
                             <tr>
                                 <th>Miniatura</th>
-                                <th>Patrimônio</th>
-                                <th>Modelo</th>
+                                <th>Número de Série</th>
+                                <th>Marca</th>
                                 <th>Categoria</th>
                                 <th>Status</th>
-                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,11 +91,12 @@
                                 <th>
                                     <img src="../static/img/monitor_dell.webp" class="thumb">
                                 </th>
-                                <th>010621</th>
-                                <th>Dell 18,5 E1920H</th>
-                                <th>Monitor</th>
-                                <th>Disponível</th>
-                                <th>...</th>
+                                {{for periferico in perifericos}}
+                                <td>{{periferico[1]}}</td>
+                                <td>{{periferico[2]}}</td>
+                                <td>{{periferico[3]}}</td>
+                                <td>{{periferico[4]}}</td>
+                                {{endfor}}
                             </tr>
                         </tbody>
                     </table>
