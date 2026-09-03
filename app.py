@@ -1,7 +1,9 @@
 from flask import Flask, render_template
-
+from datetime import timedelta
 app = Flask(__name__)
 app.secret_key = '14082017'
+
+app.config ['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
 #Capturando as rotas dos arquivos de rotas
 from routes.login import route_login
