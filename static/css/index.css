@@ -137,11 +137,16 @@ li:last-child {
 
 /*Conteúdo Principal (todas as pages)*/
 .main-content {
-    padding: 5px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
     height: fit-content;
     align-items: center;
+}
+
+.main-content h2 {
+    font-size: 30px;
+    padding: 10px;
 }

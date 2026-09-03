@@ -1,13 +1,41 @@
 /*------------Conteúdo do Equipamentos------------*/
 
+
+
 /*Barra de Pesquisa e Filtragem*/
 
+.barra-pesquisa {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.pesquisa-enter {
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    flex: 1;
+}
+
+.filter-select {
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/*Tabela*/
 .tabela-container {
-    margin-top: 16px;
     border-radius: 10px;
     border: 1px solid black;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     overflow: hidden;
+    width: 100%;
+    margin: 20px;
 }
 
 table {
