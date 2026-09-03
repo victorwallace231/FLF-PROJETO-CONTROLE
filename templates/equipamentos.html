@@ -38,7 +38,7 @@
 
         <main>
 
-            <div>
+            <section>
                 <aside id="classbar" class="sidebar">
                     <nav>
                         <ul>
@@ -49,11 +49,60 @@
                         </ul>
                     </nav>
                 </aside>
-            </div>
+            </section>
 
-            <div class="main-content">
+            <section class="main-content">
+                
+                <h2>Gerenciamento de Inventário de Equipamentos</h2>
+                
+                <div class="barra-pesquisa">
+                    <input type="text" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
 
-            </div>
+                    <select class="filter-select">
+                        <option value="">Todas as categorias</option>
+                        <option value="monitor">Monitores</option>
+                        <option value="teclado">Teclados</option>
+                        <option value="mouse">Mouses</option>
+                    </select>
+
+                    <select class="filter-select">
+                        <option value="">Todos os status</option>
+                        <option value="disponivel">Disponíveis</option>
+                        <option value="em-uso">Em Uso</option>
+                        <option value="manutencao">Em Manutenção</option>
+                    </select>
+
+                    <button>+ Adicionar Equipamento</button>
+                </div>
+
+                <div class="tabela-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Miniatura</th>
+                                <th>Patrimônio</th>
+                                <th>Modelo</th>
+                                <th>Categoria</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <img src="../static/img/monitor_dell.webp">
+                                </th>
+                                <th>010621</th>
+                                <th>Dell 18,5 E1920H</th>
+                                <th>Monitor</th>
+                                <th>Disponível</th>
+                                <th>...</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
 
         </main>
 
