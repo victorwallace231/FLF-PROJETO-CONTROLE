@@ -9,12 +9,17 @@
     --cor-primaria: #2277E5;
     --cor-escura: #10386B;
     --cor-primaria-escura: #1C5FB8;
+    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-size-titulo: 40px;
+    --font-size-subtitulo: 20px;
+    --font-size-texto: 16px;
+    --font-titulo: "Poppins", sans-serif;
 }
 
 body {
     display: flex;
     background-color: #f4f6f8;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--font);
     flex-direction: column;
 }
 
@@ -137,100 +142,4 @@ li:last-child {
     align-items: center;
 }
 
-/*------------Conteúdo do Dashboard------------*/
 
-/*caixinha de balões*/
-.ballons-box {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    max-width: 100%;
-    height: fit-content;
-}
-
-.ballons-all h2 {
-    font-size: 40px;
-}
-
-.ballons-all {
-    display: block;
-    width: 225px;
-    height: 100px;
-    border-radius: 10px;
-    margin: 10px;
-    color: white;
-    padding: 10px;
-    box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.3);
-}
-
-#ballon1 {
-    background-color: #033b77;
-}
-
-#ballon2 {
-    background-color: #24a344;
-}
-
-#ballon3 {
-    background-color: goldenrod;
-}
-
-#ballon4 {
-    background-color: #b11818;
-}
-
-/*Cards dos Outros Menus*/
-
-.tabelas-afins {
-    max-width: 100%;
-    height: fit-content;
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.cards-dash {
-    display: flex;
-    flex-direction: column;
-    border: 5px solid #033b77;
-    width: 300px;
-    height: 350px;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.3);
-}
-
-.cards-dash button {
-    cursor: pointer;
-    max-width: 100%;
-    height: 40px;
-    font-size: 20px;
-    background-color: #033b77;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-weight: bold;
-}
-
-.cards-dash button a {
-    text-decoration: none;
-}
-
-.cards-dash button:hover {
-    color: #0A2242;
-    background-color: white;
-    transition: 0.7s;
-    border: 2px solid #0A2242;
-}
-
-#card-acoes {
-    gap: 10px;
-}
-
-#card-relatorio, #card-movimentacao {
-    justify-content: space-between;
-}

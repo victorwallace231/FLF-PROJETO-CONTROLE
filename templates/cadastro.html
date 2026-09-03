@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - FLF</title>
-    <link rel="stylesheet" href="../static/css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/global.css">
 </head>
 <body>
     <main class="container" id="tela-cadastro">
@@ -13,30 +16,30 @@
 
         <form id="form-cad" action="{{ url_for('cadastro.cadastrar') }}" method="POST">
 
-            <h2>Cadastrar Nova Conta</h2>
+            <h2 id="Title-Cad">Cadastrar Nova Conta</h2>
 
             <div class="lembra-esquece">
                 <p>Insira as informações abaixo.</p>
             </div>
 
             <div class="input-box">
-                <input type="text" id="cadNome" name="nome" placeholder="Digite seu nome" required>
+                <input type="text" id="cadInput" name="nome" placeholder="Digite seu nome" required>
             </div>
 
             <div class="input-box">
-                <input type="email" id="cadEmail" name="email" placeholder="Digite seu e-mail" required>
+                <input type="email" id="cadInput" name="email" placeholder="Digite seu e-mail" required>
             </div>
 
             <div class="input-box">
-                <input type="password" id="cadSenha" name="senha" placeholder="Digite sua senha" required>
+                <input type="password" id="cadInput" name="senha" placeholder="Digite sua senha" required>
             </div>
 
             <div class="input-box">
-                <input type="text" id="cadTelefone" name="telefone" placeholder="Digite seu telefone" required>
+                <input type="text" id="cadInput" name="telefone" placeholder="Digite seu telefone" required>
             </div>
 
             <button type="submit">Entrar</button>
-            <p>Já possui uma conta? <a href="{{ url_for('login.login') }}">Faça login</a></p>
+            <p>Já possui uma conta? <a  class= "lembra-esquece" href="{{ url_for('login.login') }}">Faça login</a></p>
         </form>
         
     </main>
