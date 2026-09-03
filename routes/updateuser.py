@@ -17,7 +17,7 @@ def update():
         nome = request.form['nome']
         telefone = request.form['telefone']
 
-        cursor.execute("UPDATE usuario SET nome = ?, telefone = ?, email = ? WHERE email = ?", (nome, telefone, email, session.get('usuario_email')))
+        cursor.execute("UPDATE usuario SET name_user = ?, email_user = ?, tel_user = ? WHERE user_email = ?", (nome, email, telefone, session.get('usuario_email')))
         conexao.commit()
         conexao.close()
 

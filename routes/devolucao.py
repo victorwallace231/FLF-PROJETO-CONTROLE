@@ -13,7 +13,7 @@ def devolucao():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("UPDATE emprestimos SET devolvido = True WHERE id_emprestio = ?", (id_emprestimo,))
+        cursor.execute("UPDATE emprestimos SET devolvido = True WHERE id_emprestimo = ?", (id_emprestimo,))
         conexao.commit()
         conexao.close()
         return redirect ('/verifica_emprestimos')

@@ -22,7 +22,7 @@ def emprestimo():
         observacao = request.form ["observacao"]
 
         #Insere no banco de dados os valores digitados do pelo o usuário
-        cursor.execute("INSERT INTO emprestimo (responsavel,data_saida,telefone,observacao) VALUES (?,?,?,?)", (responsavel,data_saida,telefone_responsavel,observacao))
+        cursor.execute("INSERT INTO emprestimo (responsavel,data_saida,tel_responsavel,observacao) VALUES (?,?,?,?)", (responsavel,data_saida,telefone_responsavel,observacao))
 
         #Salva as informações executadas pelo cursor e fecha a conexão com banco
         conexao.commit()
