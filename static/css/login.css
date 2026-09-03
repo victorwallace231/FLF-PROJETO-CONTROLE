@@ -81,13 +81,16 @@ form {
 }
 
 button {
-    width: 100%;
+    max-width: 100%;
     height: 40px;
-    font-size: 25px;
-    background-color: #042e5f;
+    font-size: 20px;
+    background-color: #033b77;
     color: white;
     border-radius: 10px;
+    border: none;
+    font-weight: bold;
 }
+
 button:hover {
     background-color: #1e64b4;
     cursor: pointer;

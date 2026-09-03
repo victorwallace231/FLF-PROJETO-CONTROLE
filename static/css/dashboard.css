@@ -82,10 +82,9 @@
 }
 
 .cards-dash button:hover {
-    color: #0A2242;
-    background-color: white;
-    transition: 0.7s;
-    border: 2px solid #0A2242;
+    background-color: #1e64b4;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
 }
 
 #card-acoes {

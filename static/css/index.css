@@ -103,7 +103,7 @@ main {
 .sidebar {
     width: 175px;
     background-color: #1C5FB8;
-    min-height: 88.4vh;
+    min-height: 100vh;
     padding: 5px;
     border-right: 5px solid #10386B;
 }
@@ -122,7 +122,7 @@ main {
 }
 
 .sidebar a:hover {
-  color: #0A2242;
+    color: #0A2242;
 }
 
 .sidebar li {
