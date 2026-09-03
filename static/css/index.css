@@ -4,7 +4,9 @@
     margin: 0px;
     padding: 0px;
 }
-
+/*Adicionando fonts e algumas variaveis, obs: olha o final do arquivo login.css e a estruturação do projeto, se não entender
+algo me chama que eu ti explico oq eu fiz e pq, na página de login eu adicionei uns detalhes a mais, acho que se a organização
+do projeto for melhor ele sai mais rápido*/
 :root {
     --cor-primaria: #2277E5;
     --cor-escura: #10386B;
