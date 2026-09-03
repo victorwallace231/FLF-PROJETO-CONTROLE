@@ -17,7 +17,7 @@ def verificar_emprestimos():
         responsavel = request.form ["responsavel"]
         telefone = request.form["telefone"]
 
-        cursor.execute("SELECT * FROM emprestimos WHERE telefone = ? AND devolvido = false", (telefone,))
+        cursor.execute("SELECT * FROM emprestimos WHERE tel_responsavel = ? AND devolvido = false", (telefone,))
         emprestimos = cursor.fetchall()
         conexao.close()
 
