@@ -70,8 +70,8 @@
                 </div>
 
                 <div class="barra-pesquisa">
-                    
-                    <input type="text" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
+
+                    <input type="text" placeholder="Pesquisar por..." class="pesquisa-enter">
                     <select class="filter-select">
                         <option value="todos">Todos</option>
                         <option value="entrada">Entrada</option>
@@ -80,6 +80,37 @@
 
                     <button>+ Nova Movimentação</button>
                     
+                </div>
+
+                <div class="tabela-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data / Hora</th>
+                                <th>Tipo</th>
+                                <th>N° Série</th>
+                                <th>Categoria</th>
+                                <th>Origem</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td>04/09/2026 11:09</td>
+                                <td><span class="badge" id="disponivel">Entrada</span></td>
+                                <td>67676767</td>
+                                <td></td>
+
+                            </tr>
+                            <tr>
+                                <td>05/05/2026 11:11</td>
+                                <td><span class="badge" id="manutencao">Saída</span></td>
+                                <td>123456123</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 

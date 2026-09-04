@@ -29,9 +29,11 @@
 }
 
 .texto-red {
-    color: red;
+    color: rgb(150, 37, 37);
 }
 
 .texto-green {
-    color: green;
+    color: rgb(14, 82, 14);
 }
+
+/**/
