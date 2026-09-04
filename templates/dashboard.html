@@ -13,6 +13,8 @@
     </head>
 
     <body>
+
+        <!--Cabeçalho-->
         <header>
 
             <div class="part-header">
@@ -20,8 +22,9 @@
                 <h1>CONTROLE DE ESTOQUE DE EQUIPAMENTOS</h1>
             </div>
 
+            <!--Usuário Principal-->
             <div class="part-header">
-                <p>Usuário{{ name }}</p>
+                <p>Usuário: {{ name }}</p>
                 <div class="icon-container">
                     <button id="btn-icon" class="icon-btn">
                         <img class="logo-user" src="../static/img/user.png">
@@ -41,8 +44,11 @@
 
         </header>
 
+        <!--Menu Lateral e Conteúdo da Página-->
         <main>
 
+
+            <!--Menu Lateral Sempre à Esquerda-->
             <section>
                 <aside id="classbar" class="sidebar">
                     <nav>
@@ -56,8 +62,11 @@
                 </aside>
             </section>
 
+
+            <!--Conteúdo Principal (Dashboard) Sempre à Direita-->
             <section class="main-content">
 
+                <!--Visão Geral dos Equipamentos-->
                 <div class="ballons-box">
 
                     <div id="ballon1" class="ballons-all">
@@ -82,19 +91,25 @@
 
                 </div>
 
+
+                <!--Cards Informativos de Atualizações, e Ações Rápidas-->
                 <div class="tabelas-afins">
+
+                    <!--Relatórios de última hora-->
                     <div id="card-relatorio" class="cards-dash">
                         <h2>Relatórios recentes</h2>
                         <div class="temporario"></div>
                         <button><a>Abrir</a></button>
                     </div>
 
+                    <!--Movimentações Recentes-->
                     <div id="card-movimentacao" class="cards-dash">
                         <h2>Últimas Movimentações</h2>
                         <div class="temporario"></div>
                         <button><a>Abrir</a></button>
                     </div>
 
+                    <!--Ações Rápidas (Ou Atalhos)-->
                     <div id="card-acoes" class="cards-dash">
                         <h2>Ações Rápidas</h2>
                         <button ><a href="/emprestimo">Nova Movimentação</a></button>
