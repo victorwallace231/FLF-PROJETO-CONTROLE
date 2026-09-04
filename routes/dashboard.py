@@ -28,9 +28,9 @@ def dashboard():
     for periferico in perifericos:
         if periferico[4] == True:
             disponiveis += 1
-        elif periferico[4] == False:
+        elif periferico[4] == False and periferico[5] == False:
             usados += 1
-        elif periferico[4] == None and periferico[5] == True:
+        elif periferico[4] == False and periferico[5] == True:
             manutencao += 1
 
     conexao.close()
