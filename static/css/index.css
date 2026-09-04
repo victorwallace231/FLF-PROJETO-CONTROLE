@@ -155,3 +155,14 @@ li:last-child {
     font-size: 30px;
     padding: 10px;
 }
+#msg-erro{
+    display: flex;
+    justify-content: space-around;
+    padding-inline: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px black;
+    background-color: #f8d7da;
+    color: red;
+    font-family: var(--font);
+    font-size: 14px;
+}
