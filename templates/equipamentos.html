@@ -9,6 +9,7 @@
             CONTROLE DE ESTOQUE - FLF
         </title>
         <link rel="stylesheet" href="../static/css/global.css">
+        <script src="../static/js/script.js" defer></script>
     </head>
 
     <body>
@@ -86,8 +87,10 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
+                        
                         <tbody>
                             <tr>
+<<<<<<< HEAD
                                
                                 {% for periferico in perifericos %}
                                 
@@ -101,6 +104,28 @@
                                         <td>{{ periferico[4] }}</td>
                                     </tr>
                                 {% endfor %}
+=======
+                                <td>
+                                    <img src="../static/img/monitor_dell.webp" class="thumb">
+                                </td>
+                                <td>010621</td>
+                                <td>Dell</td>
+                                <td>Monitor</td>
+                                <td><span class="badge" id="disponivel">Disponivel</span></td>
+                                <td class="action-cell">
+                                    <div class="action-menu">
+                                        <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
+
+                                        <div class="dropdown-menu">
+                                            <button class="dropdown-item">Visualizar</button>
+                                            <button class="dropdown-item">Editar</button>
+                                            <button class="dropdown-item">Histórico</button>
+                                            <div class="dropdown-divider"></div>
+                                            <button class="dropdown-item danger">Excluir</button>
+                                        </div>
+                                    </div>
+                                </td>
+>>>>>>> 6baae21a3cf3830613d28250f3c8cfa51f04a96b
                             </tr>
                         </tbody>
                     </table>
