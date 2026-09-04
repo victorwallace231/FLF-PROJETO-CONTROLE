@@ -1,3 +1,5 @@
+//Janelinha da Conta de usuário no Menu Principal
+
 const btnIcon = document.getElementById('btn-icon');
 const modal = document.getElementById('modal-suspensao');
 

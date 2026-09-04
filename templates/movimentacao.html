@@ -9,6 +9,7 @@
             CONTROLE DE ESTOQUE - FLF
         </title>
         <link rel="stylesheet" href="../static/css/global.css">
+        <script src="../static/js/script.js" defer></script>
     </head>
 
     <body>
@@ -20,16 +21,20 @@
             </div>
 
             <div class="part-header">
-                <p>{{ name }}</p>
+                <p>Usuário: {{ name }}</p>
                 <div class="icon-container">
                     <button id="btn-icon" class="icon-btn">
                         <img class="logo-user" src="../static/img/user.png">
                     </button>
 
                     <!--Janela Modal da Conta-->
-                    <div id="modal-suspensao" class="modal-popover">
-                        <h3>Login</h3>
-                        <p>Alguma coisa para testar.</p>
+                    <div id="modal-suspensao" class="modal-popover"> 
+                        <!--Inserir informações em relação a conta, ai decide se só vai ser nome, histórico e sair da conta-->
+                        <h3 class="dropdown-item">Nome da Conta</h3>
+                        <button class="dropdown-item">Perfil</button>
+                        <button class="dropdown-item">Histórico</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger">Sair da Conta</button>
                     </div>
                 </div>
             </div>
@@ -90,6 +95,7 @@
                                 <th>Tipo</th>
                                 <th>N° Série</th>
                                 <th>Categoria</th>
+                                <th>Qtd.</th>
                                 <th>Origem</th>
                                 <th>Responsável</th>
                             </tr>
