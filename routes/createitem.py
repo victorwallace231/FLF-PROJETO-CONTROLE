@@ -16,11 +16,11 @@ def create():
         cursor = conexao.cursor()
 
             # Captura os dados do formulário de criação
-        item_name = request.form["item_name"]
-        item_marca = request.form["item_marca"]
-        item_numero_de_serie = request.form["item_numero_de_serie"]
+        periferico = request.form["periferico"]
+        marca = request.form["marca"]
+        num_serie = request.form["num_serie"]
 
-        cursor.execute("INSERT INTO perifericos (periferico, marca, num_serie) VALUES (?, ?, ?)", (item_name, item_marca, item_numero_de_serie))
+        cursor.execute("INSERT INTO perifericos (periferico, marca, num_serie) VALUES (?, ?, ?)", (periferico, marca, num_serie))
         conexao.commit()
         conexao.close()
         return redirect('/createitem')

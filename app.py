@@ -16,6 +16,7 @@ from routes.deleteitem import route_deleteitem
 from routes.updateitem import route_updateitem
 from routes.emprestimo import route_emprestimo
 from routes.devolucao import route_devolucao
+from routes.dashboard import route_equipamentos
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -28,6 +29,7 @@ app.register_blueprint(route_deleteitem)
 app.register_blueprint(route_updateitem)
 app.register_blueprint(route_emprestimo)
 app.register_blueprint(route_devolucao)
+app.register_blueprint(route_equipamentos)
 
 #Rota principal do sistema
 @app.route('/')

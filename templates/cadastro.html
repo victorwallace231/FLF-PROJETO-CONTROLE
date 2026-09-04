@@ -36,11 +36,16 @@
             </div>
 
             <div class="input-box">
+                <input type="password" id="cadInput" name="confirma_senha" placeholder="Confirme sua senha" required>
+            </div>
+            <p> {{ error }}</p>
+
+            <div class="input-box">
                 <input type="text" id="cadInput" name="telefone" placeholder="Digite seu telefone" required>
             </div>
 
             <button type="submit">Entrar</button>
-            <p>Já possui uma conta? <a  class= "lembra-esquece" href="{{ url_for('login.login') }}">Faça login</a></p>
+            <p>Já possui uma conta? <a href="{{ url_for('login.login') }}">Faça login</a></p>
         </form>
         
     </main>

@@ -85,12 +85,26 @@
                                 <th>Marca</th>
                                 <th>Categoria</th>
                                 <th>Status</th>
-                                <th>Ações</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             <tr>
+<<<<<<< HEAD
+                               
+                                {% for periferico in perifericos %}
+                                
+                                    <tr>
+                                         <td>
+                                            <img src="../static/img/monitor_dell.webp" class="thumb">
+                                        </td>
+                                        <td>{{ periferico[1] }}</td>
+                                        <td>{{ periferico[2] }}</td>
+                                        <td>{{ periferico[3] }}</td>
+                                        <td>{{ periferico[4] }}</td>
+                                    </tr>
+                                {% endfor %}
+=======
                                 <td>
                                     <img src="../static/img/monitor_dell.webp" class="thumb">
                                 </td>
@@ -111,6 +125,7 @@
                                         </div>
                                     </div>
                                 </td>
+>>>>>>> 6baae21a3cf3830613d28250f3c8cfa51f04a96b
                             </tr>
                         </tbody>
                     </table>
