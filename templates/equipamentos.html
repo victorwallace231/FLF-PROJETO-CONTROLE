@@ -90,33 +90,35 @@
                         
                         <tbody>
                             <tr>
-<<<<<<< HEAD
                                
                                 {% for periferico in perifericos %}
-=======
->>>>>>> 93998d85b53f81de4781331d2c7c89a3f1ea5628
                                 <td>
                                     <img src="../static/img/monitor_dell.webp" class="thumb">
                                 </td>
                                 <td>{{ periferico[3] }}</td>
                                 <td>{{ periferico[2] }}</td>
                                 <td>{{ periferico[1] }}</td>
-                                <td><span class="badge" id="disponivel">Disponivel</span></td>
+                                    {% if periferico[4] == 1 %}
+                                    <td><span class="badge" id="disponivel">Disponivel</span></td>
+                                    {% endif %}
+                                    {% if periferico[4] == 0 and periferico [5] == 0 %}
+                                    <td><span class="badge" id="emus0">Em Uso</span></td>
+                                    {% endif %}
+                                    {% if periferico[4] == 0 and periferico [5] == 1 %}
+                                    <td><span class="badge" id="manutencao">Em Manutenção</span></td>
+                                    {% endif %}
+
                                 <td class="action-cell">
                                     <div class="action-menu">
                                         <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
 
                                         <div class="dropdown-menu">
-<<<<<<< HEAD
                                             
                                             <button class="dropdown-item">Visualizar</button>
                                             <form method = "POST" action = "/updateitem">
                                             <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
                                             <button class="dropdown-item">Editar</button>
                                             </form>
-=======
-                                            <button class="dropdown-item">Atualizar</button>
->>>>>>> 93998d85b53f81de4781331d2c7c89a3f1ea5628
                                             <button class="dropdown-item">Histórico</button>
                                             <div class="dropdown-divider"></div>
                                             <form method = "POST" action = "/deleteitem">
