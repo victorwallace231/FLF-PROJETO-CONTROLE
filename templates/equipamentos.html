@@ -55,25 +55,27 @@
             <section class="main-content">
                 
                 <h2>Gerenciamento de Inventário de Equipamentos</h2>
-                
-                <div class="barra-pesquisa">
-                    <input type="text" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
+                <form action="/equipamentos" method="POST">
+                    <div class="barra-pesquisa">
+                        <input type="text" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
 
-                    <select class="filter-select">
-                        <option value="">Todas as categorias</option>
-                        <option value="monitor">Monitores</option>
-                        <option value="teclado">Teclados</option>
-                        <option value="mouse">Mouses</option>
-                    </select>
+                        <select class="filter-select" name = "filtro_categoria">
+                            <option value="todos">Todas as categorias</option>
+                            <option value="monitor">Monitores</option>
+                            <option value="teclado">Teclados</option>
+                            <option value="mouse">Mouses</option>
+                        </select>
 
-                    <select class="filter-select">
-                        <option value="">Todos os status</option>
-                        <option value="disponivel">Disponíveis</option>
-                        <option value="em-uso">Em Uso</option>
-                        <option value="manutencao">Em Manutenção</option>
-                    </select>
+                        <select class="filter-select" name = "filtro_status">
+                            <option value="">Todos os status</option>
+                            <option value="1">Disponíveis</option>
+                            <option value="0">Em Uso</option>
+                            <option value="1">Em Manutenção</option>
+                        </select>
+                        <button type="submit">Filtrar</button>
+                </form>
 
-                    <button>+ Adicionar Equipamento</button>
+                    <button><a href="/createitem">+ Adicionar Equipamento</a></button>
                 </div>
 
                 <div class="tabela-container">
@@ -89,47 +91,44 @@
                         </thead>
                         
                         <tbody>
-                            <tr>
-                               
-                                {% for periferico in perifericos %}
-                                <td>
-                                    <img src="../static/img/monitor_dell.webp" class="thumb">
-                                </td>
-                                <td>{{ periferico[3] }}</td>
-                                <td>{{ periferico[2] }}</td>
-                                <td>{{ periferico[1] }}</td>
-                                    {% if periferico[4] == 1 %}
-                                    <td><span class="badge" id="disponivel">Disponivel</span></td>
-                                    {% endif %}
-                                    {% if periferico[4] == 0 and periferico [5] == 0 %}
-                                    <td><span class="badge" id="emus0">Em Uso</span></td>
-                                    {% endif %}
-                                    {% if periferico[4] == 0 and periferico [5] == 1 %}
-                                    <td><span class="badge" id="manutencao">Em Manutenção</span></td>
-                                    {% endif %}
-
-                                <td class="action-cell">
-                                    <div class="action-menu">
-                                        <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
-
-                                        <div class="dropdown-menu">
+                            {% for periferico in perifericos %}
+                                        <tr name="{{ periferico[1] }}">
+                                            <td>
+                                                <img src="../static/img/monitor_dell.webp" class="thumb">
+                                            </td>
+                                            <td>{{ periferico[3] }}</td>
+                                            <td>{{ periferico[2] }}</td>
+                                            <td>{{ periferico[1] }}</td>
                                             
-                                            <button class="dropdown-item">Visualizar</button>
-                                            <form method = "POST" action = "/updateitem">
-                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
-                                            <button class="dropdown-item">Editar</button>
-                                            </form>
-                                            <button class="dropdown-item">Histórico</button>
-                                            <div class="dropdown-divider"></div>
-                                            <form method = "POST" action = "/deleteitem">
-                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
-                                            <button class="dropdown-item danger">Excluir</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                                {% endfor %}
+                                            <!-- Lógica das badges melhorada e sem conflitos -->
+                                            {% if periferico[4] == 1 %}
+                                                <td><span class="badge" id="disponivel">Disponível</span></td>
+                                            {% elif periferico[4] == 0 and periferico[5] == 0 %}
+                                                <td><span class="badge" id="emuso">Em Uso</span></td>
+                                            {% elif periferico[4] == 0 and periferico[5] == 1 %}
+                                                <td><span class="badge" id="manutencao">Em Manutenção</span></td>
+                                            {% endif %}
+
+                                            <td class="action-cell">
+                                                <div class="action-menu">
+                                                    <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
+                                                    <div class="dropdown-menu">
+                                                        <button class="dropdown-item">Visualizar</button>
+                                                        <form method="POST" action="/updateitem">
+                                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
+                                                            <button class="dropdown-item">Editar</button>
+                                                        </form>
+                                                        <button class="dropdown-item">Histórico</button>
+                                                        <div class="dropdown-divider"></div>
+                                                        <form method="POST" action="/deleteitem">
+                                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
+                                                            <button class="dropdown-item danger">Excluir</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                            {% endfor %}
                                 
                         </tbody>
                     </table>
