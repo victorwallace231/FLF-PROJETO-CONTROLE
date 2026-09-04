@@ -32,7 +32,6 @@
 .tabela-container {
     border-radius: 10px;
     border: 1px solid black;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     width: 100%;
     margin: 20px;
@@ -43,6 +42,7 @@ table {
     border-collapse: collapse;
     text-align: left;
     font-size: 12px;
+    box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.2);
 }
 
 thead {
