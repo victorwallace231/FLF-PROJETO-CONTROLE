@@ -38,7 +38,7 @@
 
         <main>
 
-            <div>
+            <section>
                 <aside id="classbar" class="sidebar">
                     <nav>
                         <ul>
@@ -49,23 +49,39 @@
                         </ul>
                     </nav>
                 </aside>
-            </div>
+            </section>
 
-            <div class="main-content">
+            <section class="main-content">
                 <h2>Gerenciamento de Movimentações de Equipamentos</h2>
 
+                <div class="resumo-mov">
+                    <div class="cartao">
+                        <span class="titulo-cartao">Total de Entradas (Neste Mês)</span>
+                        <span class="cartao-info texto-red">67</span>
+                    </div>
+                    <div class="cartao">
+                        <span class="titulo-cartao">Total de Saídas (Neste Mês)</span>
+                        <span class="cartao-info texto-red">67</span>
+                    </div>
+                    <div class="cartao">
+                        <span class="titulo-cartao">Mais Movimentado</span>
+                        <span class="cartao-info texto-green">Notebook Aura Pro Ego</span>
+                    </div>
+                </div>
+
                 <div class="barra-pesquisa">
+                    
                     <input type="text" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
                     <select class="filter-select">
                         <option value="todos">Todos</option>
                         <option value="entrada">Entrada</option>
                         <option value="saida">Saída</option>
                     </select>
-                    
+
                     <button>+ Nova Movimentação</button>
                     
                 </div>
-            </div>
+            </section>
 
         </main>
 
