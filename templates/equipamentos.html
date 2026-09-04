@@ -88,24 +88,19 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    <img src="../static/img/monitor_dell.webp" class="thumb">
-<<<<<<< HEAD
-                                </th>
-                                {{for periferico in perifericos}}
-                                <td>{{periferico[1]}}</td>
-                                <td>{{periferico[2]}}</td>
-                                <td>{{periferico[3]}}</td>
-                                <td>{{periferico[4]}}</td>
-                                {{endfor}}
-=======
-                                </td>
-                                <td>010621</td>
-                                <td>Dell</td>
-                                <td>Monitor</td>
-                                <td><span class="badge" id="disponivel">Disponivel</span></td>
-                                <td><button class="btn-icon">⋮</button></td>
->>>>>>> bda600937057e8ae528d1f120ab4de429d26da70
+                               
+                                {% for periferico in perifericos %}
+                                
+                                    <tr>
+                                         <td>
+                                            <img src="../static/img/monitor_dell.webp" class="thumb">
+                                        </td>
+                                        <td>{{ periferico[1] }}</td>
+                                        <td>{{ periferico[2] }}</td>
+                                        <td>{{ periferico[3] }}</td>
+                                        <td>{{ periferico[4] }}</td>
+                                    </tr>
+                                {% endfor %}
                             </tr>
                         </tbody>
                     </table>

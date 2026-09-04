@@ -40,12 +40,12 @@ def dashboard():
 def equipamentos():
     if not session.get("usuario_email"):
         return redirect('/login')
-    if request.method == 'GET':
-        return render_template('equipamentos.html', name=session.get('usuario_name'))
-    if request.method == 'POST':
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM perifericos")
-        perifericos = cursor.fetchall()
-        conexao.close()
-        return render_template('equipamentos.html', name=session.get('usuario_name'), perifericos=perifericos)
+        
+
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+    cursor.execute("SELECT * FROM perifericos")
+    perifericos = cursor.fetchall()
+    
+    conexao.close()
+    return render_template('equipamentos.html', name=session.get('usuario_name'), perifericos=perifericos)
