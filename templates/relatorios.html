@@ -9,6 +9,10 @@
             CONTROLE DE ESTOQUE - FLF
         </title>
         <link rel="stylesheet" href="../static/css/global.css">
+        <script src="../static/js/script.js"></script>
+
+        <!--Biblioteca Chart.js para os gráficos-->
+        <script src="https://jsdelivr.net"></script>
     </head>
 
     <body>
@@ -42,8 +46,8 @@
 
         <main>
 
-            <div>
-                <aside id="classbar" class="sidebar">
+            <section id="classbar" class="sidebar">
+                <aside>
                     <nav>
                         <ul>
                             <li><a href="dashboard.html">Início</a></li>
@@ -53,11 +57,17 @@
                         </ul>
                     </nav>
                 </aside>
-            </div>
+            </section>
 
-            <div class="main-content">
-
-            </div>
+            <section class="main-content">
+                <h2>Relatórios Gerais do Sistema</h2>
+                <div class="tabs-graficos">
+                    <!--Vou precisar conectar ao Banco de Dados para aparecer as coisas, tô no processo-->
+                    <div id="tabela-entra-sai" class="chart-container">
+                            <canvas id="meuGrafico"></canvas>
+                    </div>
+                </div>
+            </section>
 
         </main>
 
