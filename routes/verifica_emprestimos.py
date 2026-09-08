@@ -9,12 +9,44 @@ def verificar_emprestimos():
             return redirect ('/login')
     #testa se o metodo é GET ou POST para carregar a página ou executar o codigo
     if request.method == 'GET':
-        return render_template('movimentacao.html')
+
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
+
+        cursor.execute("""SELECT e.*, p.periferico FROM emprestimos e 
+        JOIN perifericos p ON e.id_periferico = p.id_periferico
+        WHERE 1=1 """)
+
+        movimentacoes = cursor.fetchall()
+        conexao.close()
+
+        return render_template ("movimentacao.html", movimentacoes = movimentacoes, name = session.get("usuario_name"))
+    
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
         status =  request.form["filtro_status"]
+        categoria = request.form ["filtro_categoria"]
+        sql = """SELECT e.*, p.periferico FROM emprestimos e 
+        JOIN perifericos p ON e.id_periferico = p.id_periferico
+        WHERE 1=1 """
+
+        paramentros = []
+
+        if categoria != "todos":
+             sql +=  " AND LOWER(p.periferico) LIKE '%' || ? || '%'"
+             paramentros.append (categoria)
+        if status != "todos":
+             status_tranlate = 1 if status == "devolvido" else 0
+             sql += " AND e.devolvido = ?"
+             paramentros.append (status_tranlate)
+
+        cursor.execute (sql,paramentros)
+        movimentacoes = cursor.fetchall()
+        conexao.close()
+        return render_template ("movimentacao.html", movimentacoes = movimentacoes, name = session.get("usuario_name"))
+
 
         
 
