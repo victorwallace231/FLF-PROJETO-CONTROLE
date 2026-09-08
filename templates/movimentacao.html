@@ -47,9 +47,9 @@
                 <aside>
                     <nav>
                         <ul>
-                            <li><a href="dashboard.html">Início</a></li>
-                            <li><a href="equipamentos.html">Equipamentos</a></li>
-                            <li><a href="#">Movimentações</a></li>
+                            <li><a href="/dashboard">Início</a></li>
+                            <li><a href="/equipamentos">Equipamentos</a></li>
+                            <li><a href="/emprestimo">Movimentações</a></li>
                             <li><a href="relatorios.html">Relatórios</a></li>
                         </ul>
                     </nav>
@@ -62,10 +62,10 @@
                 <div class="barra-pesquisa">
 
                     <input type="text" placeholder="Pesquisar por..." class="pesquisa-enter">
-                    <select class="filter-select">
+                    <select class="filter-select" name = "filtro_status">
                         <option value="todos">Todos</option>
-                        <option value="entrada">Entrada</option>
-                        <option value="saida">Saída</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="devolvido">Devolvido</option>
                     </select>
 
                     <button>+ Nova Movimentação</button>

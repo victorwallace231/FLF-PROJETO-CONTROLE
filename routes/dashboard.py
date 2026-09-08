@@ -46,7 +46,7 @@ def equipamentos():
         cursor.execute("SELECT * FROM perifericos")
         perifericos = cursor.fetchall()
         conexao.close()
-        return render_template("equipamentos.html", perifericos = perifericos)
+        return render_template("equipamentos.html", perifericos = perifericos, name = session.get("usuario_name"))
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
