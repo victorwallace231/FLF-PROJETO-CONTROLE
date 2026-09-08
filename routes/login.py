@@ -45,5 +45,5 @@ def login():
                 return redirect('/dashboard')
             else:
                 # Renderiza o template de login novamente com uma mensagem de erro se o login falhar
-                return render_template("login.html", error='Email ou senha incorretos')
+                return render_template("login.html", erro='Email ou senha incorretos')
                 #cONFIGURAR MENSAGEM DE ERRO PARA O USUÁRIO, CASO O LOGIN FALHE OBS: NÃO ESTÁ FUNCIONANDO A MENSAGEM DE ERRO, POIS O TEMPLATE NÃO ESTÁ CONFIGURADO PARA RECEBER A VARIÁVEL ERROR.
