@@ -50,29 +50,27 @@ def equipamentos():
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
-        categoria = request.form["filtro_categoria"]
-        status = request.form ["filtro_status"]
-        status_translate = False
-        manutencao = False
+        categoria = request.form["filtro_categoria"].strip().lower()
+        status = request.form ["filtro_status"].strip().lower()
 
         if categoria == "todos" and status == "todos":
-            cursor.execute("SELECT * FROM perifericos")
+            cursor.execute("SELECT * FROM TRIM(LOWER(periferico))")
         elif status == "todos":
-            cursor.execute("SELECT * FROM perifericos WHERE periferico = ?",(categoria,))
+            cursor.execute("SELECT * FROM perifericos WHERE LOWER(periferico) LIKE '%' || ? || '%'",(categoria,))
         elif status == "manutencao":
             if categoria == "todos":
                 cursor.execute("SELECT * FROM perifericos WHERE manutencao = 1")
             else:
-                cursor.execute("SELECT * FROM perifericos WHERE periferico = ? AND manutencao = 1", (categoria,))
+                cursor.execute("SELECT * FROM perifericos WHERE LOWER(periferico) LIKE '%' || ? || '%' AND manutencao = 1", (categoria,))
         else:
             status_translate = 1 if status == "disponivel" else 0
             if categoria == "todos":
                 cursor.execute("SELECT * FROM perifericos WHERE disponivel = ? AND manutencao = 0", (status_translate,))
             else:
-                cursor.execute("SELECT * FROM perifericos WHERE periferico = ? AND  disponivel = ? AND manutencao = 0", (categoria , status_translate,))
+                cursor.execute("SELECT * FROM perifericos WHERE LOWER(periferico) LIKE '%' || ? || '%' AND  disponivel = ? AND manutencao = 0", (categoria , status_translate,))
     perifericos = cursor.fetchall()
     conexao.close()
-    return render_template("equipamentos.html", perifericos = perifericos)
+    return render_template("equipamentos.html", perifericos = perifericos, name = session.get("usuario_name"))
         
         
 
