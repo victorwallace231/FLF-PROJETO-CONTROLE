@@ -41,15 +41,43 @@ def equipamentos():
     if not session.get("usuario_email"):
         return redirect('/login')
     if request.method == 'GET':
-        return render_template("equipamentos.html")
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM perifericos")
+        perifericos = cursor.fetchall()
+        conexao.close()
+        return render_template("equipamentos.html", perifericos = perifericos)
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
         categoria = request.form["filtro_categoria"]
         status = request.form ["filtro_status"]
+        status_translate = False
+        manutencao = False
 
-        cursor.execute("SELECT * FROM perifericos WHERE periferico = ? AND disponivel = ? ", (categoria, status))
-        perifericos = cursor.fetchall()
+        if categoria == "todos" and status == "todos":
+            cursor.execute("SELECT * FROM perifericos")
+        elif status == "todos":
+            cursor.execute("SELECT * FROM perifericos WHERE periferico = ?",(categoria,))
+        elif status == "manutencao":
+            if categoria == "todos":
+                cursor.execute("SELECT * FROM perifericos WHERE manutencao = 1")
+            else:
+                cursor.execute("SELECT * FROM perifericos WHERE periferico = ? AND manutencao = 1", (categoria,))
+        else:
+            status_translate = 1 if status == "disponivel" else 0
+            if categoria == "todos":
+                cursor.execute("SELECT * FROM perifericos WHERE disponivel = ? AND manutencao = 0", (status_translate,))
+            else:
+                cursor.execute("SELECT * FROM perifericos WHERE periferico = ? AND  disponivel = ? AND manutencao = 0", (categoria , status_translate,))
+    perifericos = cursor.fetchall()
+    conexao.close()
+    return render_template("equipamentos.html", perifericos = perifericos)
+        
+        
 
-        conexao.close()
-        return render_template('equipamentos.html', name=session.get('usuario_name'), perifericos=perifericos)
+
+
+        
+                
+
