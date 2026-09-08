@@ -9,22 +9,14 @@ def verificar_emprestimos():
             return redirect ('/login')
     #testa se o metodo é GET ou POST para carregar a página ou executar o codigo
     if request.method == 'GET':
-        return render_template('verifica_emprestimo.html')
+        return render_template('movimentacao.html')
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        responsavel = request.form ["responsavel"]
-        telefone = request.form["telefone"]
+        status =  request.form["filtro_status"]
 
-        cursor.execute("SELECT * FROM emprestimos WHERE tel_responsavel = ? AND devolvido = false", (telefone,))
-        emprestimos = cursor.fetchall()
-        conexao.close()
-
-        if not emprestimos :
-             return render_template ("verifica_emprestimo.html",responsavel = responsavel, erro = "Não foi possivel encontrar emprestimos nesse nome")
-        else:
-             return render_template ("verifica_emprestimo.html",responsavel = responsavel,emprestimos = emprestimos, sucesso = True)
+        
 
         
 
