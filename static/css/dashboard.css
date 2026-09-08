@@ -4,7 +4,7 @@
 .ballons-box {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: var(--gap-min);
     flex-wrap: wrap;
     justify-content: space-around;
     max-width: 100%;
@@ -19,9 +19,9 @@
     display: block;
     width: 225px;
     height: 100px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     margin: 10px;
-    color: white;
+    color: var(--white-color);
     padding: 10px;
     box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.3);
 }
@@ -48,7 +48,7 @@
     max-width: 100%;
     height: fit-content;
     display: flex;
-    gap: 20px;
+    gap: var(--gap);
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
@@ -72,8 +72,8 @@
     font-size: 20px;
     background-color: #033b77;
     border: none;
-    border-radius: 10px;
-    color: white;
+    border-radius: var(--radius);
+    color: var(--white-color);
     font-weight: bold;
 }
 
@@ -88,7 +88,7 @@
 }
 
 #card-acoes {
-    gap: 10px;
+    gap: var(--gap-min);
 }
 
 #card-relatorio, #card-movimentacao {

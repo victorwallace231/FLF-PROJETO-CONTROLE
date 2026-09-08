@@ -1,10 +1,5 @@
 /*Configurações Gerais*/
 
-* {
-    margin: 0px;
-    padding: 0px;
-}
-
 .cadastro-login-corpo {
     background-image: linear-gradient(to right, #1e64b4, #4ef9ff);
     display: flex;
@@ -21,12 +16,12 @@ img {
 /*Configurações da Telinha de Login e Cadastro*/
 
 .container {
-    background-color: white;
+    background-color: var(--white-color);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border-radius: 10px;
+    border-radius: var(--radius);
     width: 450px;
     height: 350px;
     padding: 30px;
@@ -53,7 +48,7 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: var(--gap-min);
 }
 
 .container h2 {
@@ -83,8 +78,8 @@ button {
     height: 40px;
     font-size: 20px;
     background-color: #033b77;
-    color: white;
-    border-radius: 10px;
+    color: var(--white-color);
+    border-radius: var(--radius);
     border: none;
     font-weight: bold;
     padding: 10px;
@@ -99,7 +94,7 @@ button:hover {
 .lembra-esquece {
     font-size: 14px;
     display: flex;
-    gap: 10px;
+    gap: var(--gap-min);
     justify-content: space-between;
 }
 

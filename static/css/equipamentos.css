@@ -9,15 +9,15 @@
     display: flex;
     justify-content: center;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: var(--gap-min);
 }
 
 .pesquisa-enter {
     width: fit-content;
     height: fit-content;
     padding: 10px;
-    border-radius: 10px;
-    border: 1px solid black;
+    border-radius: var(--radius);
+    border: 1px solid var(--black-color);
     flex: 1;
 }
 
@@ -25,13 +25,13 @@
     width: fit-content;
     height: fit-content;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: var(--radius);
 }
 
 /*Tabela*/
 .tabela-container {
-    border-radius: 10px;
-    border: 1px solid black;
+    border-radius: var(--radius);
+    border: 1px solid var(--black-color);
     overflow: hidden;
     width: 100%;
     margin: 20px;
@@ -48,7 +48,7 @@ table {
 thead {
     background-color: var(--cor-primaria-escura);
     border-bottom: 1px solid #e2e8f0;
-    color: #ffffff;
+    color: var(--white-color);
     font-weight: bold;
 }
 
@@ -154,7 +154,7 @@ tbody tr:hover {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--gap-min);
 }
 
 .dropdown-item:hover {
