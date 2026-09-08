@@ -23,7 +23,7 @@
     margin: 10px;
     color: var(--white-color);
     padding: 10px;
-    box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow);
 }
 
 #ballon1 {
@@ -40,57 +40,4 @@
 
 #ballon4 {
     background-color: #b11818;
-}
-
-/*Cards dos Outros Menus*/
-
-.tabelas-afins {
-    max-width: 100%;
-    height: fit-content;
-    display: flex;
-    gap: var(--gap);
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.cards-dash {
-    display: flex;
-    flex-direction: column;
-    border: 5px solid #033b77;
-    width: 300px;
-    height: 350px;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.3);
-}
-
-.cards-dash button {
-    cursor: pointer;
-    max-width: 100%;
-    height: 40px;
-    font-size: 20px;
-    background-color: #033b77;
-    border: none;
-    border-radius: var(--radius);
-    color: var(--white-color);
-    font-weight: bold;
-}
-
-.cards-dash button a {
-    text-decoration: none;
-}
-
-.cards-dash button:hover {
-    background-color: #1e64b4;
-    cursor: pointer;
-    transition: background-color 0.5s ease;
-}
-
-#card-acoes {
-    gap: var(--gap-min);
-}
-
-#card-relatorio, #card-movimentacao {
-    justify-content: space-between;
 }

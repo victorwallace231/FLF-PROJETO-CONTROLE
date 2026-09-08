@@ -34,15 +34,15 @@
   --font-body: "Montserrat", sans-serif;
 
   /* ── Layout ───────────────────────────────────────── */
-  --gap:           2rem; 
+  --gap:           2.5rem; 
   --gap-min:       1rem; 
   --container-max: 120rem;
   --radius:        0.8rem;
   --radius-lg:     1.2rem;
 
   /* ── Sombras ──────────────────────────────────────── */
-  --shadow:    0 4px 24px rgba(0, 0, 0, 0.10);  /* Sombra suave   */
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.14);  /* Sombra média   */
+  --shadow:    0 4px 24px rgba(0, 0, 0, 0.20);  /* Sombra suave   */
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.24);  /* Sombra média   */
 
   /* ── Navbar ───────────────────────────────────────── */
   --navbar-height: 6.5rem;
