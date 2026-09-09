@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/css/variables.css">
+        <link rel="stylesheet" href="../static/css/elements.css">
+        <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/global.css">
+        <script src="../static/js/script.js" defer></script>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+        <title>CONTROLE DE ESTOQUE - FLF</title>
+    </head>
+    <body>
+
+        <!--Cabeçalho-->
+        <header>
+
+            <div class="part-header">
+                <img class="logo-user" src="../static/img/flflogoshort.png">
+                <h1>CONTROLE DE ESTOQUE DE EQUIPAMENTOS</h1>
+            </div>
+
+            <!--Usuário Principal-->
+            <div class="part-header">
+                <p>Usuário: {{ name }}</p>
+                <div class="icon-container">
+                    <button id="btn-icon" class="icon-btn">
+                        <img class="logo-user" src="../static/img/user.png">
+                    </button>
+
+                    <!--Janela Modal da Conta-->
+                    <div id="modal-suspensao" class="modal-popover"> 
+                        <!--Inserir informações em relação a conta, ai decide se só vai ser nome, histórico e sair da conta-->
+                        <h3 class="dropdown-item">Nome da Conta</h3>
+                        <button class="dropdown-item">Perfil</button>
+                        <button class="dropdown-item">Histórico</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger">Sair da Conta</button>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <!--Menu Lateral e Conteúdo da Página-->
+        <main>
+
+
+            <!--Menu Lateral Sempre à Esquerda-->
+            <section id="classbar" class="sidebar">
+                <aside>
+                    <nav>
+                        <ul>
+                            <li><a href="/dashboard">Início</a></li>
+                            <li><a href="/equipamentos">Equipamentos</a></li>
+                            <li><a href="/emprestimo">Movimentações</a></li>
+                            <li><a href="relatorios.html">Relatórios</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+            </section>
+
+
+            <!--Conteúdo Principal (Dashboard) Sempre à Direita-->
+            <section class="main-content">
+
+                <!--Formulário para adicionar novo equipamento!-->
+                <form id="novo-equipamento">
+
+                    <div class="input-box">
+                        <input type="text" placeholder="Nome do Equipamento">
+                    </div>
+                    <button class="button">Adicionar</button>
+
+                
+                </form>
+
+            </section>
+
+        </main>
+
+    </body>
+
+</html>
