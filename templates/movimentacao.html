@@ -60,7 +60,7 @@
 
             <section class="main-content">
                 <h2>Movimentações</h2>
-                <form action="/verifica_emprestimos" method="POST"></form>
+                <form action="/verifica_emprestimos" method="POST">
                         <div class="barra-pesquisa">
                     
                             <input type="text" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
@@ -107,7 +107,7 @@
                                                 <td>{{ emprestimo [9] }}</td>
                                                 <td>{{ emprestimo [1] }}</td>
                                             {% else %}
-                                                <td>{{ emprestimo [3] }}</td>
+                                                <td>{{ emprestimo [2] }}</td>
                                                 <td><span class="badge" id="emuso">Pendente</span></td>
                                                 <td>{{ emprestimo [10] }}</td>
                                                 <td>{{ emprestimo [9] }}</td>

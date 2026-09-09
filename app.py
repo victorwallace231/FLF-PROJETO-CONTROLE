@@ -14,7 +14,7 @@ from routes.deleteuser import route_deleteuser
 from routes.createitem import route_createitem
 from routes.deleteitem import route_deleteitem
 from routes.updateitem import route_updateitem
-from routes.emprestimos import verifica_emprestimos
+from routes.verifica_emprestimos import verifica_emprestimos
 from routes.devolucao import route_devolucao
 from routes.dashboard import route_equipamentos
 
