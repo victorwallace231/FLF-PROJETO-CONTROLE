@@ -63,7 +63,7 @@
                 <form action="/verifica_emprestimos" method="POST">
                         <div class="barra-pesquisa">
                     
-                            <input type="text" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
+                            <input type="text" name = "filtro_responsavel" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
 
                             <select class="filter-select" name = "filtro_status">
                                 <option value="todos">Todos</option>
@@ -125,6 +125,7 @@
                                                         <div class="dropdown-divider"></div>
                                                         <form method="POST" action="/devolucao">
                                                             <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
+                                                            <input type="hidden" name="id_periferico" value = "{{ emprestimo [11] }}">
                                                             <button class="dropdown-item danger">Devolver</button>
                                                         </form>
                                                     </div>

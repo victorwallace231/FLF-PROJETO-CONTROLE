@@ -52,25 +52,27 @@ def equipamentos():
         cursor = conexao.cursor()
         categoria = request.form["filtro_categoria"].strip().lower()
         status = request.form ["filtro_status"].strip().lower()
+        marca = request.form ["filtro_marca"].strip().lower()
+        sql = """SELECT * FROM perifericos WHERE 1=1"""
+        paramentros = []
 
-        if categoria == "todos" and status == "todos":
-            cursor.execute("SELECT * FROM TRIM(LOWER(periferico))")
-        elif status == "todos":
-            cursor.execute("SELECT * FROM perifericos WHERE LOWER(periferico) LIKE '%' || ? || '%'",(categoria,))
+        if categoria != "todos":
+            sql += " AND periferico LIKE '%' || ? || '%'"
+            paramentros.append (categoria)
+
+        if marca != "":
+            sql+= " AND marca LIKE '%' || ? || '%'"
+            paramentros.append(marca)
+        if status == "disponivel":
+            sql += " AND disponivel = 1"
+        elif status == "emuso":
+            sql+= " AND disponivel = 0 AND manutencao = 0"
         elif status == "manutencao":
-            if categoria == "todos":
-                cursor.execute("SELECT * FROM perifericos WHERE manutencao = 1")
-            else:
-                cursor.execute("SELECT * FROM perifericos WHERE LOWER(periferico) LIKE '%' || ? || '%' AND manutencao = 1", (categoria,))
-        else:
-            status_translate = 1 if status == "disponivel" else 0
-            if categoria == "todos":
-                cursor.execute("SELECT * FROM perifericos WHERE disponivel = ? AND manutencao = 0", (status_translate,))
-            else:
-                cursor.execute("SELECT * FROM perifericos WHERE LOWER(periferico) LIKE '%' || ? || '%' AND  disponivel = ? AND manutencao = 0", (categoria , status_translate,))
-    perifericos = cursor.fetchall()
-    conexao.close()
-    return render_template("equipamentos.html", perifericos = perifericos, name = session.get("usuario_name"))
+            sql+= " AND disponivel = 0 AND manutencao = 1"
+        cursor.execute(sql,paramentros)
+        perifericos = cursor.fetchall()
+        conexao.close()
+        return render_template("equipamentos.html", perifericos = perifericos, name = session.get("usuario_name"))
         
         
 

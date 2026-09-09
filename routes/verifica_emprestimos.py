@@ -13,9 +13,9 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("""SELECT e.*, p.periferico, p.num_serie FROM emprestimos e 
+        cursor.execute("""SELECT e.*, p.periferico, p.num_serie, p.id_periferico FROM emprestimos e 
         JOIN perifericos p ON e.id_periferico = p.id_periferico
-        WHERE 1=1 """)
+        WHERE 1=1 ORDER BY e.id_emprestimo DESC""")
 
         movimentacoes = cursor.fetchall()
         conexao.close()
@@ -28,7 +28,8 @@ def verificar_emprestimos():
 
         status =  request.form["filtro_status"]
         categoria = request.form ["filtro_categoria"]
-        sql = """SELECT e.*, p.periferico, p.num_serie FROM emprestimos e 
+        responsavel = request.form["filtro_responsavel"].strip().lower()
+        sql = """SELECT e.*, p.periferico, p.num_serie, p.id_periferico FROM emprestimos e 
         JOIN perifericos p ON e.id_periferico = p.id_periferico
         WHERE 1=1 """
 
@@ -41,59 +42,13 @@ def verificar_emprestimos():
              status_tranlate = 1 if status == "devolvido" else 0
              sql += " AND e.devolvido = ?"
              paramentros.append (status_tranlate)
+        if responsavel:
+             sql+= " AND LOWER(e.responsavel) LIKE '%' || ? || '%'"
+             paramentros.append(responsavel)
 
+        sql += " ORDER BY e.id_emprestimo DESC"
         cursor.execute (sql,paramentros)
         movimentacoes = cursor.fetchall()
         conexao.close()
         return render_template ("movimentacao.html", movimentacoes = movimentacoes, name = session.get("usuario_name"))
-
-
-
-        
-
-        
-
-"""
-Quando for criado a página html para o processo de devolção escrever o codigo a seguir no arquivo html
-{% if erro %}
-    <p>{{ erro }} {{ responsavel }}</p>
-{% endif %}
-{% if sucesso%}
-    <p>{{ sucesso }}</p>
-        <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Responsavel</th>
-                        <th>Data de retirada</th>
-                        <th>ID_PERIFERICO</th>
-                        <th>Telefone</th>
-                        <th>Observação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for emprestimo in emprestimos %}
-                    <tr>
-                        <td><p>{{ emprestimo[0] }}</p></td>
-                        <td><p>{{ emprestimo[1] }}</p></td>
-                        <td><p>{{ emprestimo[2] }}</p></td>
-                        <td><p>{{ emprestimo[4] }}</p></td>
-                        <td><p>{{ emprestimo[5] }}</p></td>
-                        <td><p>{{ emprestimo[7] }}</p></td>
-                        <td><form action="/devolucao" method="POST">
-                            <!-- Campo oculto mandando o ID deste empréstimo específico -->
-                            <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
-                            <button type="submit" class="btn-devolver">Devolver</button>
-                        </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-        </table>
-{% endif %}
-
-
-obs:Local da mensagem decidido pelo front
-
-"""
         
