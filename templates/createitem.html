@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-
 <html lang="pt-br">
-
     <head>
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../static/css/variables.css">
@@ -13,7 +12,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
         <title>CONTROLE DE ESTOQUE - FLF</title>
     </head>
-
     <body>
 
         <!--Cabeçalho-->
@@ -57,7 +55,7 @@
                         <ul>
                             <li><a href="/dashboard">Início</a></li>
                             <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/verifica_emprestimos">Movimentações</a></li>
+                            <li><a href="/emprestimo">Movimentações</a></li>
                             <li><a href="relatorios.html">Relatórios</a></li>
                         </ul>
                     </nav>
@@ -68,60 +66,21 @@
             <!--Conteúdo Principal (Dashboard) Sempre à Direita-->
             <section class="main-content">
 
-                <!--Visão Geral dos Equipamentos-->
-                <div class="ballons-box">
+                <!--Formulário para adicionar novo equipamento!-->
+                <form id="novo-equipamento">
 
-                    <div id="ballon1" class="ballons-all">
-                        <h3>Total: </h3>
-                        <h4>{{ total_perifericos }}</h4>
+                    <div class="input-box">
+                        <input type="text" placeholder="Nome do Equipamento">
                     </div>
+                    <button class="button">Adicionar</button>
 
-                    <div id="ballon2" class="ballons-all">
-                        <h3>Disponiveís: </h3>
-                        <h4>{{ disponiveis }}</h4>
-                    </div>
-
-                    <div id="ballon3" class="ballons-all">
-                        <h3>Em Uso: </h3>
-                        <h4>{{ usados }}</h4>
-                    </div>
-
-                    <div id="ballon4" class="ballons-all">
-                        <h3>Em Manutenção: </h3>
-                        <h4>{{ manutencao }}</h4>
-                    </div>
-
-                </div>
-
-
-                <!--Cards Informativos de Atualizações, e Ações Rápidas-->
-                <div class="tabelas-afins">
-
-                    <!--Relatórios de última hora-->
-                    <div id="card-relatorio" class="cards-dash">
-                        <h2>Relatórios recentes</h2>
-                        <div class="temporario"></div>
-                        <button><a>Abrir</a></button>
-                    </div>
-
-                    <!--Movimentações Recentes-->
-                    <div id="card-movimentacao" class="cards-dash">
-                        <h2>Últimas Movimentações</h2>
-                        <div class="temporario"></div>
-                        <button><a>Abrir</a></button>
-                    </div>
-
-                    <!--Ações Rápidas (Ou Atalhos)-->
-                    <div id="card-acoes" class="cards-dash">
-                        <h2>Ações Rápidas</h2>
-                        <button ><a href="/emprestimo">Nova Movimentação</a></button>
-                        <button ><a href="/createitem">Novo Equipamento</a></button>
-                    </div>
-                </div>
+                
+                </form>
 
             </section>
 
         </main>
 
     </body>
+
 </html>

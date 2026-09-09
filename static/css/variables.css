@@ -2,7 +2,7 @@
     --cor-primaria: #2277E5;
     --cor-escura: #10386B;
     --cor-primaria-escura: #1C5FB8;
-    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     --font-size-titulo: 40px;
     --font-size-subtitulo: 20px;
     --font-size-texto: 16px;
@@ -19,6 +19,7 @@
 
   /* ── Neutros ──────────────────────────────────────── */
   --white-color:  #FFFFFF;
+  --black-color:  #000000;
   --gray-light:   #F4F6FA;  
   --gray-mid:     #e0e4ec;  
   --gray-text:    #5A6070;  
@@ -33,15 +34,15 @@
   --font-body: "Montserrat", sans-serif;
 
   /* ── Layout ───────────────────────────────────────── */
-  --gap:           2rem; 
+  --gap:           2.5rem; 
   --gap-min:       1rem; 
   --container-max: 120rem;
   --radius:        0.8rem;
   --radius-lg:     1.2rem;
 
   /* ── Sombras ──────────────────────────────────────── */
-  --shadow:    0 4px 24px rgba(0, 0, 0, 0.10);  /* Sombra suave   */
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.14);  /* Sombra média   */
+  --shadow:    0 4px 24px rgba(0, 0, 0, 0.20);  /* Sombra suave   */
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.24);  /* Sombra média   */
 
   /* ── Navbar ───────────────────────────────────────── */
   --navbar-height: 6.5rem;
