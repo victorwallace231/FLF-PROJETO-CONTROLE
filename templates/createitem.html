@@ -7,11 +7,13 @@
         <link rel="stylesheet" href="../static/css/variables.css">
         <link rel="stylesheet" href="../static/css/elements.css">
         <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/createitem.css">
         <link rel="stylesheet" href="../static/css/global.css">
         <script src="../static/js/script.js" defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
         <title>CONTROLE DE ESTOQUE - FLF</title>
     </head>
+
     <body>
 
         <!--Cabeçalho-->
@@ -67,13 +69,29 @@
             <section class="main-content">
 
                 <!--Formulário para adicionar novo equipamento!-->
-                <form id="novo-equipamento">
+                <form id="novo-equipamento" class="form-mov-equip">
+
+                    <h2>Adicionar Novo Equipamento</h2>
 
                     <div class="input-box">
-                        <input type="text" placeholder="Nome do Equipamento">
+                        <input type="text" placeholder="Marca do Equipamento" required>
                     </div>
-                    <button class="button">Adicionar</button>
+                    
+                    <div class="input-box">
+                        <input type="text" placeholder="ID do Equipamento" required>
+                    </div>
 
+                    <select class="input-box">
+                            <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
+                            <option value="passa-slide">Passador de Slides</option>
+                            <option value="monitor">Monitor</option>
+                            <option value="projetor">Projetor</option>
+                            <option value="cabo">Cabo</option>
+                            <option value="mouse">Mouse</option>
+                    </select>
+                    
+
+                    <button class="button">Adicionar</button>
                 
                 </form>
 

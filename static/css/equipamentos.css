@@ -1,33 +1,5 @@
 /*------------Conteúdo do Equipamentos------------*/
 
-
-
-/*Barra de Pesquisa e Filtragem*/
-
-.barra-pesquisa {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--gap-min);
-}
-
-.pesquisa-enter {
-    width: fit-content;
-    height: fit-content;
-    padding: 10px;
-    border-radius: var(--radius);
-    border: 1px solid var(--black-color);
-    flex: 1;
-}
-
-.filter-select {
-    width: fit-content;
-    height: fit-content;
-    padding: 10px;
-    border-radius: var(--radius);
-}
-
 /* Badges de Status*/
 .badge {
     display: inline-block;

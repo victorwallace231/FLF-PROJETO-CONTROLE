@@ -1,0 +1,9 @@
+/*Tela de inserção de equipamento e movimentação*/
+
+.form-mov-equip {
+    width: fit-content;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}

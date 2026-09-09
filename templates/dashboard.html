@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="../static/css/variables.css">
         <link rel="stylesheet" href="../static/css/elements.css">
         <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/dashboard.css">
         <link rel="stylesheet" href="../static/css/global.css">
         <script src="../static/js/script.js" defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -72,23 +73,23 @@
                 <div class="ballons-box">
 
                     <div id="ballon1" class="ballons-all">
-                        <h3>Total: </h3>
-                        <h4>{{ total_perifericos }}</h4>
+                        <h4>Total: </h4>
+                        <h3>{{ total_perifericos }}</h3>
                     </div>
 
                     <div id="ballon2" class="ballons-all">
-                        <h3>Disponiveís: </h3>
-                        <h4>{{ disponiveis }}</h4>
+                        <h4>Disponiveís: </h4>
+                        <h3>{{ disponiveis }}</h3>
                     </div>
 
                     <div id="ballon3" class="ballons-all">
-                        <h3>Em Uso: </h3>
-                        <h4>{{ usados }}</h4>
+                        <h4>Em Uso: </h4>
+                        <h3>{{ usados }}</h3>
                     </div>
 
                     <div id="ballon4" class="ballons-all">
-                        <h3>Em Manutenção: </h3>
-                        <h4>{{ manutencao }}</h4>
+                        <h4>Em Manutenção: </h4>
+                        <h3>{{ manutencao }}</h3>
                     </div>
 
                 </div>
@@ -115,7 +116,7 @@
                     <div id="card-acoes" class="cards-dash">
                         <h2>Ações Rápidas</h2>
                         <button ><a href="/emprestimo">Nova Movimentação</a></button>
-                        <button ><a href="/createitem">Novo Equipamento</a></button>
+                        <button ><a href="../templates/createitem.html">Novo Equipamento</a></button>
                     </div>
                 </div>
 
