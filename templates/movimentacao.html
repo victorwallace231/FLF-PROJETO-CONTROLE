@@ -60,32 +60,29 @@
 
             <section class="main-content">
                 <h2>Movimentações</h2>
-
-                <div class="barra-pesquisa">
-
-                    <input type="text" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
-
-                    <select class="filter-select" name = "filtro_status">
-                        <option value="todos">Todos</option>
-                        <option value="pendente">Pendente</option>
-                        <option value="devolvido">Devolvido</option>
-                    </select>
-
-                        <select class="filter-select" name = "filtro_categoria">
-                            <option value="todos">Todas as categorias</option>
-                            <option value="microfone">Microfones</option>
-                            <option value="teclado">Teclados</option>
-                            <option value="mouse">Mouses</option>
-<<<<<<< HEAD
-                        </select>
-=======
-                    </select>
-                    <button type="submit">Filtrar</button>
->>>>>>> ed85a3fdd4fee8ebf3cc3889377524174741f558
-
-                    <button>+ Nova Movimentação</button>
+                <form action="/verifica_emprestimos" method="POST"></form>
+                        <div class="barra-pesquisa">
                     
-                </div>
+                            <input type="text" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
+
+                            <select class="filter-select" name = "filtro_status">
+                                <option value="todos">Todos</option>
+                                <option value="pendente">Pendente</option>
+                                <option value="devolvido">Devolvido</option>
+                            </select>
+
+                                <select class="filter-select" name = "filtro_categoria">
+                                    <option value="todos">Todas as categorias</option>
+                                    <option value="microfone">Microfones</option>
+                                    <option value="teclado">Teclados</option>
+                                    <option value="mouse">Mouses</option>
+                            </select>
+                            <button type="submit">Filtrar</button>
+
+                            <button>+ Nova Movimentação</button>   
+                        </div>
+                </form>
+
 
                 <div class="tabela-container">
                     <table>
