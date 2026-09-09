@@ -125,31 +125,3 @@ li:last-child {
 }
 
 /*---------------------------------------------------------------*/
-
-/*Conteúdo Principal (todas as pages)*/
-.main-content {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: fit-content;
-    align-items: center;
-}
-
-.main-content h2 {
-    font-size: 30px;
-    padding: 10px;
-}
-
-#msg-erro{
-    display: flex;
-    justify-content: space-around;
-    padding-inline: 5px;
-    border-radius: 5px;
-    box-shadow: var(--shadow);
-    background-color: #f8d7da;
-    color: red;
-    font-family: var(--font);
-    font-size: 14px;
-}
