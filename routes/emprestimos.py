@@ -13,7 +13,7 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("""SELECT e.*, p.periferico FROM emprestimos e 
+        cursor.execute("""SELECT e.*, p.periferico, p.num_serie FROM emprestimos e 
         JOIN perifericos p ON e.id_periferico = p.id_periferico
         WHERE 1=1 """)
 
@@ -28,7 +28,7 @@ def verificar_emprestimos():
 
         status =  request.form["filtro_status"]
         categoria = request.form ["filtro_categoria"]
-        sql = """SELECT e.*, p.periferico FROM emprestimos e 
+        sql = """SELECT e.*, p.periferico, p.num_serie FROM emprestimos e 
         JOIN perifericos p ON e.id_periferico = p.id_periferico
         WHERE 1=1 """
 
@@ -48,7 +48,6 @@ def verificar_emprestimos():
         return render_template ("movimentacao.html", movimentacoes = movimentacoes, name = session.get("usuario_name"))
 
 
-        
 
         
 

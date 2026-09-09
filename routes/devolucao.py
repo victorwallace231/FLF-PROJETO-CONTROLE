@@ -3,11 +3,9 @@ from banco import conectar_banco
 
 route_devolucao = Blueprint('devolucao', __name__)
 
-@route_devolucao.route('/devolucao', methods= ['GET', 'POST'])
+@route_devolucao.route('/devolucao', methods= ['PATCH'])
 def devolucao():
-    if not session.get("usuario_email"):
-        return redirect ('/login')
-    if request.method == 'POST':
+
         id_emprestimo = request.form.get("id_emprestimo")
 
         conexao = conectar_banco()

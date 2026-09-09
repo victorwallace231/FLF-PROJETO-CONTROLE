@@ -49,7 +49,7 @@
                         <ul>
                             <li><a href="/dashboard">Início</a></li>
                             <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/emprestimo">Movimentações</a></li>
+                            <li><a href="/verifica_emprestimos">Movimentações</a></li>
                             <li><a href="relatorios.html">Relatórios</a></li>
                         </ul>
                     </nav>
@@ -93,19 +93,40 @@
                         </thead>
                         
                         <tbody>
-                            <tr>
-                                <td>04/09/2026 11:09</td>
-                                <td><span class="badge" id="disponivel">Entrada</span></td>
-                                <td>67676767</td>
-                                <td></td>
-
-                            </tr>
-                            <tr>
-                                <td>05/05/2026 11:11</td>
-                                <td><span class="badge" id="manutencao">Saída</span></td>
-                                <td>123456123</td>
-                                <td></td>
-                            </tr>
+                            {% for emprestimo in movimentacoes %}
+                                        <tr>
+                                            {% if emprestimo [8] == 1%}
+                                                <td>{{ emprestimo [3] }}</td>
+                                                <td><span class="badge" id="disponivel">Devolvido</span></td>
+                                                <td>{{ emprestimo [10] }}</td>
+                                                <td>{{ emprestimo [9] }}</td>
+                                                <td>{{ emprestimo [1] }}</td>
+                                            {% else %}
+                                                <td>{{ emprestimo [3] }}</td>
+                                                <td><span class="badge" id="emuso">Pendente</span></td>
+                                                <td>{{ emprestimo [10] }}</td>
+                                                <td>{{ emprestimo [9] }}</td>
+                                                <td>{{ emprestimo [1] }}</td>
+                                            {% endif %}
+                                            <td class="action-cell">
+                                                <div class="action-menu">
+                                                    <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
+                                                    <div class="dropdown-menu">
+                                                        <button class="dropdown-item">Visualizar</button>
+                                                        <form method="POST" action="/updateitem">
+                                                            <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
+                                                            <button class="dropdown-item">Editar</button>
+                                                        </form>
+                                                        <div class="dropdown-divider"></div>
+                                                        <form method="POST" action="/devolucao">
+                                                            <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
+                                                            <button class="dropdown-item danger">Devolver</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

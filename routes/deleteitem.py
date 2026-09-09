@@ -3,7 +3,7 @@ from banco import conectar_banco
 
 route_deleteitem = Blueprint('deleteitem', __name__)
 
-@route_deleteitem.route('/deleteitem', methods=['POST'])
+@route_deleteitem.route('/deleteitem', methods=['PATCH'])
 def delete():
     if not session.get("usuario_email"):
            return redirect ('/login')
