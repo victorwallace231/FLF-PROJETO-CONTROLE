@@ -15,8 +15,8 @@ def login():
             return render_template('login.html')
         if request.method == 'POST':
             # Captura os dados do formulário de login
-            email = request.form['email']
-            password = request.form['senha']
+            email = request.form['email'].strip().lower()
+            password = request.form['senha'].strip()
 
             # Conecta ao banco de dados e verifica se o usuário existe
             conexao = conectar_banco()
