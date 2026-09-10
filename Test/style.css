@@ -1,0 +1,68 @@
+body{
+    background-image: linear-gradient(to right, #1e64b4, #4ef9ff);
+    /* background-color: ; */
+    background-size: cover;
+    color: black;
+    font-family: "Poppins", sans-serif;
+}
+
+.border-icon{
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    /* border-radius: 22px; */
+    color: black;
+}
+
+.login-card{
+    max-width: 420px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    border-radius: 22px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+}
+
+.cadastro-card{
+    max-width: 550px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    border-radius: 22px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+}
+
+.form-control{
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    /* border-radius: 22px; */
+    color: black;
+}
+.form-control::placeholder{
+    color: rgba(0, 0, 0, 0.643);
+}
+
+.form-control:focus{
+    background-color: rgba(0, 0, 0, 0.12);
+    border-color: 1px solid rgba(255, 255, 255, .25);
+}
+
+.btn{
+    border-radius: 999px;
+    padding: 0.7rem;
+    margin-bottom: .5rem;
+}
+
+.img-login{
+    display: flex;
+    margin: 0 auto;
+    width: 50%;
+}
+
+.img-cadastro{
+    display: flex;
+    margin: 0 auto;
+    width: 40%;
+}
+
