@@ -36,6 +36,7 @@ def login():
                 session['usuario_name'] = usuario[0]  # Armazena o nome do usuário na sessão
                 session['usuario_email'] = usuario[1]  # Armazena o email do usuário na sessão
                 session['usuario_telefone'] = usuario[3]  # Armazena o telefone do usuário na sessão
+                session["usuario_id"] = usuario [4]
                 
                 if request.form.get('lembrar'):
                     session.permanent = True  # Define a sessão como permanente se o usuário escolher "lembrar"

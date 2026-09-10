@@ -69,19 +69,19 @@
             <section class="main-content">
 
                 <!--Formulário para adicionar novo equipamento!-->
-                <form id="novo-equipamento" class="form-mov-equip">
+                <form id="novo-equipamento" class="form-mov-equip" action="/create_item" method="POST">
 
                     <h2>Adicionar Novo Equipamento</h2>
 
                     <div class="input-box">
-                        <input type="text" placeholder="Marca do Equipamento" required>
+                        <input type="text" placeholder="Marca do Equipamento" name="marca" required>
                     </div>
                     
                     <div class="input-box">
-                        <input type="text" placeholder="ID do Equipamento" required>
+                        <input type="text" placeholder="Número de Série" name="num_serie" required>
                     </div>
 
-                    <select class="input-box">
+                    <select class="input-box" name="categoria">
                             <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
                             <option value="passa-slide">Passador de Slides</option>
                             <option value="monitor">Monitor</option>
