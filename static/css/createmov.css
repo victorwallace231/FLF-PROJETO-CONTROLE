@@ -1,0 +1,16 @@
+#janelamodal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) ;
+    margin: 0;
+}
+
+/* Opcional: Escurece o fundo da tela quando o modal abrir */
+#janelamodal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#janelamodal input {
+    margin-bottom: 1rem;
+}

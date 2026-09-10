@@ -6,9 +6,11 @@
         <link rel="stylesheet" href="../static/css/variables.css">
         <link rel="stylesheet" href="../static/css/elements.css">
         <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/createmov.css">
         <link rel="stylesheet" href="../static/css/global.css">
         <script src="../static/js/script.js" defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <title>CONTROLE DE ESTOQUE - FLF</title>
     </head>
     
@@ -96,18 +98,26 @@
                                             {% endif %}
 
                                             <td class="action-cell">
-                                                 <div class="action-menu">
-                                                        <button class="dropdown-item" id="abrirmodal" >Emprestar</button>
-                                                        <header>
-                                                            <dialog id="janelamodal">
-                                                                <h2>Preencha as informações abaixo</h2>
-                                                                <input type="text" name="responsavel" placeholder="nome do responsável pelo empréstimo">
-                                                                <input type="text" name="tel_responsavel" placeholder="telefone do responsavel">
-                                                                <input type="text" name="observacao" placeholder="Setor do resposável ou evento">
-                                                                <button id="fecharmodal" action="/create_emprestimo">Fechar</button>
-                                                            </dialog>
-                                                        </header>
-                                                    </div>
+                                                <div class="action-menu">
+                                                    <button class="dropdown-item" id="abrirmodal" >Emprestar</button>
+                                                   <dialog id="janelamodal" class="position-fixed top-50 start-50 translate-middle p-4 border-0 rounded shadow">
+                                                        <!-- Estrutura interna -->
+                                                        <div class="d-flex flex-column gap-3" style="min-width: 320px;">
+                                                            <h2 class="fs-4 text-center mb-1">Preencha as informações abaixo</h2>
+                                                            
+                                                            <input type="text" name="responsavel" class="form-control" placeholder="Nome do responsável"><br>
+                                                            <input type="text" name="tel_responsavel" class="form-control" placeholder="Telefone do responsável"><br>
+                                                            <input type="text" name="observacao" class="form-control" placeholder="Setor ou evento">
+                                                            
+                                                            <div class="d-flex gap-2 justify-content-end mt-2">
+                                                                <button type="button" id="fecharmodal" class="btn btn-secondary">Fechar</button>
+                                                                <button type="submit" class="btn btn-primary" formaction="/create_emprestimo">Enviar</button>
+                                                            </div>
+                                                        </div>
+                                                    </dialog>
+
+
+                                                </div>
                                             </td>
                                         </tr>
                             {% endfor %}
@@ -133,4 +143,5 @@
             modal.close()
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </html>
