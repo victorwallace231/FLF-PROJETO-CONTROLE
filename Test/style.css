@@ -1,5 +1,5 @@
 body{
-    /* background-image: url(images.jfif); */
+    background-image: linear-gradient(to right, #1e64b4, #4ef9ff);
     /* background-color: ; */
     background-size: cover;
     color: black;
@@ -7,7 +7,7 @@ body{
 }
 
 .border-icon{
-    background-color: rgba(255, 255, 255, .08);
+    background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.587);
     /* border-radius: 22px; */
     color: black;
@@ -15,7 +15,17 @@ body{
 
 .login-card{
     max-width: 420px;
-    background-color: rgba(255, 255, 255, .08);
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    border-radius: 22px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+}
+
+.cadastro-card{
+    max-width: 550px;
+    background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.587);
     border-radius: 22px;
     padding: 2rem;
@@ -24,7 +34,7 @@ body{
 }
 
 .form-control{
-    background-color: rgba(255, 255, 255, .12);
+    background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.587);
     /* border-radius: 22px; */
     color: black;
@@ -44,8 +54,15 @@ body{
     margin-bottom: .5rem;
 }
 
-img{
+.img-login{
     display: flex;
     margin: 0 auto;
     width: 50%;
 }
+
+.img-cadastro{
+    display: flex;
+    margin: 0 auto;
+    width: 40%;
+}
+
