@@ -15,11 +15,11 @@ def cadastrar():
         cursor = conexao.cursor()
 
         #recebendo do formulario html os valores de cadastro do usuário
-        name = request.form ["nome"]
-        email = request.form ["email"]
-        number = request.form ["telefone"]
-        password = request.form ["senha"]
-        confirm_password = request.form ["confirma_senha"]
+        name = request.form ["nome"].strip().lower()
+        email = request.form ["email"].strip().lower()
+        number = request.form ["telefone"].strip()
+        password = request.form ["senha"].strip()
+        confirm_password = request.form ["confirma_senha"].strip()
 
         if password != confirm_password:
             return render_template("cadastro.html", error="As senhas não coincidem. Por favor, tente novamente.")

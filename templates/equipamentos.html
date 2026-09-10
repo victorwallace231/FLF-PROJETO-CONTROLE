@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="../static/css/variables.css">
         <link rel="stylesheet" href="../static/css/elements.css">
         <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/equipamentos.css">
         <link rel="stylesheet" href="../static/css/global.css">
         <script src="../static/js/script.js" defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -53,7 +54,7 @@
                         <ul>
                             <li><a href="/dashboard">Início</a></li>
                             <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/emprestimo">Movimentações</a></li>
+                            <li><a href="/verifica_emprestimos">Movimentações</a></li>
                             <li><a href="relatorios.html">Relatórios</a></li>
                         </ul>
                     </nav>
@@ -65,7 +66,7 @@
                 <h2>Gerenciamento de Inventário de Equipamentos</h2>
                 <form action="/equipamentos" method="POST">
                     <div class="barra-pesquisa">
-                        <input type="text" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
+                        <input type="text" name= "filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
 
                         <select class="filter-select" name = "filtro_categoria">
                             <option value="todos">Todas as categorias</option>
