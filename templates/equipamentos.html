@@ -83,6 +83,7 @@
                             <option value="disponivel">Disponíveis</option>
                             <option value="emuso">Em Uso</option>
                             <option value="manutencao">Em Manutenção</option>
+                            <option value="inativo">Inativo</option>
                         </select>
                         <button type="submit">Filtrar</button>
                 </form>
@@ -105,9 +106,6 @@
                         
                         <tbody>
                             {% for periferico in perifericos %}
-                                {% if indisponivel ==  1 %}
-
-                                {% elif %}
                                         <tr name="{{ periferico[1] }}">
                                             <td>
                                                 <img src="../static/img/monitor_dell.webp" class="thumb">
@@ -119,10 +117,12 @@
                                             <!-- Lógica das badges melhorada e sem conflitos -->
                                             {% if periferico[4] == 1 %}
                                                 <td><span class="badge" id="disponivel">Disponível</span></td>
-                                            {% elif periferico[4] == 0 and periferico[5] == 0 %}
+                                            {% elif periferico[4] == 0 and periferico[5] == 0 and periferico [6] == 0 %}
                                                 <td><span class="badge" id="emuso">Em Uso</span></td>
-                                            {% elif periferico[4] == 0 and periferico[5] == 1 %}
+                                            {% elif periferico[4] == 0 and periferico[5] == 1 and periferico [6] == 0 %}
                                                 <td><span class="badge" id="manutencao">Em Manutenção</span></td>
+                                            {% elif periferico[6] == 1%}
+                                                <td><span class="badge" id="emuso">Inativo</span></td>
                                             {% endif %}
 
                                             <td class="action-cell">
@@ -130,10 +130,10 @@
                                                     <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
                                                     <div class="dropdown-menu">
                                                         <button class="dropdown-item">Visualizar</button>
-                                                        <form method="POST" action="/updateitem">
-                                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
-                                                            <button class="dropdown-item">Editar</button>
-                                                        </form>
+                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Editar</button>
+                                                        
+                                                        <!-- Modal com ID dinâmico baseado no id_periferico -->
+
                                                         <button class="dropdown-item">Histórico</button>
                                                         <div class="dropdown-divider"></div>
                                                         <form method="POST" action="/deleteitem">
@@ -142,9 +142,40 @@
                                                         </form>
                                                     </div>
                                                 </div>
+                                                            <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
+                                                                
+                                                                <form action="/update_item" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+                                                                    <select class="input-box" name="categoria">
+                                                                            <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
+                                                                            <option value="passa-slide">Passador de Slides</option>
+                                                                            <option value="monitor">Monitor</option>
+                                                                            <option value="projetor">Projetor</option>
+                                                                            <option value="cabo">Cabo</option>
+                                                                            <option value="mouse">Mouse</option>
+                                                                    </select>
+                                                                        <select class="filter-select" name = "filtro_status">
+                                                                        <option value="todos">Todos os status</option>
+                                                                        <option value="disponivel">Disponíveis</option>
+                                                                        <option value="emuso">Em Uso</option>
+                                                                        <option value="manutencao">Em Manutenção</option>
+                                                                        <option value="inativo">Inativo</option>
+                                                                    </select>
+                                                                    <input type="text" name="marca" placeholder="Marca" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="text" name="num_serie" placeholder="Número de Série" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
+                                                                    
+                                                                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+                                                                        <button type="button" onclick="document.getElementById('modal-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
+                                                                        <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </dialog>
                                             </td>
                                         </tr>
-                                {% endif %}
+
 
 
                             {% endfor %}

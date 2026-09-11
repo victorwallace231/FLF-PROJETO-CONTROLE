@@ -7,8 +7,9 @@ route_cadastro = Blueprint('cadastro', __name__)
 @route_cadastro.route("/cadastro", methods=["GET","POST"])
 def cadastrar():
     #Carregar o arquivo html para a pagina web
+    erro=""
     if request.method == "GET":
-        return render_template("cadastro.html")
+        return render_template("cadastro.html", erro = erro)
     if request.method == "POST":
         #conexão com o banco de dados
         conexao = conectar_banco()
@@ -22,7 +23,7 @@ def cadastrar():
         confirm_password = request.form ["confirmar_senha"].strip()
 
         if password != confirm_password:
-            return render_template("cadastro.html", error="As senhas não coincidem. Por favor, tente novamente.")
+            return render_template("cadastro.html", erro="As senhas não coincidem. Por favor, tente novamente.")
 
         #convertendo a senha digitada em hash
         password_hash = generate_password_hash(password)

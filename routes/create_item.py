@@ -20,7 +20,7 @@ def create():
         marca = request.form["marca"].strip().lower()
         num_serie = request.form["num_serie"].strip().lower()
 
-        cursor.execute("INSERT INTO perifericos (periferico, marca, num_serie, disponivel, manutencao) VALUES (?, ?, ?,1,0)", (periferico, marca, num_serie))
+        cursor.execute("INSERT INTO perifericos (periferico, marca, num_serie, disponivel, manutencao, inativo) VALUES (?, ?, ?,1,0,0)", (periferico, marca, num_serie))
         conexao.commit()
         conexao.close()
         return redirect('/create_item')

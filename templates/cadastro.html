@@ -53,9 +53,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-=======
             <div class="lembra-esquece">
                 <p>Insira as informações abaixo.</p>
             </div>
@@ -76,11 +73,11 @@
                 <input type="password" id="cadInput" name="confirma_senha" placeholder="Confirme sua senha" required>
             </div>
             
-            {% if error %}
-            <div id="msg-erro" class="alert alert-danger" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <strong>Erro:</strong> {{ error }}
-            </div>
+                {% if erro != "" %}
+                    <div id="msg-erro" class="alert alert-danger" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong>Erro:</strong> {{ erro }}
+                    </div>
                 {% endif %}
 
             <div class="input-box">
@@ -92,6 +89,5 @@
         </form>
         
     </main>
->>>>>>> a1436576b00cf83ed3a38e114caf37704faed65f
 </body>
 </html>

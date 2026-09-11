@@ -28,9 +28,9 @@ def dashboard():
     for periferico in perifericos:
         if periferico[4] == True:
             disponiveis += 1
-        elif periferico[4] == False and periferico[5] == False:
+        elif periferico[4] == False and periferico[5] == False and periferico[6] == 0:
             usados += 1
-        elif periferico[4] == False and periferico[5] == True:
+        elif periferico[4] == False and periferico[5] == True and periferico[6] == 0:
             manutencao += 1
 
     conexao.close()
@@ -43,7 +43,7 @@ def equipamentos():
     if request.method == 'GET':
         conexao = conectar_banco()
         cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM perifericos")
+        cursor.execute("SELECT * FROM perifericos WHERE inativo != 1")
         perifericos = cursor.fetchall()
         conexao.close()
         return render_template("equipamentos.html", perifericos = perifericos, name = session.get("usuario_name"))
@@ -66,11 +66,11 @@ def equipamentos():
         if status == "disponivel":
             sql += " AND disponivel = 1"
         elif status == "emuso":
-            sql+= " AND disponivel = 0 AND manutencao = 0"
+            sql+= " AND disponivel = 0 AND manutencao = 0 AND inativo = 0"
         elif status == "manutencao":
-            sql+= " AND disponivel = 0 AND manutencao = 1"
-        elif status == "indisponivel" :
-            sql += " AND indiponivel = 1"
+            sql+= " AND disponivel = 0 AND manutencao = 1 AND inativo = 0"
+        elif status == "inativo" :
+            sql += " AND inativo = 1"
             
         cursor.execute(sql,paramentros)
         perifericos = cursor.fetchall()

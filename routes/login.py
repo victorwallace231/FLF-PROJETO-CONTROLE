@@ -14,7 +14,8 @@ def login():
 
     # Renderiza o template de login para requisições GET
         if request.method == 'GET':
-            return render_template('login.html')
+            erro=""
+            return render_template('login.html', erro=erro)
         if request.method == 'POST':
             # Captura os dados do formulário de login
             email = request.form['email'].strip().lower()
