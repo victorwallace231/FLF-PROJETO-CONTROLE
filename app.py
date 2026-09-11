@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from datetime import timedelta
 app = Flask(__name__)
 app.secret_key = '14082017'
@@ -39,6 +39,6 @@ app.register_blueprint(route_logout)
 #Rota principal do sistema
 @app.route('/')
 def index():
-    return render_template('cadastro.html')
+    return redirect ('/cadastro')
 if __name__ == "__main__":
     app.run(debug=True) 

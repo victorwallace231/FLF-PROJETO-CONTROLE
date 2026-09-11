@@ -7,8 +7,8 @@ route_cadastro = Blueprint('cadastro', __name__)
 @route_cadastro.route("/cadastro", methods=["GET","POST"])
 def cadastrar():
     #Carregar o arquivo html para a pagina web
-    erro=""
     if request.method == "GET":
+        erro= ""
         return render_template("cadastro.html", erro = erro)
     if request.method == "POST":
         #conexão com o banco de dados

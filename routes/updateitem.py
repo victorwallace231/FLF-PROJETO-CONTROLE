@@ -10,14 +10,43 @@ def update():
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
+        sql = """UPDATE perifericos SET id_periferico = id_periferico"""
         # Captura os dados do formulário de atualização
-        item_id = request.form['id_periferico']
-        item_nome = request.form['categoria']
-        item_marca = request.form['marca']
-        item_numero_de_serie = request.form['num_serie']
-        status = request.form['filtro_status']
+        item_id = request.form.get('id_periferico')
+        item_nome = request.form.get("categoria")
+        item_marca = request.form.get('marca')
+        item_numero_de_serie = request.form.get('num_serie')
+        status = request.form.get('filtro_status')
+        paramentros = []
 
-        cursor.execute("UPDATE perifericos SET periferico = ?, marca = ?, num_serie = ? WHERE id_periferico", (item_nome, item_marca, item_numero_de_serie, item_id))
+        if item_nome:
+             sql+= ", periferico = ?"
+             paramentros.append(item_nome)
+
+        if item_marca:
+             sql+= ", marca = ?"
+             paramentros.append(item_marca)
+        if item_numero_de_serie != "":
+            sql+= ", num_serie = ?"
+            paramentros.append(item_numero_de_serie)
+        if status != "":
+            if status == "disponivel":
+                sql += ", disponivel = 1, inativo = 0, manutencao = 0"
+            elif status == "emuso":
+                sql += ", disponivel = 0, inativo = 0, manutencao = 0"
+            elif status == "manutencao":
+                sql += ", disponivel = 0, manutencao = 1, inativo = 0"
+            elif status == "inativo":
+                sql += ", disponivel = 0, manutencao = 0, inativo = 1"
+        if item_numero_de_serie:
+            sql += ", num_serie = ?"
+            paramentros.append(item_numero_de_serie)
+
+        sql += " WHERE id_periferico = ?"
+        paramentros.append(item_id)
+
+        cursor.execute(sql,paramentros)
+
         conexao.commit()
         conexao.close()
         return redirect('/equipamentos')

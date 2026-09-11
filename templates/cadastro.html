@@ -43,7 +43,12 @@
 
                 <button type="submit" class="btn btn-primary w-100 text-dark text-black fw-semibold">Entrar</button>
 
-                <p id="msg-erro">Senhas não compatíveis</p>
+                {% if erro != "" %}
+                    <div id="msg-erro" class="alert alert-danger" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong>Erro:</strong> {{ erro }}
+                    </div>
+                {% endif %}                
                 
                 <p class="text-center"> 
                     Já possui uma conta? 
@@ -73,12 +78,7 @@
                 <input type="password" id="cadInput" name="confirma_senha" placeholder="Confirme sua senha" required>
             </div>
             
-                {% if erro != "" %}
-                    <div id="msg-erro" class="alert alert-danger" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <strong>Erro:</strong> {{ erro }}
-                    </div>
-                {% endif %}
+
 
             <div class="input-box">
                 <input type="text" id="cadInput" name="telefone" placeholder="Digite seu telefone" required>
