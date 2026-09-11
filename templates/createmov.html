@@ -97,29 +97,31 @@
                                                 <td><span class="badge" id="manutencao">Em Manutenção</span></td>
                                             {% endif %}
 
-                                            <td class="action-cell">
-                                                <div class="action-menu">
-                                                    <button class="dropdown-item" id="abrirmodal" >Emprestar</button>
-                                                   <dialog id="janelamodal" class="position-fixed top-50 start-50 translate-middle p-4 border-0 rounded shadow">
-                                                        <!-- Estrutura interna -->
-                                                        <div class="d-flex flex-column gap-3" style="min-width: 320px;">
-                                                            <h2 class="fs-4 text-center mb-1">Preencha as informações abaixo</h2>
-                                                            
-                                                            <input type="text" name="responsavel" class="form-control" placeholder="Nome do responsável"><br>
-                                                            <input type="text" name="tel_responsavel" class="form-control" placeholder="Telefone do responsável"><br>
-                                                            <input type="text" name="observacao" class="form-control" placeholder="Setor ou evento">
-                                                            
-                                                            <div class="d-flex gap-2 justify-content-end mt-2">
-                                                                <button type="button" id="fecharmodal" class="btn btn-secondary">Fechar</button>
-                                                                <button type="submit" class="btn btn-primary" formaction="/create_emprestimo">Enviar</button>
+                                                <td class="action-cell">
+                                                    <div class="action-menu">
+                                                        <!-- Botão com onclick apontando para o ID único do modal deste item -->
+                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Emprestar</button>
+                                                        
+                                                        <!-- Modal com ID dinâmico baseado no id_periferico -->
+                                                        <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
+                                                                
+                                                                <form action="/create_emprestimo" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+                                                                    <input type="text" name="responsavel" placeholder="Nome do responsável" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="text" name="tel_responsavel" placeholder="Telefone do responsável" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="text" name="observacao" placeholder="Setor ou evento" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
+                                                                    
+                                                                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+                                                                        <button type="button" onclick="document.getElementById('modal-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
+                                                                        <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                        </div>
-                                                    </dialog>
-
-
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        </dialog>
+                                                    </div>
+                                                </td>
                             {% endfor %}
                                 
                         </tbody>

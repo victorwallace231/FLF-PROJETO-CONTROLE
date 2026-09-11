@@ -5,10 +5,12 @@ from werkzeug.security import check_password_hash
 
 # Blueprint para a rota de login
 route_login = Blueprint ('login', __name__)
+route_logout = Blueprint ('logout', __name__)
 
 # Rota de login
 @route_login.route('/login', methods=['GET','POST'])
 def login():
+
 
     # Renderiza o template de login para requisições GET
         if request.method == 'GET':
@@ -48,3 +50,10 @@ def login():
                 # Renderiza o template de login novamente com uma mensagem de erro se o login falhar
                 return render_template("login.html", erro='Email ou senha incorretos')
                 #cONFIGURAR MENSAGEM DE ERRO PARA O USUÁRIO, CASO O LOGIN FALHE OBS: NÃO ESTÁ FUNCIONANDO A MENSAGEM DE ERRO, POIS O TEMPLATE NÃO ESTÁ CONFIGURADO PARA RECEBER A VARIÁVEL ERROR.
+
+            
+@route_logout.route('/logout', methods = ['POST'])
+def logout():
+
+          session.clear()
+          return redirect('/login')

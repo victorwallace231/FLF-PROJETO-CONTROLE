@@ -11,7 +11,7 @@ def delete():
     cursor = conexao.cursor()
 
     # Deleta o item do banco de dados com base no ID fornecido
-    cursor.execute("DELETE FROM perifericos WHERE id_periferico = ?", (request.form['periferico_id'],))
+    cursor.execute("UPDATE perifericos SET indisponivel = 1 WHERE id_periferico = ?", (request.form['periferico_id'],))
     conexao.commit()
     cursor.execute("SELECT * FROM perifericos")
     perifericos = cursor.fetchall()  # Atualiza a lista de periféricos após a exclusão

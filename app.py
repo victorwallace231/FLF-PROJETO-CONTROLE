@@ -18,6 +18,7 @@ from routes.verifica_emprestimos import verifica_emprestimos
 from routes.devolucao import route_devolucao
 from routes.dashboard import route_equipamentos
 from routes.create_emprestimo import create_emprestimo
+from routes.login import route_logout
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -32,6 +33,8 @@ app.register_blueprint(verifica_emprestimos)
 app.register_blueprint(route_devolucao)
 app.register_blueprint(route_equipamentos)
 app.register_blueprint(create_emprestimo)
+app.register_blueprint(route_logout)
+
 
 #Rota principal do sistema
 @app.route('/')

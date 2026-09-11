@@ -69,6 +69,9 @@ def equipamentos():
             sql+= " AND disponivel = 0 AND manutencao = 0"
         elif status == "manutencao":
             sql+= " AND disponivel = 0 AND manutencao = 1"
+        elif status == "indisponivel" :
+            sql += " AND indiponivel = 1"
+            
         cursor.execute(sql,paramentros)
         perifericos = cursor.fetchall()
         conexao.close()
