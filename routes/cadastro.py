@@ -19,7 +19,7 @@ def cadastrar():
         email = request.form ["email"].strip().lower()
         number = request.form ["telefone"].strip()
         password = request.form ["senha"].strip()
-        confirm_password = request.form ["confirma_senha"].strip()
+        confirm_password = request.form ["confirmar_senha"].strip()
 
         if password != confirm_password:
             return render_template("cadastro.html", error="As senhas não coincidem. Por favor, tente novamente.")
