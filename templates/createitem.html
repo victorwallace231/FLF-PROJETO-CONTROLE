@@ -8,9 +8,11 @@
         <link rel="stylesheet" href="../static/css/elements.css">
         <link rel="stylesheet" href="../static/css/class.css">
         <link rel="stylesheet" href="../static/css/createitem.css">
+        <link rel="stylesheet" href="../static/css/style.css">
         <link rel="stylesheet" href="../static/css/global.css">
         <script src="../static/js/script.js" defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <title>CONTROLE DE ESTOQUE - FLF</title>
     </head>
 
@@ -63,41 +65,38 @@
                 </aside>
             </section>
 
-
-            <!--Conteúdo Principal (Dashboard) Sempre à Direita-->
             <section class="main-content">
+                <div class="d-flex justify-content-center align-items-center vh-100 p-4">
+                    <div class="createitem-card">
+                        <h3 class="fw-bold text-center mb-4">Adicionar Novo Equipamento</h3>
+                        <form id="form-createitem" action="{{ url_for('createitem.create_item') }}" method="POST">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
+                                <input type="text" id="createInput" class="form-control" name="marca" placeholder="Digite a marca do equipamento" required>
+                            </div>
 
-                <!--Formulário para adicionar novo equipamento!-->
-                <form id="novo-equipamento" class="form-mov-equip" action="/create_item" method="POST">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
+                                <input type="text" id="createInput" class="form-control" name="num_serie" placeholder="Digite o número de série do equipamento" required>
+                            </div>
 
-                    <h2>Adicionar Novo Equipamento</h2>
+                            <select class="input-group mb-3 form-select border-icon" name="categoria" required>
+                                <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
+                                <option value="passa-slide">Passador de Slides</option>
+                                <option value="monitor">Monitor</option>
+                                <option value="projetor">Projetor</option>
+                                <option value="cabo">Cabo</option>
+                                <option value="mouse">Mouse</option>
+                            </select>
 
-                    <div class="input-box">
-                        <input type="text" placeholder="Marca do Equipamento" name="marca" required>
+                            <button type="submit" class="btn btn-primary w-100 text-dark text-black fw-semibold">Adicionar</button>
                     </div>
-                    
-                    <div class="input-box">
-                        <input type="text" placeholder="Número de Série" name="num_serie" required>
-                    </div>
-
-                    <select class="input-box" name="categoria">
-                            <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
-                            <option value="passa-slide">Passador de Slides</option>
-                            <option value="monitor">Monitor</option>
-                            <option value="projetor">Projetor</option>
-                            <option value="cabo">Cabo</option>
-                            <option value="mouse">Mouse</option>
-                    </select>
-                    
-
-                    <button class="button">Adicionar</button>
-                
-                </form>
-
+                </div>
             </section>
 
         </main>
 
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     </body>
 
 </html>
