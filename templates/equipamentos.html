@@ -161,9 +161,9 @@
                                                                         <option value="manutencao">Em Manutenção</option>
                                                                         <option value="inativo">Inativo</option>
                                                                     </select>
-                                                                    <input type="text" name="marca" placeholder="Marca" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="text" name="marca" placeholder="Marca" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                                     <input type="text" name="num_serie" placeholder="Número de Série" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
+                                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">,
                                                                     
                                                                     <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
                                                                         <button type="button" onclick="document.getElementById('modal-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
