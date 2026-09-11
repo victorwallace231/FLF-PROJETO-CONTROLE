@@ -43,7 +43,12 @@
                 <input type="password" id="cadInput" name="confirma_senha" placeholder="Confirme sua senha" required>
             </div>
             
-            <p id="msg-erro"> {{ error }}</p>
+            {% if error %}
+            <div id="msg-erro" class="alert alert-danger" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>Erro:</strong> {{ error }}
+            </div>
+                {% endif %}
 
             <div class="input-box">
                 <input type="text" id="cadInput" name="telefone" placeholder="Digite seu telefone" required>
