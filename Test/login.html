@@ -17,20 +17,20 @@
         <div class="login-card">
             <img src="logo-removebg-preview.png" alt="" class="img-login">
             <h2 class="fw-bold text-center mb-4">Login</h2>
-            <form action="">
+            <form id="form-login" method="POST" action="{{ url_for('login.login') }}">
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"> <i class="bi bi-person-fill"></i></span>
-                    <input type="text" class="form-control" placeholder="Usuário">
+                    <input type="text" class="form-control" placeholder="Usuário" required>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" class="form-control" placeholder="Senha">
+                    <input type="password" class="form-control" placeholder="Senha" required>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="text-">
-                        <input type="checkbox" class="form-check-input border-primary" id="remember-me">
+                        <input type="checkbox" name="lembrar" id="lembrar" class="form-check-input border-primary" id="remember-me">
                         <label class="form-check-label " for="remember-me">Lembrar-me</label>
                     </div>
                     <a href="" class="text-blue small text-decoration-none ms-4"> Esqueceu a senha?</a>
@@ -40,7 +40,7 @@
                 
                 <p class="text-center">
                     Não tem uma conta? 
-                    <a href="" class="text-b fw-semibold text-decoration-none">Cadastre-se</a>
+                    <a href="{{ url_for('cadastro.cadastrar') }}" class="text-b fw-semibold text-decoration-none">Cadastre-se</a>
                 </p>
             </form>
         </div>

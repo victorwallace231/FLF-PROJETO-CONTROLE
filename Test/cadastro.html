@@ -16,35 +16,36 @@
     <div class="d-flex justify-content-center align-items-center vh-100 p-3">
         <div class="cadastro-card">
             <img src="logo-removebg-preview.png" alt="Logo" class="img-cadastro">
-            <h2 class="fw-bold text-center mb-4">Cadastro</h2>
-            <form action="">
+            <h2 class="fw-bold text-center mb-2 mt-2">Cadastro</h2>
+            <p class="text-center">Insira suas informações abaixos.</p>
+            <form id="form-cad" action="{{ url_for('cadastro.cadastrar') }}" method="POST">
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"> <i class="bi bi-person-fill"></i></span>
-                    <input type="text" class="form-control" placeholder="Digite seu nome">
+                    <input type="text" id="cadInput" class="form-control" name="nome" placeholder="Digite seu nome" required>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-envelope-fill"></i></span>
-                    <input type="email" class="form-control" placeholder="Digite seu e-mail">
+                    <input type="email" id="cadInput" class="form-control" name="email" placeholder="Digite seu e-mail" required>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-telephone-fill"></i></span>
-                    <input type="tel" class="form-control" placeholder="Digite seu telefone">
+                    <input type="tel" id="cadInput" class="form-control" name="telefone" placeholder="Digite seu telefone" required>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" class="form-control" placeholder="Digite sua senha">
+                    <input type="password" id="cadInput" class="form-control" name="senha" placeholder="Digite sua senha" required>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" class="form-control" placeholder="Confirme sua senha">
+                    <input type="password" id="cadInput" class="form-control" name="confirmar_senha" placeholder="Confirme sua senha" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 text-dark text-black fw-semibold">Entrar</button>
                 
                 <p class="text-center">
                     Já possui uma conta? 
-                    <a href="" class="text-b fw-semibold text-decoration-none">Entrar</a>
+                    <a href="{{ url_for('login.login') }}" class="text-b fw-semibold text-decoration-none">Entrar</a>
                 </p>
             </form>
         </div>
