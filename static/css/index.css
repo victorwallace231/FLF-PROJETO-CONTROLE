@@ -4,8 +4,7 @@ algo me chama que eu ti explico oq eu fiz e pq, na página de login eu adicionei
 do projeto for melhor ele sai mais rápido*/
 
 .main-content{
-    /* width: 100%; */
-    height: 100%;
+    height: 100vh;
 }
 
 body {
@@ -13,7 +12,6 @@ body {
     background-color: #f4f6f8;
     font-family: var(--font);
     flex-direction: column;
-    height: 100%;
     width: 100%;
 }
 
@@ -97,10 +95,9 @@ main {
 
 /*Menu Lateral*/
 .sidebar {
-    /* width: 175px; */
+    width: 175px;
     background-color: #1C5FB8;
-    min-height: 565px;
-    max-height: 100vh;
+    min-height: 100vh;
     padding: 5px;
     border-right: 5px solid #10386B;
 }
