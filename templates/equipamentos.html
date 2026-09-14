@@ -128,20 +128,41 @@
                                                 <div class="action-menu">
                                                     <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
                                                     <div class="dropdown-menu">
-                                                        <button class="dropdown-item">Visualizar</button>
+                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-visualizar-{{ periferico[0] }}').showModal()">Visualizar</button>
                                                         <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Editar</button>
                                                         
                                                         <!-- Modal com ID dinâmico baseado no id_periferico -->
+                                                      
+                                                            <button type="button" class="dropdown-item" onclick="carregarEmprestimos('{{ periferico[0] }}')">Histórico</button>
 
-                                                        <button class="dropdown-item">Histórico</button>
-                                                        <div class="dropdown-divider"></div>
+                                                            <div class="dropdown-divider"></div>
                                                         <form method="POST" action="/deleteitem">
                                                             <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
                                                             <button class="dropdown-item danger">Excluir</button>
                                                         </form>
                                                     </div>
                                                 </div>
-                                                            <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                                        <dialog id="modal-historico" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
+                                                                
+                                                                <form method="GET" style="display: flex; flex-direction: column; gap: 12px;">
+                                                                    <p>Categoria: {{ periferico [1] }}</p>
+                                                                    <p>Marca: {{ periferico [2] }}</p>
+                                                                    <p>Número de Série: {{ periferico [3] }}</p>
+                                                                    {% if periferico[4] == 1 %}
+                                                                        <td><p>Status: <span class="badge" id="disponivel">Disponível</span></p></td>
+                                                                    {% elif periferico[4] == 0 and periferico[5] == 0 and periferico [6] == 0 %}
+                                                                        <td><p>Status: <span class="badge" id="emuso">Em uso</span></p></td>
+                                                                    {% elif periferico[4] == 0 and periferico[5] == 1 and periferico [6] == 0 %}
+                                                                        <td><p>Status: <span class="badge" id="manutencao">Manutencao</span></p></td>
+                                                                    {% elif periferico[6] == 1%}
+                                                                        <td><p>Status: <span class="badge" id="emuso">Inativo</span></p></td>
+                                                                    {% endif %}
+                                                                </form>
+                                                            </div>
+                                                        </dialog>
+                                                        <dialog id="modal-visualizar-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
                                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
                                                                 
@@ -172,6 +193,15 @@
                                                                 </form>
                                                             </div>
                                                         </dialog>
+                                                        <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">HISTÓRICO DE MOVIMENTAÇÕES</h2>
+                                                                
+                                                                <form action="/verica_1emprestimo" style="display: flex; flex-direction: column; gap: 12px;">
+                                                                    <P></P>
+                                                                </form>
+                                                            </div>
+                                                        </dialog>
                                             </td>
                                         </tr>
 
@@ -188,4 +218,5 @@
         </main>
 
     </body>
+    <script src="../static/js/busca_emprestimo.js" defer></script>
 </html>
