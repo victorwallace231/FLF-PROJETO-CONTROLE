@@ -1,40 +1,45 @@
 <!DOCTYPE html>
-
 <html lang="pt-br">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>
-            CONTROLE DE ESTOQUE - FLF
-        </title>
+        <title>CONTROLE DE ESTOQUE - FLF</title>
+        
+        <!-- Importação dos arquivos de estilização CSS -->
         <link rel="stylesheet" href="../static/css/variables.css">
         <link rel="stylesheet" href="../static/css/elements.css">
         <link rel="stylesheet" href="../static/css/class.css">
         <link rel="stylesheet" href="../static/css/equipamentos.css">
         <link rel="stylesheet" href="../static/css/global.css">
+        
+        <!-- Scripts JavaScript principais -->
         <script src="../static/js/script.js" defer></script>
+        
+        <!-- Fontes externas do Google Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     </head>
 
     <body>
+        <!-- Cabeçalho principal da aplicação -->
         <header>
-
+            <!-- Lado esquerdo: Logo e Título da Página -->
             <div class="part-header">
-                <img class="logo-user" src="../static/img/flflogoshort.png">
+                <img class="logo-user" src="../static/img/flflogoshort.png" alt="Logo FLF">
                 <h1>CONTROLE DE ESTOQUE DE EQUIPAMENTOS</h1>
             </div>
 
+            <!-- Lado direito: Perfil do Usuário e Menu Suspenso -->
             <div class="part-header">
+                <!-- Exibe o nome do usuário logado vindo do Flask/Jinja2 -->
                 <p>Usuário: {{ name }}</p>
                 <div class="icon-container">
                     <button id="btn-icon" class="icon-btn">
-                        <img class="logo-user" src="../static/img/user.png">
+                        <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
                     </button>
 
-                    <!--Janela Modal da Conta-->
+                    <!-- Janela Modal/Popover de Opções da Conta -->
                     <div id="modal-suspensao" class="modal-popover"> 
-                        <!--Inserir informações em relação a conta, ai decide se só vai ser nome, histórico e sair da conta-->
                         <h3 class="dropdown-item">Nome da Conta</h3>
                         <button class="dropdown-item">Perfil</button>
                         <button class="dropdown-item">Histórico</button>
@@ -43,11 +48,10 @@
                     </div>
                 </div>
             </div>
-
         </header>
 
         <main>
-
+            <!-- Menu Lateral (Sidebar) de Navegação -->
             <section id="classbar" class="sidebar">
                 <aside>
                     <nav>
@@ -60,14 +64,18 @@
                 </aside>
             </section>
 
+            <!-- Conteúdo Principal: Tabela e Filtros de Pesquisa -->
             <section class="main-content">
-                
                 <h2>Gerenciamento de Inventário de Equipamentos</h2>
+                
+                <!-- Formulário de Filtro e Busca -->
                 <form action="/equipamentos" method="POST">
                     <div class="barra-pesquisa">
-                        <input type="text" name= "filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
+                        <!-- Campo de busca por texto livre -->
+                        <input type="text" name="filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
 
-                        <select class="filter-select" name = "filtro_categoria">
+                        <!-- Seleção por Categoria -->
+                        <select class="filter-select" name="filtro_categoria">
                             <option value="todos">Todas as categorias</option>
                             <option value="microfone">Microfones</option>
                             <option value="teclado">Teclados</option>
@@ -77,19 +85,25 @@
                             <option value="monitor">Monitores</option>
                         </select>
 
-                        <select class="filter-select" name = "filtro_status">
+                        <!-- Seleção por Status do Equipamento -->
+                        <select class="filter-select" name="filtro_status">
                             <option value="todos">Todos os status</option>
                             <option value="disponivel">Disponíveis</option>
                             <option value="emuso">Em Uso</option>
                             <option value="manutencao">Em Manutenção</option>
                             <option value="inativo">Inativo</option>
                         </select>
+                        
                         <button type="submit">Filtrar</button>
+                    </div>
                 </form>
 
+                <!-- Botão de Ação para Cadastrar Novo Equipamento -->
+                <div>
                     <button><a href="/create_item">+ Adicionar Equipamento</a></button>
                 </div>
 
+                <!-- Tabela de Listagem dos Equipamentos -->
                 <div class="tabela-container">
                     <table>
                         <thead>
@@ -99,93 +113,137 @@
                                 <th>Marca</th>
                                 <th>Categoria</th>
                                 <th>Status</th>
-                                <th></th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         
                         <tbody>
+                            <!-- Loop Jinja2: Percorre a lista de periféricos vinda do backend -->
                             {% for periferico in perifericos %}
-                                        <tr name="{{ periferico[1] }}">
-                                            <td>
-                                                <img src="../static/img/monitor_dell.webp" class="thumb">
-                                            </td>
-                                            <td>{{ periferico[3] }}</td>
-                                            <td>{{ periferico[2] }}</td>
-                                            <td>{{ periferico[1] }}</td>
+                                <tr name="{{ periferico[1] }}">
+                                    <!-- Imagem do item -->
+                                    <td>
+                                        <img src="../static/img/monitor_dell.webp" class="thumb" alt="Miniatura">
+                                    </td>
+                                    
+                                    <!-- Dados do Equipamento da Tupla SQLite -->
+                                    <td>{{ periferico[3] }}</td> <!-- Número de Série -->
+                                    <td>{{ periferico[2] }}</td> <!-- Marca -->
+                                    <td>{{ periferico[1] }}</td> <!-- Categoria -->
+                                    
+                                    <!-- Renderização Condicional da Badge de Status -->
+                                    {% if periferico[4] == 1 %}
+                                        <td><span class="badge" id="disponivel">Disponível</span></td>
+                                    {% elif periferico[4] == 0 and periferico[5] == 0 and periferico[6] == 0 %}
+                                        <td><span class="badge" id="emuso">Em Uso</span></td>
+                                    {% elif periferico[4] == 0 and periferico[5] == 1 and periferico[6] == 0 %}
+                                        <td><span class="badge" id="manutencao">Em Manutenção</span></td>
+                                    {% elif periferico[6] == 1 %}
+                                        <td><span class="badge" id="emuso">Inativo</span></td>
+                                    {% endif %}
+
+                                    <!-- Menu de Ações Individuais (Dropdown por Item) -->
+                                    <td class="action-cell">
+                                        <div class="action-menu">
+                                            <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
                                             
-                                            <!-- Lógica das badges melhorada e sem conflitos -->
-                                            {% if periferico[4] == 1 %}
-                                                <td><span class="badge" id="disponivel">Disponível</span></td>
-                                            {% elif periferico[4] == 0 and periferico[5] == 0 and periferico [6] == 0 %}
-                                                <td><span class="badge" id="emuso">Em Uso</span></td>
-                                            {% elif periferico[4] == 0 and periferico[5] == 1 and periferico [6] == 0 %}
-                                                <td><span class="badge" id="manutencao">Em Manutenção</span></td>
-                                            {% elif periferico[6] == 1%}
-                                                <td><span class="badge" id="emuso">Inativo</span></td>
-                                            {% endif %}
+                                            <div class="dropdown-menu">
+                                                <!-- Botões para abrir os respectivos modais pelo ID dinâmico -->
+                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-visualizar-{{ periferico[0] }}').showModal()">Visualizar</button>
+                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Editar</button>
+                                                <button type="button" class="dropdown-item" onclick="carregarEmprestimos('{{ periferico[0] }}')">Histórico</button>
 
-                                            <td class="action-cell">
-                                                <div class="action-menu">
-                                                    <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
-                                                    <div class="dropdown-menu">
-                                                        <button class="dropdown-item">Visualizar</button>
-                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Editar</button>
-                                                        
-                                                        <!-- Modal com ID dinâmico baseado no id_periferico -->
+                                                <div class="dropdown-divider"></div>
+                                                
+                                                <!-- Form para exclusão direta do periférico -->
+                                                <form method="POST" action="/deleteitem">
+                                                    <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
+                                                    <button class="dropdown-item danger">Excluir</button>
+                                                </form>
+                                            </div>
+                                        </div>
 
-                                                        <button class="dropdown-item">Histórico</button>
-                                                        <div class="dropdown-divider"></div>
-                                                        <form method="POST" action="/deleteitem">
-                                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
-                                                            <button class="dropdown-item danger">Excluir</button>
-                                                        </form>
+                                        <!-- MODAL 1: Exibição Rápida de Informações do Item -->
+                                        <dialog id="modal-historico" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
+                                                
+                                                <form method="GET" style="display: flex; flex-direction: column; gap: 12px;">
+                                                    <p>Categoria: {{ periferico[1] }}</p>
+                                                    <p>Marca: {{ periferico[2] }}</p>
+                                                    <p>Número de Série: {{ periferico[3] }}</p>
+                                                    
+                                                    <!-- Status exibido na visualização rápida -->
+                                                    {% if periferico[4] == 1 %}
+                                                        <p>Status: <span class="badge" id="disponivel">Disponível</span></p>
+                                                    {% elif periferico[4] == 0 and periferico[5] == 0 and periferico[6] == 0 %}
+                                                        <p>Status: <span class="badge" id="emuso">Em uso</span></p>
+                                                    {% elif periferico[4] == 0 and periferico[5] == 1 and periferico[6] == 0 %}
+                                                        <p>Status: <span class="badge" id="manutencao">Manutenção</span></p>
+                                                    {% elif periferico[6] == 1 %}
+                                                        <p>Status: <span class="badge" id="emuso">Inativo</span></p>
+                                                    {% endif %}
+                                                </form>
+                                            </div>
+                                        </dialog>
+
+                                        <!-- MODAL 2: Form de Edição/Atualização do Item (ID dinâmico com periferico[0]) -->
+                                        <dialog id="modal-visualizar-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
+                                                
+                                                <form action="/update_item" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+                                                    <select class="input-box" name="categoria">
+                                                        <option value="{{ periferico[1] }}" disabled selected>Selecione a Categoria do Equipamento</option>
+                                                        <option value="passa-slide">Passador de Slides</option>
+                                                        <option value="monitor">Monitor</option>
+                                                        <option value="projetor">Projetor</option>
+                                                        <option value="cabo">Cabo</option>
+                                                        <option value="mouse">Mouse</option>
+                                                    </select>
+                                                    
+                                                    <select class="filter-select" name="filtro_status">
+                                                        <option value="todos">Todos os status</option>
+                                                        <option value="disponivel">Disponíveis</option>
+                                                        <option value="emuso">Em Uso</option>
+                                                        <option value="manutencao">Em Manutenção</option>
+                                                        <option value="inativo">Inativo</option>
+                                                    </select>
+                                                    
+                                                    <input type="text" name="marca" placeholder="Marca" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                    <input type="text" name="num_serie" placeholder="Número de Série" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                    
+                                                    <!-- ID oculto enviado para atualizar a linha correta no BD -->
+                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
+                                                    
+                                                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+                                                        <button type="button" onclick="document.getElementById('modal-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
+                                                        <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
                                                     </div>
-                                                </div>
-                                                            <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
-                                                                
-                                                                <form action="/update_item" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
-                                                                    <select class="input-box" name="categoria">
-                                                                            <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
-                                                                            <option value="passa-slide">Passador de Slides</option>
-                                                                            <option value="monitor">Monitor</option>
-                                                                            <option value="projetor">Projetor</option>
-                                                                            <option value="cabo">Cabo</option>
-                                                                            <option value="mouse">Mouse</option>
-                                                                    </select>
-                                                                        <select class="filter-select" name = "filtro_status">
-                                                                        <option value="todos">Todos os status</option>
-                                                                        <option value="disponivel">Disponíveis</option>
-                                                                        <option value="emuso">Em Uso</option>
-                                                                        <option value="manutencao">Em Manutenção</option>
-                                                                        <option value="inativo">Inativo</option>
-                                                                    </select>
-                                                                    <input type="text" name="marca" placeholder="Marca" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                                    <input type="text" name="num_serie" placeholder="Número de Série" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">,
-                                                                    
-                                                                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-                                                                        <button type="button" onclick="document.getElementById('modal-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
-                                                                        <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </dialog>
-                                            </td>
-                                        </tr>
+                                                </form>
+                                            </div>
+                                        </dialog>
 
-
-
+                                        <!-- MODAL 3: Histórico de Movimentações do Item -->
+                                        <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">HISTÓRICO DE MOVIMENTAÇÕES</h2>
+                                                
+                                                <form action="/verica_1emprestimo" style="display: flex; flex-direction: column; gap: 12px;">
+                                                    <p></p>
+                                                </form>
+                                            </div>
+                                        </dialog>
+                                    </td>
+                                </tr>
                             {% endfor %}
-                                
                         </tbody>
                     </table>
                 </div>
-
             </section>
-
         </main>
 
+        <!-- Script auxiliar carregado no fim do documento -->
+        <script src="../static/js/busca_emprestimo.js" defer></script>
     </body>
 </html>

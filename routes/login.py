@@ -1,60 +1,63 @@
 from flask import Blueprint, render_template, request, redirect, session
 from banco import conectar_banco
-# Importando funções de segurança para hash de senha
 from werkzeug.security import check_password_hash
 
-# Blueprint para a rota de login
-route_login = Blueprint ('login', __name__)
-route_logout = Blueprint ('logout', __name__)
+# Definição dos Blueprints para rotas de autenticação e encerramento de sessão
+route_login = Blueprint('login', __name__)
+route_logout = Blueprint('logout', __name__)
 
-# Rota de login
-@route_login.route('/login', methods=['GET','POST'])
+
+# Rota responsável por exibir o formulário e autenticar o usuário
+@route_login.route('/login', methods=['GET', 'POST'])
 def login():
 
+    # Requisição GET: Renderiza a página inicial de login enviando mensagem de erro vazia
+    if request.method == 'GET':
+        erro = ""
+        return render_template('login.html', erro=erro)
 
-    # Renderiza o template de login para requisições GET
-        if request.method == 'GET':
-            erro=""
-            return render_template('login.html', erro=erro)
-        if request.method == 'POST':
-            # Captura os dados do formulário de login
-            email = request.form['email'].strip().lower()
-            password = request.form['senha'].strip()
+    # Requisição POST: Processa a tentativa de login enviada pelo formulário
+    if request.method == 'POST':
+        # Captura os dados do formulário, removendo espaços extras e padronizando o e-mail em minúsculas
+        email = request.form['email'].strip().lower()
+        password = request.form['senha'].strip()
 
-            # Conecta ao banco de dados e verifica se o usuário existe
-            conexao = conectar_banco()
-            # cria um cursor para executar comandos SQL
-            cursor = conexao.cursor()
-            # executa uma consulta SQL para buscar o usuário pelo email fornecido
-            cursor.execute("SELECT * FROM usuario WHERE email_user = ?", (email,))
-            # busca o primeiro resultado da consulta
-            usuario = cursor.fetchone()
-            conexao.close()
+        # Conecta ao banco de dados para buscar o usuário pelo e-mail
+        conexao = conectar_banco()
+        cursor = conexao.cursor()
 
-            # Verifica se o usuário existe e se a senha fornecida corresponde à senha armazenada no banco de dados
-            # A função check_password_hash é usada para comparar a senha fornecida com a senha armazenada de forma segura (hash)
-            
-            if usuario and check_password_hash(usuario[2], password):
-                # Redireciona para a página do dashboard se o login for bem-sucedido
-                session['usuario_name'] = usuario[0]  # Armazena o nome do usuário na sessão
-                session['usuario_email'] = usuario[1]  # Armazena o email do usuário na sessão
-                session['usuario_telefone'] = usuario[3]  # Armazena o telefone do usuário na sessão
-                session["usuario_id"] = usuario [4]
-                
-                if request.form.get('lembrar'):
-                    session.permanent = True  # Define a sessão como permanente se o usuário escolher "lembrar"
-                else:
-                    session.permanent = False  # Define a sessão como não permanente se o usuário não escolher "lembrar"
+        # Busca os dados do usuário correspondente ao e-mail informado
+        cursor.execute("SELECT * FROM usuario WHERE email_user = ?", (email,))
+        usuario = cursor.fetchone()
+        conexao.close()
 
-                return redirect('/dashboard')
+        # Validação: verifica se o usuário foi encontrado e compara o hash da senha armazenada
+        # Ordem das colunas da tabela 'usuario': 0=name_user, 1=email_user, 2=senha_user, 3=tel_user, 4=id_usuario
+        if usuario and check_password_hash(usuario[2], password):
+            # Armazena os dados do usuário na sessão do Flask
+            session['usuario_name'] = usuario[0]
+            session['usuario_email'] = usuario[1]
+            session['usuario_telefone'] = usuario[3]
+            session["usuario_id"] = usuario[4]
+
+            # Configura a duração da sessão de acordo com a checkbox "Lembrar-me"
+            if request.form.get('lembrar'):
+                session.permanent = True  # Mantém a sessão ativa por mais tempo
             else:
-                # Renderiza o template de login novamente com uma mensagem de erro se o login falhar
-                return render_template("login.html", erro='Email ou senha incorretos')
-                #cONFIGURAR MENSAGEM DE ERRO PARA O USUÁRIO, CASO O LOGIN FALHE OBS: NÃO ESTÁ FUNCIONANDO A MENSAGEM DE ERRO, POIS O TEMPLATE NÃO ESTÁ CONFIGURADO PARA RECEBER A VARIÁVEL ERROR.
+                session.permanent = False # Encerra a sessão ao fechar o navegador
 
-            
-@route_logout.route('/logout', methods = ['POST'])
+            # Redireciona para o painel principal do sistema após sucesso
+            return redirect('/dashboard')
+        else:
+            # Em caso de erro na autenticação, recarrega o formulário exibindo o aviso
+            return render_template("login.html", erro='Email ou senha incorretos')
+
+
+# Rota para encerrar a sessão do usuário
+@route_logout.route('/logout', methods=['POST'])
 def logout():
-
-          session.clear()
-          return redirect('/login')
+    # Limpa todas as variáveis armazenadas na sessão ativa
+    session.clear()
+    
+    # Redireciona o usuário de volta para a tela de login
+    return redirect('/login')

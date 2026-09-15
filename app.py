@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from datetime import timedelta
 app = Flask(__name__)
 app.secret_key = '14082017'
@@ -19,6 +19,7 @@ from routes.devolucao import route_devolucao
 from routes.dashboard import route_equipamentos
 from routes.create_emprestimo import create_emprestimo
 from routes.login import route_logout
+from routes.verifica_emprestimos import verifica_1emprestimo
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -34,11 +35,11 @@ app.register_blueprint(route_devolucao)
 app.register_blueprint(route_equipamentos)
 app.register_blueprint(create_emprestimo)
 app.register_blueprint(route_logout)
-
+app.register_blueprint(verifica_1emprestimo)
 
 #Rota principal do sistema
 @app.route('/')
 def index():
-    return render_template('cadastro.html')
+    return redirect ('/cadastro')
 if __name__ == "__main__":
     app.run(debug=True) 
