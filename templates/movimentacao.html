@@ -117,8 +117,8 @@
                                                 <div class="action-menu">
                                                     <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
                                                     <div class="dropdown-menu">
-                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').showModal()">Visualizar</button>
-                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').showModal()">Editar</button>
+                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ emprestimo [0] }}').showModal()">Visualizar</button>
+                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ emprestimo[0] }}').showModal()">Editar</button>
                                                         <form method="POST" action="/devolucao">
                                                             <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
                                                             <input type="hidden" name="id_periferico" value = "{{ emprestimo [11] }}">
@@ -130,15 +130,15 @@
                                         </tr>
 
                                                                                 <!-- MODAL 1: Exibição Rápida de Informações do Item -->
-                                        <dialog id="modal-vizualizar-{{ periferico [0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                        <dialog id="modal-vizualizar-{{ emprestimo [0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
                                                 
                                                 <form method="GET" style="display: flex; flex-direction: column; gap: 12px;">
                                                  
                                                     <p>Responsável:  {{ emprestimo [1] }} </p>
-                                                    <p>Data de Saída: {{ emprestimo [3] }} </p>
-                                                    <p>Data de Devolução:</p>
+                                                    <p>Data de Saída: {{ emprestimo [2] }} </p>
+                                                    <p>Data de Devolução: {{ emprestimo [3] }}</p>
                                                     <p>Telefone do Responsável: {{ emprestimo [5] }} </p>
                                                     <p>Observação: {{ emprestimo [7] }} </p>
                                                     <p>Categoria do Item: {{ emprestimo [9] }}</p>
@@ -146,36 +146,29 @@
                                                     
                                                     <!-- Status exibido na visualização rápida -->
                                                     {% if emprestimo [8] == 1%}
-                                                        <span class="badge" id="disponivel">Devolvido</span>
-                                                    
-                                                        <td>{{ emprestimo [9] }}</td>
-                                                        <td>{{ emprestimo [1] }}</td>
+                                                        <p>Status: Devolvido</p>
                                                     {% else %}
-                                                        <td>{{ emprestimo [2] }}</td>
-                                                        <td><span class="badge" id="emuso">Pendente</span></td>
-                                                        <td>{{ emprestimo [10] }}</td>
-                                                        <td>{{ emprestimo [9] }}</td>
-                                                        <td>{{ emprestimo [1] }}</td>
+                                                        <p>Status: Pendente</p>
                                                     {% endif %}
-                                                        <button type="button" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
+                                                        <button type="button" onclick="document.getElementById('modal-vizualizar-{{ emprestimo [0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
                                                 </form>
                                             </div>
                                         </dialog>
 
-                                        <!-- MODAL 2: Form de Edição/Atualização do Item (ID dinâmico com periferico[0]) -->
-                                        <dialog id="modal-editar-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                        <!-- MODAL 2: Form de Edição/Atualização do Item (ID dinâmico com emprestimo[0]) -->
+                                        <dialog id="modal-editar-{{ emprestimo[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
                                                 
-                                                <form action="/update_item" method="POST" style="display: flex; flex-direction: column; gap: 12px;">         
-                                                    <input type="text" name="marca" placeholder="Marca" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                    <input type="text" name="num_serie" placeholder="Número de Série" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                <form action="/update_emprestimo" method="POST" style="display: flex; flex-direction: column; gap: 12px;">         
+                                                    <input type="text" name="responsavel" placeholder="Edite o nome do Responsável" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                    <input type="text" name="tel_responsavel" placeholder="Número de Telefone do Responsável" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                     
                                                     <!-- ID oculto enviado para atualizar a linha correta no BD -->
-                                                    <input type="hidden" name="id_periferico" value="{{ emprestimo[0] }}">
+                                                    <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
                                                     
                                                     <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-                                                        <button type="button" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
+                                                        <button type="button" onclick="document.getElementById('modal-editar-{{ emprestimo[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
                                                         <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
                                                     </div>
                                                 </form>

@@ -6,8 +6,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Cadastro - Moderno</title>
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../static/css/style.css">
 </head>
@@ -17,77 +17,52 @@
         <div class="cadastro-card">
             <img src="../static/img/logo-removebg-preview.png" alt="Logo" class="img-cadastro">
             <h2 class="fw-bold text-center mb-2 mt-2">Cadastro</h2>
-            <p class="text-center">Insira suas informações abaixos.</p>
+            <p class="text-center">Insira suas informações abaixo.</p>
+
             <form id="form-cad" action="{{ url_for('cadastro.cadastrar') }}" method="POST">
                 <div class="input-group mb-3">
-                    <span class="input-group-text border-icon"> <i class="bi bi-person-fill"></i></span>
-                    <input type="text" id="cadInput" class="form-control" name="nome" placeholder="Digite seu nome" required>
+                    <span class="input-group-text border-icon"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" id="cadNome" class="form-control" name="nome" placeholder="Digite seu nome" required>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-envelope-fill"></i></span>
-                    <input type="email" id="cadInput" class="form-control" name="email" placeholder="Digite seu e-mail" required>
+                    <input type="email" id="cadEmail" class="form-control" name="email" placeholder="Digite seu e-mail" required>
                 </div>
+
                 <div class="input-group mb-3">
                     <span class="input-group-text border-icon"><i class="bi bi-telephone-fill"></i></span>
-                    <input type="tel" id="cadInput" class="form-control" name="telefone" placeholder="Digite seu telefone" required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" id="cadInput" class="form-control" name="senha" placeholder="Digite sua senha" required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" id="cadInput" class="form-control" name="confirmar_senha" placeholder="Confirme sua senha" required>
+                    <input type="tel" id="cadTelefone" class="form-control" name="telefone" placeholder="Digite seu telefone" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 text-dark text-black fw-semibold">Cadastrar</button>
+                <div class="input-group mb-3">
+                    <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" id="cadSenha" class="form-control" name="senha" placeholder="Digite sua senha" required>
+                </div>
 
-                {% if erro != "" %}
-                    <div id="msg-erro" class="alert alert-danger" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="input-group mb-3">
+                    <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" id="cadConfirmarSenha" class="form-control" name="confirmar_senha" placeholder="Confirme sua senha" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold">Cadastrar</button>
+
+                {% if erro %}
+                    <div id="msg-erro" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                         <strong>Erro:</strong> {{ erro }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                {% endif %}                
+                {% endif %} 
                 
-                <p class="text-center"> 
+                <p class="text-center mt-3"> 
                     Já possui uma conta? 
                     <a href="{{ url_for('login.login') }}" class="text-b fw-semibold text-decoration-none">Entrar</a>
                 </p>
             </form>
         </div>
     </div>
-
-            <div class="lembra-esquece">
-                <p>Insira as informações abaixo.</p>
-            </div>
-
-            <div class="input-box">
-                <input type="text" id="cadInput" name="nome" placeholder="Digite seu nome" required>
-            </div>
-
-            <div class="input-box">
-                <input type="email" id="cadInput" name="email" placeholder="Digite seu e-mail" required>
-            </div>
-
-            <div class="input-box">
-                <input type="password" id="cadInput" name="senha" placeholder="Digite sua senha" required>
-            </div>
-
-            <div class="input-box">
-                <input type="password" id="cadInput" name="confirma_senha" placeholder="Confirme sua senha" required>
-            </div>
-            
-
-
-            <div class="input-box">
-                <input type="text" id="cadInput" name="telefone" placeholder="Digite seu telefone" required>
-            </div>
-
-            <button type="submit">Entrar</button>
-            <p>Já possui uma conta? <a href="{{ url_for('login.login') }}">Faça login</a></p>
-        </form>
         
-    </main>
+    <!-- Script do Bootstrap necessário para o botão de fechar o alerta funcionar -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
