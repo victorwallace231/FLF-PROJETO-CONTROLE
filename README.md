@@ -1,8 +1,10 @@
 # 💻 FLF Controle
 
-Sistema web para gestão e controle de entrada, saída e empréstimo de periféricos da sala do N.T.I.
+O FLF Controle é um sistema web que tem a finalidade de gerir e ter controle da entrada, saída e empréstimo dos periféricos da sala do N.T.I. Esse projeto foi criado pelos estagiarios de Desenvolvimento da Faculdade Luciano Feijão com o proposito principal sendo a aprendizagem dos estagiarios num projeto prático.
 
-## ✨ Funcionalidades
+## Sobre o Projeto
+
+### ✨ Funcionalidades
 * **Autenticação:** Login de acesso para supervisores.
 * **Gestão de Periféricos:** Consulta e verificação de status dos equipamentos.
 * **Controle de Empréstimos:** Registro de saídas e devoluções no banco de dados.
