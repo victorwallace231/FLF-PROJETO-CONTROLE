@@ -4,8 +4,9 @@
 
 <h3>Setup de Ambiente:</h3>
   
-* ????
-* ????
+* [Python 3.14.7](https://www.python.org/downloads/)
+* [Flask 3.1.3](https://pypi.org/project/Flask/3.1.3/)
+* [Werkzeug 3.1.8](https://pypi.org/project/Werkzeug/)
 
 <h3>Como rodar na minha máquina?</h3>
 
@@ -13,7 +14,19 @@
    ```bash
    git clone https://github.com/victorwallace231/FLF-PROJETO-CONTROLE.git   
 
-* `?????`
+* Criar o ambiente virtual na pasta do projeto
+`python -m venv venv`
+
+* Ativar o ambiente virtual(Windows PowerShell)
+`.\venv\Scripts\activate`
+
+* Ativar o ambiente virtual (Linux/macOS ou Git Bash)
+`source venv/bin/activate`
+
+* Instalar o Flask no ambiente virtual 
+`python -m pip install flask`
+
+* 🆗Pronto
 
 ## Controle FLF Site
 
@@ -28,3 +41,5 @@
 * `./static/img` Pasta que fica as imagens utilizadas no projeto. 
 * `./static/js` Contem os arquivos que contribuem para escrever a busca de emprestimos no banco.
 * `./templates` É a pasta que contem o `HTML` do projeto.
+
+
