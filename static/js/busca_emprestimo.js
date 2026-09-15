@@ -1,6 +1,17 @@
 async function carregarEmprestimos(idPeriferico){
+
+    const modal = document.getElementById('modal-historico');
+    const container = document.getElementById('lista-emprestimos');
+
+    if (!modal || !container) return;
+
+    modal.showModal();
+    container.innerHTML += "<p> Carregando Histórico de Movimentações... </p>"
+
+
     const formData = new FormData();
     formData.append('id_periferico', idPeriferico);
+
 
     try {
         const resposta = await fetch('/verifica_1emprestimo', {
@@ -10,11 +21,9 @@ async function carregarEmprestimos(idPeriferico){
 
         const listaEmprestimos = await resposta.json()
 
-        const container = document.getElementById('lista-emprestimos');
-        container.innerHTML = '';
-
         if (listaEmprestimos.length === 0) {
             container.innerHTML = '<p>Nenhum empréstimo realizado para esse item</p>'
+
             return;
         }else{
 
@@ -37,7 +46,6 @@ async function carregarEmprestimos(idPeriferico){
         });
 
         }
-        document.getElementById('modal-historico').showModal();
     
     } catch (erro){
         console.error ("erro ao carregar emprestimos:", erro)

@@ -149,8 +149,8 @@
                                             
                                             <div class="dropdown-menu">
                                                 <!-- Botões para abrir os respectivos modais pelo ID dinâmico -->
-                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-visualizar-{{ periferico[0] }}').showModal()">Visualizar</button>
-                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Editar</button>
+                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').showModal()">Visualizar</button>
+                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').showModal()">Editar</button>
                                                 <button type="button" class="dropdown-item" onclick="carregarEmprestimos('{{ periferico[0] }}')">Histórico</button>
 
                                                 <div class="dropdown-divider"></div>
@@ -164,7 +164,7 @@
                                         </div>
 
                                         <!-- MODAL 1: Exibição Rápida de Informações do Item -->
-                                        <dialog id="modal-historico" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                        <dialog id="modal-vizualizar-{{ periferico [0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
                                                 
@@ -183,12 +183,13 @@
                                                     {% elif periferico[6] == 1 %}
                                                         <p>Status: <span class="badge" id="emuso">Inativo</span></p>
                                                     {% endif %}
+                                                    <button type="button" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
                                                 </form>
                                             </div>
                                         </dialog>
 
                                         <!-- MODAL 2: Form de Edição/Atualização do Item (ID dinâmico com periferico[0]) -->
-                                        <dialog id="modal-visualizar-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                        <dialog id="modal-editar-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
                                                 
@@ -217,26 +218,29 @@
                                                     <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
                                                     
                                                     <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-                                                        <button type="button" onclick="document.getElementById('modal-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
+                                                        <button type="button" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
                                                         <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </dialog>
 
-                                        <!-- MODAL 3: Histórico de Movimentações do Item -->
-                                        <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">HISTÓRICO DE MOVIMENTAÇÕES</h2>
-                                                
-                                                <form action="/verica_1emprestimo" style="display: flex; flex-direction: column; gap: 12px;">
-                                                    <p></p>
-                                                </form>
-                                            </div>
-                                        </dialog>
+                                        
+
                                     </td>
                                 </tr>
                             {% endfor %}
+                                        <!-- MODAL 3: Histórico de Movimentações do Item -->
+                                        <dialog id="modal-historico" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">HISTÓRICO DE MOVIMENTAÇÕES</h2>
+                                                
+                                                <!-- O JS injetará os cards de empréstimo dentro desta div -->
+                                                <div id="lista-emprestimos" style="max-height: 300px; overflow-y: auto;"></div>
+
+                                                <button type="button" onclick="document.getElementById('modal-historico').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer; align-self: flex-end;">Fechar</button>
+                                            </div>
+                                        </dialog>
                         </tbody>
                     </table>
                 </div>
