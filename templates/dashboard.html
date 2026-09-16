@@ -40,7 +40,7 @@
                         <button class="dropdown-item">Perfil</button>
                         <button class="dropdown-item">Histórico</button>
                         <div class="dropdown-divider"></div>
-                        <form action="/logout" method="POST">
+                        <form action="{{ url_for('logout.logout') }}" method="POST">
                         <button class="dropdown-item danger">Sair da Conta</button>
                         </form>
                     </div>
@@ -58,9 +58,9 @@
                 <aside>
                     <nav>
                         <ul>
-                            <li><a href="/dashboard">Início</a></li>
-                            <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/verifica_emprestimos">Movimentações</a></li>
+                            <li><a href="{{ url_for('dashboard.dashboard') }}">Início</a></li>
+                            <li><a href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a></li>
                         </ul>
                     </nav>
                 </aside>

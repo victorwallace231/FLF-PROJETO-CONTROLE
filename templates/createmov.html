@@ -39,7 +39,9 @@
                         <button class="dropdown-item">Perfil</button>
                         <button class="dropdown-item">Histórico</button>
                         <div class="dropdown-divider"></div>
+                        <form action="{{ url_for('logout.logout') }}" method="POST">
                         <button class="dropdown-item danger">Sair da Conta</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -55,9 +57,9 @@
                 <aside>
                     <nav>
                         <ul>
-                            <li><a href="/dashboard">Início</a></li>
-                            <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/emprestimo">Movimentações</a></li>
+                            <li><a href="{{ url_for('dashboard.dashboard') }}">Início</a></li>
+                            <li><a href="{{ url_for('dashboard.equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a></li>
                         </ul>
                     </nav>
                 </aside>
@@ -106,7 +108,7 @@
                                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
                                                                 
-                                                                <form action="/create_emprestimo" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+                                                                <form action="{{ url_for('create_emprestimo.create') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
                                                                     <input type="text" name="responsavel" placeholder="Nome do responsável" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                                     <input type="text" name="tel_responsavel" placeholder="Telefone do responsável" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                                     <input type="text" name="observacao" placeholder="Setor ou evento" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">

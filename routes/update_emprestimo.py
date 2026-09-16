@@ -4,7 +4,7 @@ from banco import conectar_banco
 update_emprestimo = Blueprint('update_emprestimo', __name__)
 
 @update_emprestimo.route('/update_emprestimo', methods = ['POST'])
-def atuliza_emprestimo():
+def update():
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()

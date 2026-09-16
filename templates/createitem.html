@@ -41,7 +41,9 @@
                         <button class="dropdown-item">Perfil</button>
                         <button class="dropdown-item">Histórico</button>
                         <div class="dropdown-divider"></div>
+                        <form action="{{ url_for('logout.logout') }}" method="POST">
                         <button class="dropdown-item danger">Sair da Conta</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -57,19 +59,19 @@
                 <aside>
                     <nav>
                         <ul>
-                            <li><a href="/dashboard">Início</a></li>
-                            <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/emprestimo">Movimentações</a></li>
+                            <li><a href="{{ url_for('dashboard.dashboard') }}">Início</a></li>
+                            <li><a href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a></li>
                         </ul>
                     </nav>
                 </aside>
-            </section>
+            </section>>
 
             <section class="main-content">
                 <div class="d-flex justify-content-center align-items-center vh-100 p-4">
                     <div class="createitem-card">
                         <h3 class="fw-bold text-center mb-4">Adicionar Novo Equipamento</h3>
-                        <form id="form-createitem" action="{{ url_for('createitem.create_item') }}" method="POST">
+                        <form id="form-createitem" action="{{ url_for('create_item.create') }}" method="POST">
                             <div class="input-group mb-3">
                                 <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
                                 <input type="text" id="createInput" class="form-control" name="marca" placeholder="Digite a marca do equipamento" required>
@@ -80,14 +82,16 @@
                                 <input type="text" id="createInput" class="form-control" name="num_serie" placeholder="Digite o número de série do equipamento" required>
                             </div>
 
-                            <select class="input-group mb-3 form-select border-icon" name="categoria" required>
-                                <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
-                                <option value="passa-slide">Passador de Slides</option>
-                                <option value="monitor">Monitor</option>
-                                <option value="projetor">Projetor</option>
-                                <option value="cabo">Cabo</option>
-                                <option value="mouse">Mouse</option>
-                            </select>
+                                <select class="input-group mb-3 form-select border-icon" name="categoria" required>
+                                    <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
+                                    <option value="cabo">Cabo</option>
+                                    <option value="microfone">Microfone</option>
+                                    <option value="monitor">Monitor</option>
+                                    <option value="mouse">Mouse</option>
+                                    <option value="passa-slide">Passador de Slides</option>
+                                    <option value="projetor">Projetor</option>
+                                    <option value="teclado">Teclado</option>
+                                </select>
 
                             <button type="submit" class="btn btn-primary w-100 text-dark text-black fw-semibold">Adicionar</button>
                     </div>
