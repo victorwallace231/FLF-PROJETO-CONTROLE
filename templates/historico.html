@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HISTÓRICO DE EMPRÉSTIMOS - FLF</title>
+        
+        <!-- Importação das folhas de estilo do projeto -->
+        <link rel="stylesheet" href="../static/css/variables.css">
+        <link rel="stylesheet" href="../static/css/elements.css">
+        <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/movimentacao.css">
+        <link rel="stylesheet" href="../static/css/global.css">
+        
+        <!-- Script JavaScript principal -->
+        <script src="../static/js/script.js" defer></script>
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <!-- Cabeçalho Principal -->
+        <header>
+
+            <div class="part-header">
+                <img class="logo-user" src="../static/img/flflogoshort.png">
+                <h1>CONTROLE DE ESTOQUE DE EQUIPAMENTOS</h1>
+            </div>
+
+            <!--Usuário Principal-->
+                <div class="part-header">
+                    <p>Usuário: {{ session.get('usuario_name') }}</p>
+                    <div class="icon-container">
+                        <button id="btn-icon" class="icon-btn">
+                            <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
+                        </button>
+
+                        <div id="modal-suspensao" class="modal-popover"> 
+                            <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>
+                            
+                            <button type="button" class="dropdown-item">Perfil</button>
+                            
+                            <form action="{{ url_for('user_historico.historico') }}" method="GET">
+                                <button type="submit" class="dropdown-item">Histórico</button>
+                            </form>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <form action="{{ url_for('logout.logout') }}" method="POST">
+                                <button type="submit" class="dropdown-item danger">Sair da Conta</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+        </header>
+
+        <main>
+            <!-- Menu Lateral (Sidebar) -->
+            <section id="classbar" class="sidebar">
+                <aside>
+                    <nav>
+                        <ul>
+                            <li><a href="{{ url_for('dashboard.dashboard') }}">Início</a></li>
+                            <li><a href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+            </section>
+
+            <!-- Conteúdo Principal -->
+            <section class="main-content">
+                <h2>Meu Histórico de Movimentações</h2>
+
+                <!-- Tabela de Histórico de Empréstimos -->
+                <div class="tabela-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data / Hora Saída</th>
+                                <th>Data / Hora Devolução</th>
+                                <th>Responsável</th>
+                                <th>Telefone</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {% if emprestimos %}
+                                {% for emprestimo in emprestimos %}
+                                    <tr>
+                                        <td>{{ emprestimo[2] }}</td> <!-- Data de Saída -->
+                                        <td>{{ emprestimo[3] if emprestimo[3] else '-' }}</td> <!-- Data de Devolução -->
+                                        <td>{{ emprestimo[1] }}</td> <!-- Responsável -->
+                                        <td>{{ emprestimo[5] if emprestimo[5] else '-' }}</td> <!-- Telefone -->
+                                        
+                                        <!-- Renderização da Badge de Status -->
+                                        <td>
+                                            {% if emprestimo[8] == 1 %}
+                                                <span class="badge" id="disponivel">Devolvido</span>
+                                            {% else %}
+                                                <span class="badge" id="emuso">Pendente</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Menu de Ação por Registro -->
+                                        <td class="action-cell">
+                                            <div class="action-menu">
+                                                <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
+                                                <div class="dropdown-menu">
+                                                    <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ emprestimo[0] }}').showModal()">Visualizar</button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal de Visualização Detalhada do Registro -->
+                                            <dialog id="modal-vizualizar-{{ emprestimo[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
+                                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                    <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">DETALHES DA MOVIMENTAÇÃO</h2>
+                                                    
+                                                    <div style="display: flex; flex-direction: column; gap: 10px; color: #444; text-align: left;">
+                                                        <p><strong>Responsável:</strong> {{ emprestimo[1] }}</p>
+                                                        <p><strong>Data de Saída:</strong> {{ emprestimo[2] }}</p>
+                                                        <p><strong>Data de Devolução:</strong> {{ emprestimo[3] if emprestimo[3] else 'Ainda não devolvido' }}</p>
+                                                        <p><strong>Telefone:</strong> {{ emprestimo[5] if emprestimo[5] else 'Não informado' }}</p>
+                                                        <p><strong>Observação:</strong> {{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}</p>
+                                                        <p><strong>Status:</strong> {{ 'Devolvido' if emprestimo[8] == 1 else 'Pendente' }}</p>
+                                                    </div>
+
+                                                    <button type="button" onclick="document.getElementById('modal-vizualizar-{{ emprestimo[0] }}').close()" style="margin-top: 10px; padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer; align-self: flex-end;">Fechar</button>
+                                                </div>
+                                            </dialog>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 20px;">Nenhum histórico de empréstimo encontrado para este usuário.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

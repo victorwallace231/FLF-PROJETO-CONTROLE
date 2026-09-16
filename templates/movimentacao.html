@@ -23,24 +23,31 @@
                 <h1>CONTROLE DE ESTOQUE DE EQUIPAMENTOS</h1>
             </div>
 
-            <div class="part-header">
-                <p>Usuário: {{ name }}</p>
-                <div class="icon-container">
-                    <button id="btn-icon" class="icon-btn">
-                        <img class="logo-user" src="../static/img/user.png">
-                    </button>
+            <!--Usuário Principal-->
+                <div class="part-header">
+                    <p>Usuário: {{ session.get('usuario_name') }}</p>
+                    <div class="icon-container">
+                        <button id="btn-icon" class="icon-btn">
+                            <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
+                        </button>
 
-                    <!--Janela Modal da Conta-->
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <!--Inserir informações em relação a conta, ai decide se só vai ser nome, histórico e sair da conta-->
-                        <h3 class="dropdown-item">Nome da Conta</h3>
-                        <button class="dropdown-item">Perfil</button>
-                        <button class="dropdown-item">Histórico</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item danger">Sair da Conta</button>
+                        <div id="modal-suspensao" class="modal-popover"> 
+                            <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>
+                            
+                            <button type="button" class="dropdown-item">Perfil</button>
+                            
+                            <form action="{{ url_for('user_historico.historico') }}" method="GET">
+                                <button type="submit" class="dropdown-item">Histórico</button>
+                            </form>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <form action="{{ url_for('logout.logout') }}" method="POST">
+                                <button type="submit" class="dropdown-item danger">Sair da Conta</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
         </header>
 
@@ -50,9 +57,9 @@
                 <aside>
                     <nav>
                         <ul>
-                            <li><a href="/dashboard">Início</a></li>
-                            <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/verifica_emprestimos">Movimentações</a></li>
+                            <li><a href="{{ url_for('dashboard.dashboard') }}">Início</a></li>
+                            <li><a href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a></li>
                         </ul>
                     </nav>
                 </aside>
@@ -60,7 +67,7 @@
 
             <section class="main-content">
                 <h2>Movimentações</h2>
-                <form action="/verifica_emprestimos" method="POST">
+                <form action="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}" method="POST">
                         <div class="barra-pesquisa">
                     
                             <input type="text" name = "filtro_responsavel" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
@@ -71,18 +78,22 @@
                                 <option value="devolvido">Devolvido</option>
                             </select>
 
-                                <select class="filter-select" name = "filtro_categoria">
-                                    <option value="todos">Todas as categorias</option>
-                                    <option value="microfone">Microfones</option>
-                                    <option value="teclado">Teclados</option>
-                                    <option value="mouse">Mouses</option>
+                            <select class="filter-select" name="filtro_categoria">
+                                <option value="todos">Todas as categorias</option>
+                                <option value="cabo">Cabos</option>
+                                <option value="microfone">Microfones</option>
+                                <option value="monitor">Monitores</option>
+                                <option value="mouse">Mouses</option>
+                                <option value="passa-slide">Passador de Slide</option>
+                                <option value="projetor">Projetores</option>
+                                <option value="teclado">Teclados</option>
                             </select>
                             <button type="submit">Filtrar</button>
 
                             
                         </div>
                 </form>
-                <button><a href="/create_emprestimo">+ Adicionar Equipamento</a></button>
+                <button><a href="{{ url_for('create_emprestimo.create') }}">+ Adicionar Equipamento</a></button>
 
                 <div class="tabela-container">
                     <table>
@@ -119,7 +130,7 @@
                                                     <div class="dropdown-menu">
                                                         <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ emprestimo [0] }}').showModal()">Visualizar</button>
                                                         <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ emprestimo[0] }}').showModal()">Editar</button>
-                                                        <form method="POST" action="/devolucao">
+                                                        <form method="POST" action="{{ url_for('devolucao.devolucao') }}">
                                                             <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
                                                             <input type="hidden" name="id_periferico" value = "{{ emprestimo [11] }}">
                                                             <button class="dropdown-item danger">Devolver</button>
@@ -140,7 +151,7 @@
                                                     <p>Data de Saída: {{ emprestimo [2] }} </p>
                                                     <p>Data de Devolução: {{ emprestimo [3] }}</p>
                                                     <p>Telefone do Responsável: {{ emprestimo [5] }} </p>
-                                                    <p>Observação: {{ emprestimo [7] }} </p>
+                                                    <p>Setor/Evento: {{ emprestimo [7] }} </p>
                                                     <p>Categoria do Item: {{ emprestimo [9] }}</p>
                                                     <p>Número de Série: {{ emprestimo [10] }}</p>
                                                     
@@ -160,7 +171,7 @@
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
                                                 
-                                                <form action="/update_emprestimo" method="POST" style="display: flex; flex-direction: column; gap: 12px;">         
+                                                <form action="{{ url_for('update_emprestimo.update') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">         
                                                     <input type="text" name="responsavel" placeholder="Edite o nome do Responsável" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                     <input type="text" name="tel_responsavel" placeholder="Número de Telefone do Responsável" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                     

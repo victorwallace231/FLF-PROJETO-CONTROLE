@@ -30,24 +30,30 @@
             </div>
 
             <!-- Lado direito: Perfil do Usuário e Menu Suspenso -->
-            <div class="part-header">
-                <!-- Exibe o nome do usuário logado vindo do Flask/Jinja2 -->
-                <p>Usuário: {{ name }}</p>
-                <div class="icon-container">
-                    <button id="btn-icon" class="icon-btn">
-                        <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
-                    </button>
+                <div class="part-header">
+                    <p>Usuário: {{ session.get('usuario_name') }}</p>
+                    <div class="icon-container">
+                        <button id="btn-icon" class="icon-btn">
+                            <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
+                        </button>
 
-                    <!-- Janela Modal/Popover de Opções da Conta -->
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <h3 class="dropdown-item">Nome da Conta</h3>
-                        <button class="dropdown-item">Perfil</button>
-                        <button class="dropdown-item">Histórico</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item danger">Sair da Conta</button>
+                        <div id="modal-suspensao" class="modal-popover"> 
+                            <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>
+                            
+                            <button type="button" class="dropdown-item">Perfil</button>
+                            
+                            <form action="{{ url_for('user_historico.historico') }}" method="GET">
+                                <button type="submit" class="dropdown-item">Histórico</button>
+                            </form>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <form action="{{ url_for('logout.logout') }}" method="POST">
+                                <button type="submit" class="dropdown-item danger">Sair da Conta</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
         </header>
 
         <main>
@@ -56,9 +62,9 @@
                 <aside>
                     <nav>
                         <ul>
-                            <li><a href="/dashboard">Início</a></li>
-                            <li><a href="/equipamentos">Equipamentos</a></li>
-                            <li><a href="/verifica_emprestimos">Movimentações</a></li>
+                            <li><a href="{{ url_for('dashboard.dashboard') }}">Início</a></li>
+                            <li><a href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a></li>
                         </ul>
                     </nav>
                 </aside>
@@ -69,7 +75,7 @@
                 <h2>Gerenciamento de Inventário de Equipamentos</h2>
                 
                 <!-- Formulário de Filtro e Busca -->
-                <form action="/equipamentos" method="POST">
+                <form action="{{ url_for('equipamentos.equipamentos') }}" method="POST">
                     <div class="barra-pesquisa">
                         <!-- Campo de busca por texto livre -->
                         <input type="text" name="filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
@@ -77,12 +83,13 @@
                         <!-- Seleção por Categoria -->
                         <select class="filter-select" name="filtro_categoria">
                             <option value="todos">Todas as categorias</option>
-                            <option value="microfone">Microfones</option>
-                            <option value="teclado">Teclados</option>
-                            <option value="mouse">Mouses</option>
-                            <option value="passador">Passador de Slide</option>
                             <option value="cabo">Cabos</option>
+                            <option value="microfone">Microfones</option>
                             <option value="monitor">Monitores</option>
+                            <option value="mouse">Mouses</option>
+                            <option value="passa-slide">Passador de Slide</option>
+                            <option value="projetor">Projetores</option>
+                            <option value="teclado">Teclados</option>
                         </select>
 
                         <!-- Seleção por Status do Equipamento -->
@@ -100,7 +107,7 @@
 
                 <!-- Botão de Ação para Cadastrar Novo Equipamento -->
                 <div>
-                    <button><a href="/create_item">+ Adicionar Equipamento</a></button>
+                    <button><a href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a></button>
                 </div>
 
                 <!-- Tabela de Listagem dos Equipamentos -->
@@ -156,7 +163,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 
                                                 <!-- Form para exclusão direta do periférico -->
-                                                <form method="POST" action="/deleteitem">
+                                                <form method="POST" action="{{ url_for('deleteitem.delete') }}">
                                                     <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
                                                     <button class="dropdown-item danger">Excluir</button>
                                                 </form>
@@ -193,15 +200,17 @@
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
                                                 
-                                                <form action="/update_item" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+                                                <form action="{{ url_for('update_item.update') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
                                                     <select class="input-box" name="categoria">
                                                         <option value="{{ periferico[1] }}" disabled selected>Selecione a Categoria do Equipamento</option>
-                                                        <option value="passa-slide">Passador de Slides</option>
-                                                        <option value="monitor">Monitor</option>
-                                                        <option value="projetor">Projetor</option>
                                                         <option value="cabo">Cabo</option>
+                                                        <option value="microfone">Microfone</option>
+                                                        <option value="monitor">Monitor</option>
                                                         <option value="mouse">Mouse</option>
-                                                    </select>
+                                                        <option value="passa-slide">Passador de Slides</option>
+                                                        <option value="projetor">Projetor</option>
+                                                        <option value="teclado">Teclado</option>
+                                                    </select>   
                                                     
                                                     <select class="filter-select" name="filtro_status">
                                                         <option value="todos">Todos os status</option>

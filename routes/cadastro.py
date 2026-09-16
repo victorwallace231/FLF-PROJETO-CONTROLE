@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash
 route_cadastro = Blueprint('cadastro', __name__)
 
 @route_cadastro.route("/cadastro", methods=["GET", "POST"])
-def cadastrar():
+def cadastrar   ():
     # Requisição GET: carrega o formulário HTML inicial com mensagem de erro vazia
     if request.method == "GET":
         erro = ""
