@@ -107,14 +107,14 @@
                     <div id="card-movimentacao" class="cards-dash">
                         <h2>Últimas Movimentações</h2>
                         <div class="temporario"></div>
-                        <button><a>Abrir</a></button>
+                        <button><a href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Abrir</a></button>
                     </div>
 
                     <!--Ações Rápidas (Ou Atalhos)-->
                     <div id="card-acoes" class="cards-dash">
                         <h2>Ações Rápidas</h2>
-                        <button ><a href="/emprestimo">Nova Movimentação</a></button>
-                        <button ><a href="../templates/createitem.html">Novo Equipamento</a></button>
+                        <button ><a href="{{ url_for('create_emprestimo.create') }}">Nova Movimentação</a></button>
+                        <button ><a href="{{ url_for('create_item.create') }}">Novo Equipamento</a></button>
                     </div>
                 </div>
 

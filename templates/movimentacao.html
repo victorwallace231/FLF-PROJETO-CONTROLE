@@ -93,7 +93,7 @@
                             
                         </div>
                 </form>
-                <button><a href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a></button>
+                <button><a href="{{ url_for('create_emprestimo.create') }}">+ Adicionar Equipamento</a></button>
 
                 <div class="tabela-container">
                     <table>
@@ -151,7 +151,7 @@
                                                     <p>Data de Saída: {{ emprestimo [2] }} </p>
                                                     <p>Data de Devolução: {{ emprestimo [3] }}</p>
                                                     <p>Telefone do Responsável: {{ emprestimo [5] }} </p>
-                                                    <p>Observação: {{ emprestimo [7] }} </p>
+                                                    <p>Setor/Evento: {{ emprestimo [7] }} </p>
                                                     <p>Categoria do Item: {{ emprestimo [9] }}</p>
                                                     <p>Número de Série: {{ emprestimo [10] }}</p>
                                                     
