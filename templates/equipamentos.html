@@ -100,7 +100,7 @@
 
                 <!-- Botão de Ação para Cadastrar Novo Equipamento -->
                 <div>
-                    <button><a href="/create_item">+ Adicionar Equipamento</a></button>
+                    <button><a href="url {{ 'createitem.create_item' }}">+ Adicionar Equipamento</a></button>
                 </div>
 
                 <!-- Tabela de Listagem dos Equipamentos -->
@@ -156,7 +156,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 
                                                 <!-- Form para exclusão direta do periférico -->
-                                                <form method="POST" action="/deleteitem">
+                                                <form method="POST" action="url {{'deleteitem.delete'}}">
                                                     <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
                                                     <button class="dropdown-item danger">Excluir</button>
                                                 </form>
