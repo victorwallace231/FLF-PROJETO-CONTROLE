@@ -30,27 +30,30 @@
             </div>
 
             <!-- Lado direito: Perfil do Usuário e Menu Suspenso -->
-            <div class="part-header">
-                <!-- Exibe o nome do usuário logado vindo do Flask/Jinja2 -->
-                <p>Usuário: {{ name }}</p>
-                <div class="icon-container">
-                    <button id="btn-icon" class="icon-btn">
-                        <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
-                    </button>
+                <div class="part-header">
+                    <p>Usuário: {{ session.get('usuario_name') }}</p>
+                    <div class="icon-container">
+                        <button id="btn-icon" class="icon-btn">
+                            <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
+                        </button>
 
-                    <!-- Janela Modal/Popover de Opções da Conta -->
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <!--Inserir informações em relação a conta, ai decide se só vai ser nome, histórico e sair da conta-->
-                        <h3 class="dropdown-item">Nome da Conta</h3>
-                        <button class="dropdown-item">Perfil</button>
-                        <button class="dropdown-item">Histórico</button>
-                        <div class="dropdown-divider"></div>
-                        <form action="{{ url_for('logout.logout') }}" method="POST">
-                        <button class="dropdown-item danger">Sair da Conta</button>
-                        </form>
+                        <div id="modal-suspensao" class="modal-popover"> 
+                            <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>
+                            
+                            <button type="button" class="dropdown-item">Perfil</button>
+                            
+                            <form action="{{ url_for('user_historico.historico') }}" method="GET">
+                                <button type="submit" class="dropdown-item">Histórico</button>
+                            </form>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <form action="{{ url_for('logout.logout') }}" method="POST">
+                                <button type="submit" class="dropdown-item danger">Sair da Conta</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
         </header>
 
         <main>
@@ -104,11 +107,7 @@
 
                 <!-- Botão de Ação para Cadastrar Novo Equipamento -->
                 <div>
-<<<<<<< HEAD
                     <button><a href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a></button>
-=======
-                    <button><a href="url {{ 'createitem.create_item' }}">+ Adicionar Equipamento</a></button>
->>>>>>> de3be1ec803210f251edbcfe8158d7e3a5f3d94c
                 </div>
 
                 <!-- Tabela de Listagem dos Equipamentos -->
@@ -164,11 +163,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 
                                                 <!-- Form para exclusão direta do periférico -->
-<<<<<<< HEAD
                                                 <form method="POST" action="{{ url_for('deleteitem.delete') }}">
-=======
-                                                <form method="POST" action="url {{'deleteitem.delete'}}">
->>>>>>> de3be1ec803210f251edbcfe8158d7e3a5f3d94c
                                                     <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
                                                     <button class="dropdown-item danger">Excluir</button>
                                                 </form>

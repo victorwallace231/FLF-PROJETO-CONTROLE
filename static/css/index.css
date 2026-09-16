@@ -46,45 +46,47 @@ main {
 }
 
 
-.icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;          
-    justify-content: center;
+/* 1. Alinhamento correto do texto com o ícone */
+.part-header {
+    display: flex;
     align-items: center;
+    gap: 12px;
+    position: relative;
 }
 
 .icon-container {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
-/* Modal Suspenso*/
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* 2. Oculta o menu por padrão */
 .modal-popover {
-    display: none;
-    position: fixed;
+    display: none; /* Oculto até receber a classe do clique */
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
     z-index: 9999;
     width: 180px;
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: #ffffff;
     border-radius: 8px;
-    box-shadow: var(--shadow);
-    padding: 6px 0;
-    transform: translateX(-75%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 }
 
-.modal-popover.active {
+/* Exibe o menu apenas quando ativo */
+.modal-popover.active,
+.modal-popover.show {
     display: block;
-}
-
-.part-header {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--gap);
 }
 
 /*Corpo*/
