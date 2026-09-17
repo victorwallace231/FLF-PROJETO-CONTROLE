@@ -110,4 +110,4 @@ def equipamentos():
         conexao.close()
 
         # Recarrega a página exibindo a tabela refinada pelos filtros
-        return render_template("equipamentos.html", perifericos=perifericos, name=session.get("usuario_name"))
+        return render_template("equipamentos.html", perifericos=perifericos, categoria = categoria, status = status,name=session.get("usuario_name"))
