@@ -19,8 +19,8 @@ body {
 /*Cabeçalho*/
 
 header {
-    background-color: #2277E5;
-    height: 60px;
+    /* background-color: #2277E5; */
+    height: 100px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -36,7 +36,8 @@ main {
 
 /*Botão de usuário*/
 .logo-user {
-    height: 30px;
+    height: 50px;
+    font-size: 30px;
     display: flex;
     flex-direction: row;
     justify-content: center; 
