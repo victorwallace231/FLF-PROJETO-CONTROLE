@@ -1,12 +1,16 @@
 async function carregarEmprestimos(idPeriferico){
 
+    var controle = 0
     const modal = document.getElementById('modal-historico');
     const container = document.getElementById('lista-emprestimos');
 
     if (!modal || !container) return;
 
     modal.showModal();
-    container.innerHTML += "<p> Carregando Histórico de Movimentações... </p>"
+
+    if (controle === 1){
+        return;
+    }
 
 
     const formData = new FormData();
@@ -42,7 +46,7 @@ async function carregarEmprestimos(idPeriferico){
                     <p><strong>OBS:</strong> ${statusEmprestimo}</p>
                 </div>
                 `;
-            
+                controle = 1
         });
 
         }
@@ -51,5 +55,13 @@ async function carregarEmprestimos(idPeriferico){
         console.error ("erro ao carregar emprestimos:", erro)
     }
 
+
+}
+async function fecharModal() {
+    const modal = document.getElementById('modal-historico')
+    const container = document.getElementById('lista-emprestimos')
+
+    modal.close()
+    container.innerHTML= ''
 
 }

@@ -82,23 +82,23 @@
 
                         <!-- Seleção por Categoria -->
                         <select class="filter-select" name="filtro_categoria">
-                            <option value="todos">Todas as categorias</option>
-                            <option value="cabo">Cabos</option>
-                            <option value="microfone">Microfones</option>
-                            <option value="monitor">Monitores</option>
-                            <option value="mouse">Mouses</option>
-                            <option value="passa-slide">Passador de Slide</option>
-                            <option value="projetor">Projetores</option>
-                            <option value="teclado">Teclados</option>
+                            <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>Todas as categorias</option>
+                            <option value="cabo" {% if categoria == 'cabo' %} selected {% endif %}>Cabos</option>
+                            <option value="microfone" {% if categoria == 'microfone' %} selected {% endif %}>Microfones</option>
+                            <option value="monitor" {% if categoria == 'monitor' %} selected {% endif %}>Monitores</option>
+                            <option value="mouse" {% if categoria == 'mouse' %} selected {% endif %}>Mouses</option>
+                            <option value="passa-slide" {% if categoria == 'passa-slide' %} selected {% endif %}>Passador de Slide</option>
+                            <option value="projetor" {% if categoria == 'projetor' %} selected {% endif %}>Projetores</option>
+                            <option value="teclado" {% if categoria == 'teclado' %} selected {% endif %}>Teclados</option>
                         </select>
 
                         <!-- Seleção por Status do Equipamento -->
                         <select class="filter-select" name="filtro_status">
-                            <option value="todos">Todos os status</option>
-                            <option value="disponivel">Disponíveis</option>
-                            <option value="emuso">Em Uso</option>
-                            <option value="manutencao">Em Manutenção</option>
-                            <option value="inativo">Inativo</option>
+                            <option value="todos" {% if status == 'todos' %} selected {% endif %}>Todos os status</option>
+                            <option value="disponivel" {% if status == 'disponivel' %} selected {% endif %}>Disponíveis</option>
+                            <option value="emuso" {% if status == 'emuso' %} selected {% endif %}>Em Uso</option>
+                            <option value="manutencao" {% if status == 'manutencao' %} selected {% endif %}>Em Manutenção</option>
+                            <option value="inativo" {% if status == 'inativo' %} selected {% endif %}>Inativo</option>
                         </select>
                         
                         <button type="submit">Filtrar</button>
@@ -247,7 +247,7 @@
                                                 <!-- O JS injetará os cards de empréstimo dentro desta div -->
                                                 <div id="lista-emprestimos" style="max-height: 300px; overflow-y: auto;"></div>
 
-                                                <button type="button" onclick="document.getElementById('modal-historico').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer; align-self: flex-end;">Fechar</button>
+                                                <button type="button" onclick="fecharModal()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer; align-self: flex-end;">Fechar</button>
                                             </div>
                                         </dialog>
                         </tbody>
