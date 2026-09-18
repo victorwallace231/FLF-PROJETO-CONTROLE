@@ -25,16 +25,16 @@
                     <a href=""><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt=""></a>
                 </li>
                 <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="#">Início</a>
+                    <a class="nav-link text-white hover-black" href="{{ url_for('dashboard.dashboard') }}">Início</a>
                 </li>
                 <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="#">Equipamentos</a>
+                    <a class="nav-link text-white hover-black" href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a>
                 </li>
                 <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="#">Movimentações</a>
+                    <a class="nav-link text-white hover-black" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
                 </li>
                 <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="#">Sair</a>
+                    <a class="nav-link text-white hover-black" href="{{ url_for('logout.logout') }}">Sair</a>
                 </li>
             </ul>
         </nav>
