@@ -3,14 +3,15 @@
 algo me chama que eu ti explico oq eu fiz e pq, na página de login eu adicionei uns detalhes a mais, acho que se a organização
 do projeto for melhor ele sai mais rápido*/
 
-.main-content{
-    height: 100vh;
+html, body {
+    max-width: 100%;
+    overflow-x: hidden; /* Esconde e bloqueia qualquer sobra ou rolagem horizontal */
 }
 
 body {
     display: flex;
     background-color: #f4f6f8;
-    font-family: var(--font);
+    /* font-family: var(--font); */
     flex-direction: column;
     width: 100%;
 }
@@ -19,14 +20,14 @@ body {
 /*Cabeçalho*/
 
 header {
-    /* background-color: #2277E5; */
+    background-color: var(--cor-primaria);
     height: 100px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 4px solid #10386B;
-    color: var(--white-color);
+    border-bottom: 0.1px solid #10386B;
+    /* color: var(--white-color); */
 }
 
 main {
@@ -98,36 +99,30 @@ main {
 
 /*Menu Lateral*/
 .sidebar {
-    width: 175px;
+    color: white;
     background-color: #1C5FB8;
-    min-height: 100vh;
-    padding: 5px;
-    border-right: 5px solid #10386B;
-}
-
-.sidebar ul{
-    list-style: none;
+    border-right: 1px solid #10386B;
 }
 
 .sidebar a {
-    color: var(--white-color);
-    text-decoration: none;
     display: block;
-    padding: 10px 0;
     transition: 0.2s;
     font-weight: bold;
 }
 
-.sidebar a:hover {
-    color: #0A2242;
+.sidebar li a:hover {
+    color: #020c1a !important;
 }
 
-.sidebar li {
+.sidebar-li {
     border-bottom: 1px solid #ccc;
 }
 
-li:last-child {
-    border-bottom: 0px;
+/* .hover-black {
+  transition: color 0.5s ease-in-out;
 }
 
+.hover-black:hover {
+  color: #0A2242 !important; 
+} */
 /*---------------------------------------------------------------*/
