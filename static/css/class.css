@@ -1,7 +1,6 @@
 .main-content{
     max-width: var(--container-max);
     margin: auto;  
-    padding: var(--gap);
 }
 
 /* Container padrão: centraliza e limita a largura do conteúdo */
