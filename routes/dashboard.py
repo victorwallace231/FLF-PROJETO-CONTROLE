@@ -65,7 +65,8 @@ def equipamentos():
     if request.method == 'GET':
         conexao = conectar_banco()
         cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM perifericos WHERE inativo != 1")
+        cursor.execute("""SELECT *, c.categoria FROM perifericos 
+        JOIN categorias c ON p.id_categoria = c.id_categoria WHERE 1=1 AND inativo != 1""")
         perifericos = cursor.fetchall()
         conexao.close()
         return render_template("equipamentos.html", perifericos=perifericos, name=session.get("usuario_name"))
@@ -81,7 +82,8 @@ def equipamentos():
         marca = request.form["filtro_marca"].strip().lower()
 
         # Estrutura inicial da instrução SQL dinâmica
-        sql = """SELECT * FROM perifericos WHERE 1=1"""
+        sql = """SELECT *, c.categoria FROM perifericos 
+        JOIN categorias c ON p.id_categoria = c.id_categoria WHERE 1=1"""
         paramentros = []
 
         # Adiciona cláusula para filtro por categoria
