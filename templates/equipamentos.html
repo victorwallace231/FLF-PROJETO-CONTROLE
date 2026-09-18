@@ -172,7 +172,7 @@
                                                 <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
                                                 
                                                 <form method="GET" style="display: flex; flex-direction: column; gap: 12px;">
-                                                    <p>Categoria: {{ periferico[1] }}</p>
+                                                    <p>Categoria: {{ periferico[8] }}</p>
                                                     <p>Marca: {{ periferico[2] }}</p>
                                                     <p>Número de Série: {{ periferico[3] }}</p>
                                                     
@@ -199,13 +199,9 @@
                                                 <form action="{{ url_for('update_item.update') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
                                                     <select class="input-box" name="categoria">
                                                         <option value="{{ periferico[1] }}" disabled selected>Selecione a Categoria do Equipamento</option>
-                                                        <option value="cabo">Cabo</option>
-                                                        <option value="microfone">Microfone</option>
-                                                        <option value="monitor">Monitor</option>
-                                                        <option value="mouse">Mouse</option>
-                                                        <option value="passa-slide">Passador de Slides</option>
-                                                        <option value="projetor">Projetor</option>
-                                                        <option value="teclado">Teclado</option>
+                                                        {% for cat in categorias %}
+                                                            <option value="{{ cat [1] }}" {% if categoria == cat [1] %} selected {% endif %}>{{ cat[1] }}</option>
+                                                        {% endfor %}
                                                     </select>   
                                                     
                                                     <select class="filter-select" name="filtro_status">
