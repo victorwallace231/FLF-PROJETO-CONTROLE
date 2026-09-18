@@ -1,6 +1,6 @@
 /*------------Conteúdo do Dashboard------------*/
 
-/*caixinha de balões*/
+/* caixinha de balões*/
 .ballons-box {
     display: flex;
     flex-direction: row;
@@ -14,7 +14,7 @@
 .ballons-all {
     display: block;
     width: 225px;
-    height: 100px;
+    height: 120px;
     border-radius: var(--radius);
     margin: 10px;
     color: var(--white-color);

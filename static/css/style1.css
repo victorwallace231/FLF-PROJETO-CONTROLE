@@ -161,3 +161,29 @@ p{
 .dropdown-item.danger:hover {
     background-color: #fef2f2;
 }
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:16px;
+    width: 100%;
+    box-sizing: border-box;
+    place-items: center;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* Muda para 2 colunas */
+  }
+}
+
+/* Telas Pequenas (Celulares - até 600px) -> Layout 1x1 */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr); /* Muda para 1 coluna */
+  }
+
+  .ballons-all {
+    width: 90px;; /* Faz com que cada balão ocupe toda a largura disponível */
+  }
+}

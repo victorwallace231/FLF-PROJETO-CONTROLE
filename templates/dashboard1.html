@@ -68,12 +68,15 @@
         <h1>Bem-vindo ao Dashboard</h1>
         </div> -->
 
-        <main class="d-grid d-flex justify-content-center gap-4 bi-grid-1x2-gap p-4">
+        <main class="d-flex justify-content-center gap-4 p-4">
             
             <section class="main-content">
 
+                <div class="d-flex justify-content-center">
+
+                </div>
                 <!--Visão Geral dos Equipamentos-->
-                <div class="ballons-box">
+                <div class="grid">
 
                     <div id="ballon1" class="ballons-all">
                         <h4>Total: </h4>
@@ -104,8 +107,9 @@
                     <!--Ações Rápidas (Ou Atalhos)-->
                     <div id="card-acoes" class="cards-dash">
                         <h2 class="d-flex justify-content-center">Ações Rápidas</h2>
-                        <button ><a href="{{ url_for('create_emprestimo.create') }}">Nova Movimentação</a></button>
-                        <button ><a href="{{ url_for('create_item.create') }}">Novo Equipamento</a></button>
+                        <button class="text-dark text-black text-decoration-none">Novo Usuário</button>
+                        <button class="btn btn-primary w-100 fw-semibold"><a class="text-dark text-black text-decoration-none" href="{{ url_for('create_emprestimo.create') }}">Nova Movimentação</a></button>
+                        <button class="btn btn-primary w-100 fw-semibold"><a class="text-dark text-black text-decoration-none" href="{{ url_for('create_item.create') }}">Novo Equipamento</a></button>
                     </div>
                 </div>
 
