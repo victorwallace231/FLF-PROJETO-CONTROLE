@@ -20,12 +20,7 @@ def delete():
         (request.form['periferico_id'],)
     )
     conexao.commit()
-
-    # Busca a lista atualizada contendo apenas os equipamentos que NÃO estão inativos
-    # Nota: Ajustado de 'indisponivel' para 'inativo', que é o nome correto da coluna no banco
-    cursor.execute("SELECT * FROM perifericos WHERE inativo != 1")
-    perifericos = cursor.fetchall()
     conexao.close()
 
     # Renderiza o template atualizado passando a lista de itens e o nome do usuário ativo na sessão
-    return render_template('equipamentos.html', perifericos=perifericos, name=session.get("usuario_name"))
+    return redirect('/equipamentos')

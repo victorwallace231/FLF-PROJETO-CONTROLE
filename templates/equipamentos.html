@@ -82,14 +82,10 @@
 
                         <!-- Seleção por Categoria -->
                         <select class="filter-select" name="filtro_categoria">
-                            <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>Todas as categorias</option>
-                            <option value="cabo" {% if categoria == 'cabo' %} selected {% endif %}>Cabos</option>
-                            <option value="microfone" {% if categoria == 'microfone' %} selected {% endif %}>Microfones</option>
-                            <option value="monitor" {% if categoria == 'monitor' %} selected {% endif %}>Monitores</option>
-                            <option value="mouse" {% if categoria == 'mouse' %} selected {% endif %}>Mouses</option>
-                            <option value="passa-slide" {% if categoria == 'passa-slide' %} selected {% endif %}>Passador de Slide</option>
-                            <option value="projetor" {% if categoria == 'projetor' %} selected {% endif %}>Projetores</option>
-                            <option value="teclado" {% if categoria == 'teclado' %} selected {% endif %}>Teclados</option>
+                                <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>todos</option>
+                                    {% for cat in categorias %}
+                                        <option value="{{ cat [1] }}" {% if categoria == cat [1] %} selected {% endif %}>{{ cat[1] }}</option>
+                                    {% endfor %}
                         </select>
 
                         <!-- Seleção por Status do Equipamento -->
@@ -136,7 +132,7 @@
                                     <!-- Dados do Equipamento da Tupla SQLite -->
                                     <td>{{ periferico[3] }}</td> <!-- Número de Série -->
                                     <td>{{ periferico[2] }}</td> <!-- Marca -->
-                                    <td>{{ periferico[1] }}</td> <!-- Categoria -->
+                                    <td>{{ periferico[8] }}</td> <!-- Categoria -->
                                     
                                     <!-- Renderização Condicional da Badge de Status -->
                                     {% if periferico[4] == 1 %}

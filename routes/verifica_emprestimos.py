@@ -18,11 +18,14 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
+        cursor.execute("""SELECT * FROM categorias""")
+        categorias = cursor.fetchall()
         # Consulta com JOIN para combinar dados do empréstimo aos detalhes do periférico
         cursor.execute("""
-            SELECT e.*, p.periferico, p.num_serie, p.id_periferico 
+            SELECT e.*, c.categoria, p.num_serie, p.id_periferico 
             FROM emprestimos e 
             JOIN perifericos p ON e.id_periferico = p.id_periferico
+            JOIN categorias c ON p.categoria = c.id_categoria
             WHERE 1=1 ORDER BY e.id_emprestimo DESC
         """)
 
@@ -30,7 +33,7 @@ def verificar_emprestimos():
         conexao.close()
         
         # Renderiza o HTML passando a lista completa e o nome da sessão do usuário
-        return render_template("movimentacao.html", movimentacoes=movimentacoes, name=session.get("usuario_name"))
+        return render_template("movimentacao.html", movimentacoes=movimentacoes, categorias = categorias,name=session.get("usuario_name"))
     
     # Requisição POST: Processa os filtros de busca enviados pelo formulário
     if request.method == 'POST':
@@ -44,17 +47,18 @@ def verificar_emprestimos():
 
         # Estrutura base da query SQL
         sql = """
-            SELECT e.*, p.periferico, p.num_serie, p.id_periferico 
+            SELECT e.*, c.categoria, p.num_serie, p.id_periferico 
             FROM emprestimos e 
             JOIN perifericos p ON e.id_periferico = p.id_periferico
-            WHERE 1=1 
+            JOIN categorias c ON p.categoria = c.id_categoria
+            WHERE 1=1
         """
 
         paramentros = []
 
         # Concatena condição SQL se uma categoria específica for selecionada
         if categoria != "todos":
-             sql += " AND LOWER(p.periferico) LIKE '%' || ? || '%'"
+             sql += " AND LOWER(c.categoria) LIKE '%' || ? || '%'"
              paramentros.append(categoria)
 
         # Concatena condição SQL se o status for filtrado (1 = devolvido, 0 = em uso)
@@ -72,12 +76,14 @@ def verificar_emprestimos():
         sql += " ORDER BY e.id_emprestimo DESC"
 
         # Executa a busca parametrizada evitando vulnerabilidades de SQL Injection
+        cursor.execute("""SELECT * FROM categorias""")
+        categorias = cursor.fetchall()
         cursor.execute(sql, paramentros)
         movimentacoes = cursor.fetchall()
         conexao.close()
 
         # Recarrega a página exibindo apenas os resultados filtrados
-        return render_template("movimentacao.html", movimentacoes=movimentacoes, name=session.get("usuario_name"))
+        return render_template("movimentacao.html", movimentacoes=movimentacoes, categorias=categorias, name=session.get("usuario_name"), status = status)
 
 
 # Rota da API (endpoint JSON) para consulta do histórico de um periférico individual
