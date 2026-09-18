@@ -22,6 +22,7 @@ from routes.login import route_logout
 from routes.verifica_emprestimos import verifica_1emprestimo
 from routes.update_emprestimo import update_emprestimo
 from routes.user_historico import user_historico
+from routes.create_categoria import create_categoria
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -40,6 +41,7 @@ app.register_blueprint(route_logout)
 app.register_blueprint(verifica_1emprestimo)
 app.register_blueprint(update_emprestimo)
 app.register_blueprint(user_historico)
+app.register_blueprint(create_categoria)
 
 #Rota principal do sistema
 @app.route('/')

@@ -65,10 +65,13 @@ def equipamentos():
     if request.method == 'GET':
         conexao = conectar_banco()
         cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM perifericos WHERE inativo != 1")
+        cursor.execute("""SELECT p.*, c.* FROM perifericos p
+        JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1 AND p.inativo != 1""")
         perifericos = cursor.fetchall()
+        cursor.execute("SELECT * FROM categorias")
+        categorias = cursor.fetchall()
         conexao.close()
-        return render_template("equipamentos.html", perifericos=perifericos, name=session.get("usuario_name"))
+        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, name=session.get("usuario_name"))
 
     # Requisição POST: Aplicação de filtros combinados (categoria, marca/modelo e status)
     if request.method == 'POST':
@@ -81,33 +84,38 @@ def equipamentos():
         marca = request.form["filtro_marca"].strip().lower()
 
         # Estrutura inicial da instrução SQL dinâmica
-        sql = """SELECT * FROM perifericos WHERE 1=1"""
+        sql = """SELECT p.*, c.* FROM perifericos p
+        JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1"""
         paramentros = []
 
         # Adiciona cláusula para filtro por categoria
         if categoria != "todos":
-            sql += " AND LOWER(periferico) LIKE '%' || ? || '%'"
+            sql += " AND c.categoria = ?"
             paramentros.append(categoria)
 
         # Adiciona cláusula para busca por texto de marca/modelo
         if marca != "":
-            sql += " AND LOWER(marca) LIKE '%' || ? || '%'"
+            sql += " AND LOWER(p.marca) LIKE '%' || ? || '%'"
             paramentros.append(marca)
 
         # Mapeia as combinações lógicas das colunas para os status selecionados
         if status == "disponivel":
-            sql += " AND disponivel = 1"
+            sql += " AND p.disponivel = 1"
         elif status == "emuso":
-            sql += " AND disponivel = 0 AND manutencao = 0 AND inativo = 0"
+            sql += " AND p.disponivel = 0 AND p.manutencao = 0 AND p.inativo = 0"
         elif status == "manutencao":
-            sql += " AND disponivel = 0 AND manutencao = 1 AND inativo = 0"
+            sql += " AND p.disponivel = 0 AND p.manutencao = 1 AND p.inativo = 0"
         elif status == "inativo":
-            sql += " AND inativo = 1"
+            sql += " AND p.inativo = 1"
             
         # Executa a busca parametrizada evitando SQL Injection
         cursor.execute(sql, paramentros)
         perifericos = cursor.fetchall()
+
+        cursor.execute ("SELECT * FROM categorias")
+        categorias = cursor.fetchall()
+        
         conexao.close()
 
         # Recarrega a página exibindo a tabela refinada pelos filtros
-        return render_template("equipamentos.html", perifericos=perifericos, categoria = categoria, status = status,name=session.get("usuario_name"))
+        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, categoria = categoria, status = status,name=session.get("usuario_name"))
