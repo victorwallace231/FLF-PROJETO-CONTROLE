@@ -77,16 +77,18 @@ button {
     max-width: 100%;
     height: 40px;
     font-size: 20px;
-    background-color: #033b77;
+    /* background-color: #033b77; */
     color: var(--white-color);
     border-radius: var(--radius);
     border: none;
     font-weight: bold;
     padding: 10px;
+    text-decoration: none;
 }
 
 button:hover {
-    background-color: #1e64b4;
+    /* background-color: #1e64b4; */
+    text-decoration: none;
     cursor: pointer;
     transition: background-color 0.5s ease;
 }
