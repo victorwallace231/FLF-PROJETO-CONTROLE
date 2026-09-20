@@ -1,0 +1,108 @@
+/* =====================================================================
+   ANIMACOES.CSS — animações sutis do FLF Controle
+   ---------------------------------------------------------------------
+   Regras que seguimos:
+   - só animar transform e opacity (o navegador faz isso sem recalcular layout);
+   - duração curta (150–500 ms): animação ajuda a entender, não a esperar;
+   - respeitar quem desativa animações no sistema (prefers-reduced-motion, no fim do arquivo).
+   Para desativar tudo: remova o <link> deste arquivo dos templates.
+   ===================================================================== */
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(14px) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes modal-in {
+    from { opacity: 0; scale: 0.96; }   /* "scale" (propriedade própria) não briga com o translate(-50%,-50%) do <dialog> */
+    to   { opacity: 1; scale: 1; }
+}
+
+/* 1) Entrada suave do conteúdo da página.
+      Só opacity: um transform aqui quebraria o position:fixed dos menus ⋮ (ancestral com transform vira "pai" do fixed). */
+.app-content > main {
+    animation: fade-in 0.35s ease-out;
+}
+
+/* 2) Cards do dashboard: entram em cascata (stagger) e "levantam" no hover.
+      fill-mode "backwards" (e não "both"): se o estado final ficasse preso, o :hover nunca aplicaria. */
+.ballons-all {
+    animation: card-in 0.5s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#ballon2 { animation-delay: 0.08s; }
+#ballon3 { animation-delay: 0.16s; }
+#ballon4 { animation-delay: 0.24s; }
+
+.ballons-all:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md) !important;   /* .shadow-sm do Bootstrap usa !important */
+}
+
+#card-acoes {
+    animation: card-in 0.5s 0.35s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+}
+
+/* 3) Botões: feedback de hover e de clique */
+.btn {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+}
+
+/* 4) Menus suspensos (usuário e ⋮ das tabelas).
+      display:none não anima; então ficam sempre renderizados e alternamos opacity/visibility.
+      O visibility com delay mantém o menu invisível e fora do foco do teclado depois de fechar. */
+.modal-popover,
+.dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px) scale(0.98);
+    transform-origin: top right;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+}
+
+.modal-popover.active,
+.modal-popover.show,
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+
+/* 5) Janelas <dialog> (Visualizar / Editar / Emprestar) */
+dialog[open] {
+    animation: modal-in 0.2s ease-out;
+}
+
+dialog[open]::backdrop {
+    animation: fade-in 0.2s ease-out;
+}
+
+/* 6) Quem pediu "reduzir movimento" no sistema operacional não vê animações */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+    }
+}

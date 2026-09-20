@@ -14,6 +14,8 @@
         <link rel="stylesheet" href="../static/css/global.css">
         
         <!-- Script JavaScript principal -->
+        <link rel="stylesheet" href="../static/css/responsivo.css">
+        <link rel="stylesheet" href="../static/css/animacoes.css">
         <script src="../static/js/script.js" defer></script>
         
         <!-- Google Fonts -->
@@ -33,7 +35,7 @@
                 <div class="part-header">
                     <p>Usuário: {{ session.get('usuario_name') }}</p>
                     <div class="icon-container">
-                        <button id="btn-icon" class="icon-btn">
+                        <button id="btn-icon" type="button" class="icon-btn" aria-haspopup="true" aria-expanded="false">
                             <img class="logo-user" src="../static/img/user.png" alt="Ícone de Usuário">
                         </button>
 
@@ -57,7 +59,7 @@
 
         </header>
 
-        <main>
+        <main class="main-historico">
             <!-- Menu Lateral (Sidebar) -->
             <section id="classbar" class="sidebar">
                 <aside>
@@ -110,7 +112,7 @@
                                         <!-- Menu de Ação por Registro -->
                                         <td class="action-cell">
                                             <div class="action-menu">
-                                                <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
+                                                <button type="button" class="btn-icon" aria-label="Ações do registro" aria-haspopup="true" onclick="toggleMenu(event)">⋮</button>
                                                 <div class="dropdown-menu">
                                                     <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ emprestimo[0] }}').showModal()">Visualizar</button>
                                                 </div>

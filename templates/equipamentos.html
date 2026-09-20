@@ -14,15 +14,17 @@
         <link rel="stylesheet" href="../static/css/style1.css">
         <link rel="stylesheet" href="../static/css/class.css">
         <link rel="stylesheet" href="../static/css/equipamentos.css">
+        <link rel="stylesheet" href="../static/css/responsivo.css">
+        <link rel="stylesheet" href="../static/css/animacoes.css">
         <script src="../static/js/script.js" defer></script>
 </head>
 <body>
 
-    <div class="d-flex">
+    <div class="d-flex app-layout">
         <nav class="p-2 navbar_dashboard vh-100 sidebar">
             <ul class="nav flex-column">
                 <li class="nav-item mb-3 d-flex justify-content-center ">
-                    <a href=""><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt=""></a>
+                    <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt="Faculdade Luciano Feijão - ir para o Início"></a>
                 </li>
                 <li class="nav-item sidebar-li">
                     <a class="nav-link text-white hover-black" href="{{ url_for('dashboard.dashboard') }}">Início</a>
@@ -34,11 +36,14 @@
                     <a class="nav-link text-white hover-black" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
                 </li>
                 <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('logout.logout') }}">Sair</a>
+                    <!-- Logout altera a sessão e a rota só aceita POST: por isso é <button> dentro de <form>, não <a> -->
+                    <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair">
+                        <button type="submit" class="nav-link text-white hover-black btn-nav">Sair</button>
+                    </form>
                 </li>
             </ul>
         </nav>
-        <div class="w-100">
+        <div class="w-100 app-content">
             <header>
                 <div>
                 <h3 class="fw-bold p-4 h2-dashboard text-white">Dashboard</h3>
@@ -47,8 +52,8 @@
             <div class="part-header">
                 <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
                 <div class="icon-container">
-                    <button id="btn-icon" class="icon-btn logo-user p-3">
-                        <i class="bi bi-person-circle" alt="Icone do usuario"></i>
+                    <button id="btn-icon" type="button" class="icon-btn logo-user p-3" aria-label="Menu do usuário" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-person-circle" aria-hidden="true"></i>
                     </button>
                     <div id="modal-suspensao" class="modal-popover"> 
                         <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>                
@@ -98,13 +103,13 @@
                             <option value="inativo" {% if status == 'inativo' %} selected {% endif %}>Inativo</option>
                         </select>
                         
-                        <button type="submit">Filtrar</button>
+                        <button type="submit" class="btn btn-primary fw-semibold text-black mb-0">Filtrar</button>
                     </div>
                 </form>
 
                 <!-- Botão de Ação para Cadastrar Novo Equipamento -->
                 <div>
-                    <button><a href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a></button>
+                    <a class="btn btn-primary fw-semibold text-black text-decoration-none" href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a>
                 </div>
 
                 <!-- Tabela de Listagem dos Equipamentos -->
@@ -149,7 +154,7 @@
                                     <!-- Menu de Ações Individuais (Dropdown por Item) -->
                                     <td class="action-cell">
                                         <div class="action-menu">
-                                            <button class="btn-icon" onclick="toggleMenu(event)">⋮</button>
+                                            <button type="button" class="btn-icon" aria-label="Ações do equipamento" aria-haspopup="true" onclick="toggleMenu(event)">⋮</button>
                                             
                                             <div class="dropdown-menu">
                                                 <!-- Botões para abrir os respectivos modais pelo ID dinâmico -->
