@@ -5,7 +5,17 @@ do projeto for melhor ele sai mais rápido*/
 
 html, body {
     max-width: 100%;
-    overflow-x: hidden; /* Esconde e bloqueia qualquer sobra ou rolagem horizontal */
+}
+
+/* Bloqueia rolagem horizontal. IMPORTANTE: `overflow-x: hidden` no <body> transforma o body em
+   "container de rolagem" e isso quebra o position: sticky da sidebar (ela passa a grudar no body,
+   que não rola, e não na janela). Por isso: hidden só no <html> e clip (que não cria rolagem) no <body>. */
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: clip;
 }
 
 body {
@@ -28,9 +38,6 @@ header {
     justify-content: space-between;
     border-bottom: 0.1px solid #10386B;
     /* color: var(--white-color); */
-}
-.cemporcento{
-    height: 100;
 }
 main {
     display: flex;

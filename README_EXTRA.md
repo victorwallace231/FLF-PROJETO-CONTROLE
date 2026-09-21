@@ -24,6 +24,9 @@
 | `static/css/class.css` | `.tabela-container`: `width:auto` e `overflow-x:auto` |
 | `static/css/style1.css` | Removida regra morta `.ballons-all { width: 90px }` |
 | `static/css/dashboard.css` | `.ballons-all { max-width: 100% }` |
+| `templates/*.html` (6 páginas internas) | `<nav class="sidebar">` sem `vh-100` / `cemporcento` (a altura passou a ser controlada só pelo CSS) |
+| `static/css/responsivo.css` | Bloco novo **SIDEBAR** no topo (altura da tela + `sticky`) e ajuste no breakpoint de 768px |
+| `static/css/index.css` | Removida a regra inválida `.cemporcento`; `overflow-x` separado em `html` (hidden) e `body` (clip) |
 
 ### Arquivos novos
 
@@ -86,6 +89,25 @@ Chromium (Playwright) em **375, 768, 1024 e 1440px** nas 6 páginas internas, me
 `F12` → botão de dispositivo (`Ctrl+Shift+M`) → teste 375, 768, 1024, 1440. Checklist: sem rolagem horizontal na página · botões clicáveis com o dedo (≥ 44px de altura) · tabela rola dentro do card · textos longos não quebram o layout.
 
 > ⚠️ `overflow-x: hidden` no `body` (em `index.css`) **esconde** bugs de layout em vez de resolvê-los. Use só depois de achar a causa.
+
+### Sidebar: altura errada (pequena, cheia ou quebrando)
+
+**Sintoma:** sem itens na tabela a sidebar ficava pequena; em outras páginas ocupava a tela toda, mas quando o conteúdo passava da altura da janela ela terminava no meio e sobrava um "buraco" embaixo.
+
+| Página | Classe no `<nav>` | O que acontecia |
+|---|---|---|
+| Início, Histórico, Novo Equipamento, Nova Movimentação | `vh-100` | Bootstrap aplica `height: 100vh !important`: a sidebar tinha **exatamente a altura da janela**. Conteúdo maior → sidebar acaba, resto da coluna fica vazio |
+| Equipamentos, Movimentações | `cemporcento` | `.cemporcento { height: 100; }` é **CSS inválido** (falta a unidade), o navegador ignora. Sem itens a sidebar ficava do tamanho do menu (~400px) |
+
+**Correção (a mesma para todas as páginas):**
+1. Tiradas as classes `vh-100` e `cemporcento` do `<nav>` (e a regra inválida do `index.css`).
+2. `responsivo.css`: a sidebar ganhou `height: 100vh` (com `100dvh` para o celular) + `position: sticky; top: 0`. Resultado: **sempre da altura da tela, sem itens ou com 1000 itens, e continua visível enquanto a página rola**. Se a janela for muito baixa, o menu rola dentro da própria sidebar (`overflow-y: auto`).
+3. `index.css`: `overflow-x: hidden` no `<body>` **quebrava o `sticky`**. Um elemento `sticky` cola no ancestral mais próximo que *rola*; com `overflow-x: hidden` no body, o navegador o trata como container de rolagem (que na prática nunca rola) e a sidebar ia embora junto com a página. Agora `hidden` fica só no `<html>` e o `<body>` usa `overflow-x: clip` (corta sem virar container de rolagem).
+4. Abaixo de 768px nada muda: a sidebar continua sendo a barra no topo (`position: static`).
+
+**Como foi testado:** Chromium (Playwright), 6 páginas internas, banco vazio e com 40 equipamentos, janelas de 1280×720, 1024×600, 768 e 375 de largura, rolando até o fim: a sidebar fica em `top: 0` e ocupa a altura toda da janela em todos os casos; sem rolagem horizontal; menus do usuário e ⋮ continuam abrindo no lugar certo.
+
+> 💡 Lição: **evite fixar altura com `vh-100` em um elemento cujo pai cresce com o conteúdo**. Prefira `min-height` no pai + `sticky` no filho, e sempre confira no DevTools se a regra foi aplicada (regra riscada/ignorada = erro de sintaxe, como o `height: 100`).
 
 ---
 

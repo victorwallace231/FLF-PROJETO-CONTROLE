@@ -1,3 +1,27 @@
+/* ==========================================================================
+   SIDEBAR: sempre da altura da tela e fixa enquanto a página rola
+   --------------------------------------------------------------------------
+   Antes: umas páginas usavam `vh-100` (altura travada em 100vh: se o conteúdo
+   passava disso, a sidebar acabava no meio da página) e outras `.cemporcento`
+   (`height: 100` sem unidade = regra inválida, ignorada: sem itens, a sidebar
+   ficava só do tamanho do menu).
+   Agora: um único comportamento para todas as páginas.
+   ========================================================================== */
+.app-layout {
+    min-height: 100vh;
+    min-height: 100dvh;      /* dvh acompanha a barra do navegador no celular */
+}
+
+.app-layout > .sidebar {
+    flex: 0 0 auto;          /* não encolhe quando a tabela é larga */
+    align-self: flex-start;  /* altura própria, não a do conteúdo */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;        /* tela muito baixa: o menu rola dentro da sidebar */
+}
+
 .app-content,
 .main-content {
     min-width: 0;
@@ -62,6 +86,8 @@
     .app-layout > .sidebar {
         width: 100%;
         height: auto !important;  
+        position: static;        /* barra no topo: não precisa ficar grudada */
+        overflow-y: visible;
     }
 
     .app-layout > .sidebar > .nav {
