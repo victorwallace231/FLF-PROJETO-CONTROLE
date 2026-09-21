@@ -88,8 +88,8 @@
 .tabela-container {
     border-radius: var(--radius);
     border: 1px solid var(--black-color);
-    overflow: hidden;
-    width: 100%;
+    overflow-x: auto; /* tabela larga rola dentro do card, em vez de ser cortada */
+    width: auto;      /* bloco ocupa o espaço disponível já descontando a margem */
     margin: 20px;
 }
 

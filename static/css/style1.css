@@ -182,10 +182,6 @@ p{
   .grid {
     grid-template-columns: repeat(1, 1fr);
   }
-
-  .ballons-all {
-    width: 90px;
-  }
 }
 
 .h2-dashboard{

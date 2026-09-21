@@ -5,12 +5,14 @@ const modal = document.getElementById('modal-suspensao');
 
 btnIcon.addEventListener('click', (event) => {
     event.stopPropagation();
-    modal.classList.toggle('active');
+    const aberto = modal.classList.toggle('active');
+    btnIcon.setAttribute('aria-expanded', aberto); // leitores de tela sabem se o menu está aberto
 });
 
 document.addEventListener('click', (event) => {
     if (!modal.contains(event.target) && event.target !== btnIcon) {
       modal.classList.remove('active');
+      btnIcon.setAttribute('aria-expanded', 'false');
     }
 });
 
@@ -29,8 +31,14 @@ function toggleMenu(event) {
 
   const rect = button.getBoundingClientRect();
 
-  dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`;
-  dropdown.style.left = `${rect.right - 150}px`;
+  // .dropdown-menu é position:fixed => usa coordenadas da JANELA.
+  // (Somar window.scrollY jogava o menu para longe do botão quando a página estava rolada.)
+  const largura = 160;                      // mesma largura definida em class.css
+  const altura = dropdown.offsetHeight || 170;
+  const cabeEmbaixo = rect.bottom + 4 + altura <= window.innerHeight;
+
+  dropdown.style.top = `${cabeEmbaixo ? rect.bottom + 4 : Math.max(8, rect.top - altura - 4)}px`;
+  dropdown.style.left = `${Math.min(Math.max(8, rect.right - largura), window.innerWidth - largura - 8)}px`;
 
   dropdown.classList.toggle('show');
 }
