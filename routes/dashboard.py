@@ -90,7 +90,7 @@ def equipamentos():
 
         # Adiciona cláusula para filtro por categoria
         if categoria != "todos":
-            sql += " AND c.categoria = ?"
+            sql += " AND p.categoria = ?"
             paramentros.append(categoria)
 
         # Adiciona cláusula para busca por texto de marca/modelo

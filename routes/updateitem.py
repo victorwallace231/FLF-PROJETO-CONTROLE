@@ -29,7 +29,7 @@ def update():
 
         # Se o campo categoria foi preenchido, adiciona na consulta
         if item_nome:
-             sql += ", periferico = ?"
+             sql += ", categoria = ?"
              paramentros.append(item_nome)
 
         # Se a marca foi preenchida, adiciona na consulta
