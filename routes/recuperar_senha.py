@@ -9,8 +9,8 @@ def verificar():
         return render_template('recuperar_senha.html', erro="")
 
     if request.method == 'POST':
-        email = request.form.get('email').strip()
-        telefone = request.form.get('telefone').strip()
+        email = request.form.get('email', '').strip()
+        telefone = request.form.get('telefone', '').strip()
 
         conexao = conectar_banco()
         cursor = conexao.cursor()
@@ -21,7 +21,7 @@ def verificar():
         conexao.close()
 
         if usuario:
-            # Salva o ID na sessão para garantir segurança na próxima página
+            # Salva o ID na sessão para a próxima etapa
             session['reset_user_id'] = usuario[0]
             return redirect(url_for('redefinir_senha.nova_senha'))
         else:
