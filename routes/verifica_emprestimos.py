@@ -34,15 +34,18 @@ def verificar_emprestimos():
         
         # Renderiza o HTML passando a lista completa e o nome da sessão do usuário
         return render_template("movimentacao.html", movimentacoes=movimentacoes, categorias = categorias,name=session.get("usuario_name"))
-    
+
     # Requisição POST: Processa os filtros de busca enviados pelo formulário
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
+
+        cursor.execute("""SELECT * FROM categorias""")
+        categorias = cursor.fetchall()
         
         # Captura os campos de filtro do formulário HTML
-        status = request.form["filtro_status"]
-        categoria = request.form["filtro_categoria"]
+        status = request.form["filtro_status"].strip()
+        categoria = request.form["filtro_categoria"].strip()
         responsavel = request.form["filtro_responsavel"].strip().lower()
 
         # Estrutura base da query SQL
@@ -58,7 +61,7 @@ def verificar_emprestimos():
 
         # Concatena condição SQL se uma categoria específica for selecionada
         if categoria != "todos":
-             sql += " AND LOWER(c.categoria) LIKE '%' || ? || '%'"
+             sql += " AND p.categoria = ?"
              paramentros.append(categoria)
 
         # Concatena condição SQL se o status for filtrado (1 = devolvido, 0 = em uso)
@@ -76,19 +79,19 @@ def verificar_emprestimos():
         sql += " ORDER BY e.id_emprestimo DESC"
 
         # Executa a busca parametrizada evitando vulnerabilidades de SQL Injection
-        cursor.execute("""SELECT * FROM categorias""")
-        categorias = cursor.fetchall()
+
+
         cursor.execute(sql, paramentros)
         movimentacoes = cursor.fetchall()
         conexao.close()
 
         # Recarrega a página exibindo apenas os resultados filtrados
-        return render_template("movimentacao.html", movimentacoes=movimentacoes, categorias=categorias, name=session.get("usuario_name"), status = status)
+        return render_template("movimentacao.html", movimentacoes = movimentacoes, categorias=categorias, categoria = categoria, status = status,name=session.get("usuario_name"))
 
 
 # Rota da API (endpoint JSON) para consulta do histórico de um periférico individual
 @verifica_1emprestimo.route('/verifica_1emprestimo', methods=['POST'])
-def verifica_emprestimo():
+def verifica():
      if request.method == 'POST':
           conexao = conectar_banco()
           # Configura o SQLite para associar os nomes das colunas aos valores trazidos

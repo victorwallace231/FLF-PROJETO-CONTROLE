@@ -23,7 +23,8 @@ from routes.verifica_emprestimos import verifica_1emprestimo
 from routes.update_emprestimo import update_emprestimo
 from routes.user_historico import user_historico
 from routes.create_categoria import create_categoria
-
+from routes.recuperar_senha import recuperar_senha
+from routes.redefinir_senha import redefinir_senha
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
 app.register_blueprint(route_dashboard)
@@ -42,6 +43,8 @@ app.register_blueprint(verifica_1emprestimo)
 app.register_blueprint(update_emprestimo)
 app.register_blueprint(user_historico)
 app.register_blueprint(create_categoria)
+app.register_blueprint(recuperar_senha)
+app.register_blueprint(redefinir_senha)
 
 #Rota principal do sistema
 @app.route('/')

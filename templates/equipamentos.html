@@ -160,7 +160,7 @@
                                                 <!-- Botões para abrir os respectivos modais pelo ID dinâmico -->
                                                 <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').showModal()">Visualizar</button>
                                                 <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').showModal()">Editar</button>
-                                                <button type="button" class="dropdown-item" onclick="carregarEmprestimos()">Histórico</button>
+                                                <button type="button" class="dropdown-item" onclick="carregarEmprestimos('{{ periferico[0] }}')">Histórico</button>
 
                                                 <div class="dropdown-divider"></div>
                                                 
@@ -259,5 +259,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="../static/js/busca_emprestimo.js">
+    </script>
 </body>
 </html>
