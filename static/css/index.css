@@ -102,6 +102,7 @@ main {
     color: white;
     background-color: #1C5FB8;
     border-right: 1px solid #10386B;
+    height: 100%;
 }
 
 .sidebar a {
