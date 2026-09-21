@@ -12,8 +12,10 @@
         <link rel="stylesheet" href="../static/css/global.css">
         <link rel="stylesheet" href="../static/css/variables.css">
         <link rel="stylesheet" href="../static/css/style1.css">
-        <link rel="stylesheet" href="../static/css/dashboard.css">
+        <link rel="stylesheet" href="../static/css/class.css">
+        <link rel="stylesheet" href="../static/css/createitem.css">
         <link rel="stylesheet" href="../static/css/createmov.css">
+        <link rel="stylesheet" href="../static/css/equipamentos.css">
         <link rel="stylesheet" href="../static/css/responsivo.css">
         <link rel="stylesheet" href="../static/css/animacoes.css">
         <script src="../static/js/script.js" defer></script>
@@ -111,7 +113,7 @@
                                                 <td class="action-cell">
                                                     <div class="action-menu">
                                                         <!-- Botão com onclick apontando para o ID único do modal deste item -->
-                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Emprestar</button>
+                                                        <button type="button" class="dropdown-item btn-icon" onclick="document.getElementById('modal-{{ periferico[0] }}').showModal()">Emprestar</button>
                                                         
                                                         <!-- Modal com ID dinâmico baseado no id_periferico -->
                                                         <dialog id="modal-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
