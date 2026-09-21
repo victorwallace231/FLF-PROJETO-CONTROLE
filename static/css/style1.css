@@ -7,6 +7,20 @@ body{
 
 .bg-linear{
     background-image: linear-gradient(to right, #1e64b4, #4ef9ff);
+    background-size: 200% 200%;
+    animation: fluido 10s ease infinite;
+}
+
+@keyframes fluido {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .border-icon{
