@@ -29,7 +29,9 @@ header {
     border-bottom: 0.1px solid #10386B;
     /* color: var(--white-color); */
 }
-
+.cemporcento{
+    height: 100;
+}
 main {
     display: flex;
     justify-content: space-between;
