@@ -90,7 +90,7 @@
                         <select class="filter-select" name="filtro_categoria">
                                 <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>todos</option>
                                     {% for cat in categorias %}
-                                        <option value="{{ cat [0] }}" {% if categoria == cat [0] %} selected {% endif %}>{{ cat[1] }}</option>
+                                        <option value="{{ cat [0] }}" {% if categoria|string == cat [0]|string %} selected {% endif %}>{{ cat[1] }}</option>
                                     {% endfor %}
                         </select>
 
@@ -138,7 +138,7 @@
                                     <!-- Dados do Equipamento da Tupla SQLite -->
                                     <td>{{ periferico[3] }}</td> <!-- Número de Série -->
                                     <td>{{ periferico[2] }}</td> <!-- Marca -->
-                                    <td>{{ periferico[8] }}</td> <!-- Categoria -->
+                                    <td>{{ periferico[7] }}</td> <!-- Categoria -->
                                     
                                     <!-- Renderização Condicional da Badge de Status -->
                                     {% if periferico[4] == 1 %}
@@ -160,7 +160,7 @@
                                                 <!-- Botões para abrir os respectivos modais pelo ID dinâmico -->
                                                 <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').showModal()">Visualizar</button>
                                                 <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').showModal()">Editar</button>
-                                                <button type="button" class="dropdown-item" onclick="carregarEmprestimos('{{ periferico[0] }}')">Histórico</button>
+                                                <button type="button" class="dropdown-item" onclick="carregarEmprestimos()">Histórico</button>
 
                                                 <div class="dropdown-divider"></div>
                                                 
