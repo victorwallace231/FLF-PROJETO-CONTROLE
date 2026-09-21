@@ -1,28 +1,15 @@
-/* =====================================================================
-   RESPONSIVO.CSS — correções de responsividade do FLF Controle
-   ---------------------------------------------------------------------
-   Carregue SEMPRE por último (depois do Bootstrap e dos demais .css).
-   Cada bloco diz qual problema resolve. Para desfazer: remova o <link>.
-   Pontos de quebra usados: 992px (tablet), 768px (tablet pequeno), 576px (celular)
-   ===================================================================== */
-
-/* 1) Itens flex não encolhiam.
-      Sem min-width:0 um item flex nunca fica menor que o conteúdo (tabela, form),
-      então a página passava da largura da tela e o body (overflow-x:hidden) cortava o resto. */
 .app-content,
 .main-content {
     min-width: 0;
 }
 
-/* 2) Cabeçalho tinha altura fixa (100px): nome + ícone não cabiam em telas estreitas */
+
 .app-content > header {
     height: auto;
     min-height: 100px;
     flex-wrap: wrap;
 }
 
-/* 3) "Sair" da sidebar agora é <button> (POST) e precisa parecer o <a> de antes.
-      Também neutraliza o "form { display:flex; align-items:center }" global do login.css */
 .sidebar .form-sair {
     display: block;
     margin: 0;
@@ -31,7 +18,7 @@
 .sidebar .btn-nav {
     display: block;
     width: 100%;
-    height: auto;          /* login.css força button { height: 40px } */
+    height: auto;          
     text-align: left;
     border-radius: 0;
     font-weight: bold;
@@ -45,45 +32,40 @@
     color: #020c1a !important;
 }
 
-/* 4) "Filtrar" e "+ Adicionar" agora são .btn: alinha altura dentro da barra de filtros */
+
 .barra-pesquisa .btn {
     margin-bottom: 0;
-    height: auto;          /* login.css força button { height: 40px }; assim o botão acompanha a altura dos campos */
+    height: auto;          
 }
 
-/* 4.1) Tabela com rolagem própria também nas páginas que não carregam class.css (ex.: Nova Movimentação) */
+
 .tabela-container {
     max-width: 100%;
     overflow-x: auto;
 }
 
-/* ---------------------------------------------------------------------
-   TABLET (até 992px): o <main> com duas colunas (ex.: Novo Equipamento)
-   passa a quebrar linha em vez de espremer/cortar a segunda coluna
-   --------------------------------------------------------------------- */
+/* TABLET (até 992px) */
 @media (max-width: 992px) {
     .app-content > main {
         flex-wrap: wrap;
     }
 }
 
-/* ---------------------------------------------------------------------
-   TABLET PEQUENO / CELULAR (até 768px)
-   --------------------------------------------------------------------- */
+/* TABLET PEQUENO / CELULAR (até 768px) */
 @media (max-width: 768px) {
 
-    /* 5) Sidebar de 188px fixos comia metade da tela: vira uma barra no topo */
+    /* Sidebar de 188px fixos comia metade da tela: vira uma barra no topo */
     .app-layout {
         flex-direction: column;
     }
 
     .app-layout > .sidebar {
         width: 100%;
-        height: auto !important;   /* .vh-100 do Bootstrap usa !important */
+        height: auto !important;  
     }
 
     .app-layout > .sidebar > .nav {
-        flex-direction: row !important;  /* .flex-column do Bootstrap usa !important */
+        flex-direction: row !important;  
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
@@ -99,12 +81,12 @@
         border-bottom: 0;
     }
 
-    /* 6) Tabela: mantém largura mínima legível e rola na horizontal dentro do card */
+    /* Tabela: mantém largura mínima legível e rola na horizontal dentro do card */
     .tabela-container table {
         min-width: 640px;
     }
 
-    /* 7) Barra de busca/filtros quebra em linhas */
+    /* Barra de busca/filtros quebra em linhas */
     .barra-pesquisa {
         flex-wrap: wrap;
     }
@@ -121,9 +103,8 @@
         flex: 1 1 100%;
     }
 
-    /* 8) Página Histórico (layout antigo, sem Bootstrap) */
     body > header {
-        box-sizing: border-box;   /* index.css usa width:100% sem border-box: o padding estouraria a tela */
+        box-sizing: border-box;  
         height: auto;
         min-height: 100px;
         flex-wrap: wrap;
@@ -140,7 +121,7 @@
     }
 
     .main-historico > .main-content {
-        margin: 0;                /* margin:auto desligava o "stretch" e a seção crescia até a largura da tabela */
+        margin: 0;                
         align-self: stretch;
     }
 
@@ -153,14 +134,12 @@
     }
 }
 
-/* ---------------------------------------------------------------------
-   CELULAR (até 576px)
-   --------------------------------------------------------------------- */
+/* CELULAR (até 576px) */
 @media (max-width: 576px) {
 
-    /* 9) Título com padding de 1.5rem + nome do usuário longo empurravam o ícone para fora */
+    
     .app-content > header h3 {
-        padding: 1rem !important;    /* .p-4 do Bootstrap usa !important */
+        padding: 1rem !important;    
         font-size: 1.4rem;
     }
 
@@ -171,11 +150,11 @@
     .part-header p {
         max-width: 38vw;
         overflow: hidden;
-        text-overflow: ellipsis;     /* nome longo vira "Joaquim Te…" */
+        text-overflow: ellipsis;    
         white-space: nowrap;
     }
 
-    /* 10) m-5 (3rem) em volta do card "Ações Rápidas" sobrava pouco espaço no celular */
+   
     .tabelas-afins {
         margin: 1rem !important;
     }
