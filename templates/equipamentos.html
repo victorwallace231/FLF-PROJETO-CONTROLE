@@ -21,7 +21,7 @@
 <body>
 
     <div class="d-flex app-layout">
-        <nav class="p-2 navbar_dashboard vh-100 sidebar">
+        <nav class="p-2 navbar_dashboard sidebar">
             <ul class="nav flex-column">
                 <li class="nav-item mb-3 d-flex justify-content-center ">
                     <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt="Faculdade Luciano Feijão - ir para o Início"></a>
@@ -90,7 +90,7 @@
                         <select class="filter-select" name="filtro_categoria">
                                 <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>todos</option>
                                     {% for cat in categorias %}
-                                        <option value="{{ cat [0] }}" {% if categoria|string == cat [0]|string %} selected {% endif %}>{{ cat[1] }}</option>
+                                        <option value="{{ cat [0] }}" {% if categoria == cat [0] %} selected {% endif %}>{{ cat[1] }}</option>
                                     {% endfor %}
                         </select>
 
@@ -138,7 +138,7 @@
                                     <!-- Dados do Equipamento da Tupla SQLite -->
                                     <td>{{ periferico[3] }}</td> <!-- Número de Série -->
                                     <td>{{ periferico[2] }}</td> <!-- Marca -->
-                                    <td>{{ periferico[7] }}</td> <!-- Categoria -->
+                                    <td>{{ periferico[8] }}</td> <!-- Categoria -->
                                     
                                     <!-- Renderização Condicional da Badge de Status -->
                                     {% if periferico[4] == 1 %}
