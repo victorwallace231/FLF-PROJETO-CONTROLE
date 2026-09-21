@@ -1,13 +1,3 @@
-/* =====================================================================
-   ANIMACOES.CSS — animações sutis do FLF Controle
-   ---------------------------------------------------------------------
-   Regras que seguimos:
-   - só animar transform e opacity (o navegador faz isso sem recalcular layout);
-   - duração curta (150–500 ms): animação ajuda a entender, não a esperar;
-   - respeitar quem desativa animações no sistema (prefers-reduced-motion, no fim do arquivo).
-   Para desativar tudo: remova o <link> deste arquivo dos templates.
-   ===================================================================== */
-
 @keyframes fade-in {
     from { opacity: 0; }
     to   { opacity: 1; }
