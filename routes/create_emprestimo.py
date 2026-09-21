@@ -18,7 +18,8 @@ def create():
 
         # Busca apenas os equipamentos que estão atualmente disponíveis (disponivel = 1)
         # para preencher a caixa de seleção (select) no formulário
-        cursor.execute("SELECT * FROM perifericos WHERE disponivel = 1")
+        cursor.execute("""SELECT p.*, c.categoria FROM perifericos p
+        JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1 AND p.disponivel = 1""")
         perifericos = cursor.fetchall()
         conexao.close()
 

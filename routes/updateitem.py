@@ -46,6 +46,7 @@ def update():
         if status and status != "todos":
             if status == "disponivel":
                 sql += ", disponivel = 1, inativo = 0, manutencao = 0"
+                cursor.execute("UPDATE emprestimos SET devolvido = 1 WHERE id_periferico = ?", (item_id,))
             elif status == "emuso":
                 sql += ", disponivel = 0, inativo = 0, manutencao = 0"
             elif status == "manutencao":

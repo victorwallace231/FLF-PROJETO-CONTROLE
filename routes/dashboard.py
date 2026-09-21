@@ -107,6 +107,8 @@ def equipamentos():
             sql += " AND p.disponivel = 0 AND p.manutencao = 1 AND p.inativo = 0"
         elif status == "inativo":
             sql += " AND p.inativo = 1"
+        elif status == "todos":
+            sql += " AND p.inativo != 1"
             
         # Executa a busca parametrizada evitando SQL Injection
         cursor.execute(sql, paramentros)
