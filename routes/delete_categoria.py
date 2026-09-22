@@ -11,7 +11,7 @@ def delete():
     id_categoria = request.form.get("id_categoria")
 
     cursor.execute("""UPDATE categorias SET excluido = 1 WHERE id_categoria = ?""", (id_categoria,))
-    cursor.execute("UPDATE perifericos SET categoria = 3 WHERE categoria = ?", (id_categoria,))
+    cursor.execute("UPDATE perifericos SET categoria = 1 WHERE categoria = ?", (id_categoria,))
     conexao.commit()
     conexao.close()
 

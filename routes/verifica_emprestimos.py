@@ -102,7 +102,7 @@ def verifica():
           id_periferico = request.form.get("id_periferico")
 
           # Seleciona todo o histórico de empréstimos do periférico informado
-          cursor.execute("SELECT * FROM emprestimos WHERE id_periferico = ?", (id_periferico,))
+          cursor.execute("SELECT * FROM emprestimos WHERE id_periferico = ? ORDER BY id_emprestimo DESC", (id_periferico,))
           emprestimos = cursor.fetchall()
 
           # Converte a lista de objetos sqlite3.Row em uma lista de dicionários padrão do Python
