@@ -5,12 +5,13 @@ async function adicionarCategoria() {
     
     <h3>Adicione uma Nova Categoria</h3>
     <form action="/create_categoria" method="POST">
-        <div class="w-100">
-            <label for="createInput" class="form-label">Categoria</label>
-            <div class="input-group">
-                <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
-                <input type="text" id="createInput" class="form-control" name="nome_categoria" placeholder="Digite a Nova Categoria" required>
-                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+    <div class="w-100">
+    <label for="createInput" class="form-label">Categoria</label>
+    <div class="input-group">
+    <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
+    <input type="text" id="createInput" class="form-control" name="nome_categoria" placeholder="Digite a Nova Categoria" required>
+    <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+    <button type="button" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-1 rounded-pill" onclick="voltar()">Voltar</button>
             </div>
         </div>
     </form>
@@ -40,10 +41,8 @@ async function deletarCategoria(categorias){
             ${opcoesHTML}
         </select>
 
-        <button type="submit" class=" w-100 text-dark text-black fw-semibold">
-
-        <a class=" btn btn-primary w-100 text-dark text-black text-block fw-semibold">Excluir</a>
-        </button>
+        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+        <button type="button" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-1 rounded-pill" onclick="voltar()">Voltar</button>
     </div>
     </form>
 
@@ -62,28 +61,21 @@ async function modificarCategoria(categorias){
     }
     container.innerHTML = `
 
-                            <form id="form-createitem" action="/update_categoria" method="POST">
-                             <h3>Selecione a Categoria que quer excluir</h3>
-                            <select class="input-group mb-3 form-select border-icon" name="id_categoria" required>
-                                <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
-                                ${opcoesHTML}
-                            </select>         
+        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+        <button type="button" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-1 rounded-pill" onclick="voltar()">Voltar</button>
+    </div>
+    </form>
 
-                            <div class="w-100">
-                                <label for="createInput" class="form-label">Marca</label>
-                                <div class="input-group">
-                                    <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
-                                    <input type="text" id="createInput" class="form-control" name="nome_categoria" placeholder="Digite o novo da categoria" required>
-                                </div>
-                            </div>
+    `
+}
 
-                            <div class="mb-2">
-                                
-
-                            </div>
-                                
-                                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2">Editar</button>
-                        </form>
+async function voltar(){
+    const container = document.getElementById('container')
+    container.innerHTML = `              
+        <h3 class="mb-3">Opções de Categorias</h3>
+            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="adicionarCategoria()">Adicionar Categoria</button>
+            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="deletarCategoria('{{ categorias }}')">Deletar Categoria</button>
+            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="modificarCategoria()">Modificar Categoria</button>
 
     `
 }
