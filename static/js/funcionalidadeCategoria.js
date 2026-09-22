@@ -80,10 +80,10 @@ async function modificarCategoria(){
 async function voltar(){
     const container = document.getElementById('container')
     container.innerHTML = `              
-        <div id="container">
+        <h3 class="mb-3">Opções de Categorias</h3>
             <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="adicionarCategoria()">Adicionar Categoria</button>
             <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="deletarCategoria('{{ categorias }}')">Deletar Categoria</button>
             <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="modificarCategoria()">Modificar Categoria</button>
-        </div>
+
     `
 }
