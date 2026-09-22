@@ -14,7 +14,7 @@ def create():
     if request.method == 'GET':
         conexao = conectar_banco()
         cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM categorias")
+        cursor.execute("SELECT * FROM categorias WHERE excluido !=1")
         categorias = cursor.fetchall()
         conexao.close()
         return render_template("createitem.html", categorias = categorias)
