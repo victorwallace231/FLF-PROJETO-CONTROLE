@@ -17,16 +17,22 @@
     <div class="d-flex justify-content-center align-items-center vh-100 p-3">
         <div class="login-card">
             <img src="../static/img/logo-removebg-preview.png" alt="" class="img-login">
-            <h2 class="fw-bold text-center mb-4">Login</h2>
+            <h2 class="fw-bold text-center mb-2">Login</h2>
             <form id="form-login" method="POST" action="{{ url_for('login.login') }}">
-                <div class="input-group mb-3">
-                    <span class="input-group-text border-icon"> <i class="bi bi-person-fill"></i></span>
-                    <input type="text" class="form-control" placeholder="Email do Usuário" name="email" required>
+                <div class="w-100">
+                    <label for="email" class="form-label">Email</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text border-icon"> <i class="bi bi-person-fill"></i></span>
+                        <input type="text" class="form-control" placeholder="Email do Usuário" name="email" required>
+                    </div>
                 </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" class="form-control" placeholder="Senha" name="senha" required>
+                
+                <div class="w-100">
+                    <label for="senha" class="form-label">Senha</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
+                        <input type="password" class="form-control" placeholder="Senha" name="senha" required>
+                    </div>
                 </div>
                 {% if erro != "" %}
                     <div id="msg-erro" class="alert alert-danger" role="alert">
