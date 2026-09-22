@@ -25,6 +25,9 @@ from routes.user_historico import user_historico
 from routes.create_categoria import create_categoria
 from routes.recuperar_senha import recuperar_senha
 from routes.redefinir_senha import redefinir_senha
+from routes.delete_categoria import delete_categoria
+from routes.update_categoria import update_categoria
+
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
 app.register_blueprint(route_dashboard)
@@ -45,6 +48,8 @@ app.register_blueprint(user_historico)
 app.register_blueprint(create_categoria)
 app.register_blueprint(recuperar_senha)
 app.register_blueprint(redefinir_senha)
+app.register_blueprint(delete_categoria)
+app.register_blueprint(update_categoria)
 
 #Rota principal do sistema
 @app.route('/')

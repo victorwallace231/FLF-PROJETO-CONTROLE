@@ -18,7 +18,7 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("""SELECT * FROM categorias""")
+        cursor.execute("""SELECT * FROM categorias WHERE excluido !=1""")
         categorias = cursor.fetchall()
         # Consulta com JOIN para combinar dados do empréstimo aos detalhes do periférico
         cursor.execute("""
@@ -40,7 +40,7 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("""SELECT * FROM categorias""")
+        cursor.execute("""SELECT * FROM categorias WHERE excluido !=1""")
         categorias = cursor.fetchall()
         
         # Captura os campos de filtro do formulário HTML
@@ -102,7 +102,7 @@ def verifica():
           id_periferico = request.form.get("id_periferico")
 
           # Seleciona todo o histórico de empréstimos do periférico informado
-          cursor.execute("SELECT * FROM emprestimos WHERE id_periferico = ?", (id_periferico,))
+          cursor.execute("SELECT * FROM emprestimos WHERE id_periferico = ? ORDER BY id_emprestimo DESC", (id_periferico,))
           emprestimos = cursor.fetchall()
 
           # Converte a lista de objetos sqlite3.Row em uma lista de dicionários padrão do Python
