@@ -82,26 +82,34 @@
                     <div class="createitem-card">
                         <h3 class="fw-bold text-center mb-4">Adicionar Novo Equipamento</h3>
                         <form id="form-createitem" action="{{ url_for('create_item.create') }}" method="POST">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
-                                <input type="text" id="createInput" class="form-control" name="marca" placeholder="Digite a marca do equipamento" required>
+                            
+                            <div class="w-100">
+                                <label for="createInput" class="form-label">Número de Série</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
+                                    <input type="text" id="createInput" class="form-control" name="num_serie" placeholder="Digite o número de série do equipamento" required>
+                                </div>
+                            </div>
+                            <div class="w-100">
+                                <label for="createInput" class="form-label">Marca</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
+                                    <input type="text" id="createInput" class="form-control" name="marca" placeholder="Digite a marca do equipamento" required>
+                                </div>
                             </div>
 
-                            <div class="input-group mb-3">
-                                <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
-                                <input type="text" id="createInput" class="form-control" name="num_serie" placeholder="Digite o número de série do equipamento" required>
-                            </div>
-
-                                <select class="input-group mb-3 form-select border-icon" name="categoria" required>
+                            <div class="mb-2">
+                                <label for="createInput" class="form-label">Categoria</label>
+                                
+                                <select class="input-group form-select border-icon" name="categoria" required>
                                     <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
                                     {% for cat in categorias %}
-                                        <option value="{{ cat [0] }}" {% if categoria == cat [1] %} selected {% endif %}>{{ cat[1] }}</option>
+                                    <option value="{{ cat [0] }}" {% if categoria == cat [1] %} selected {% endif %}>{{ cat[1] }}</option>
                                     {% endfor %}
                                 </select>
+                            </div>
                                 
-                                <button  class=" w-100">
-                                    <a type="submit" class=" btn btn-primary w-100 text-dark text-black text-block fw-semibold">Adicionar</a>
-                                </button>
+                                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2">Adicionar</button>
                         </form>
                     </div>
                 </div>
@@ -112,8 +120,7 @@
                     <div class="createitem-card">
                         
                         <div id="container">
-                            
-                            <button type="button" class="text-dark text-black text-decoration-none" onclick="adicionarCategoria()">Adicionar Categoria</button>
+                            <button type="button" class="w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2" onclick="adicionarCategoria()">Adicionar Categoria</button>
                             
                         </div>
 
@@ -128,15 +135,15 @@
             async function adicionarCategoria() {
                 const container = document.getElementById('container')
 
-                container.innerHTML = `<h3>Adicione uam Nova Categoria</h3>
+                container.innerHTML = `<h3>Adicione uma Nova Categoria</h3>
                                         <form action="{{ url_for('create_categoria.create') }}" method="POST">
-                                        <div class="input-group mb-3">
+                                        <div class="w-100">
+                                            <label for="createInput" class="form-label">Categoria</label>
+                                            <div class="input-group">
                                             <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
                                             <input type="text" id="createInput" class="form-control" name="nome_categoria" placeholder="Digite a Nova Categoria" required>
-                                            <button type="submit" class=" w-100 text-dark text-black fw-semibold">
-
-                                            <a class=" btn btn-primary w-100 text-dark text-black text-block fw-semibold">Adicionar</a>
-                                            </button>
+                                            <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+                                            </div>
                                         </div>
                                         </form>
                                         `
