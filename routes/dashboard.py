@@ -68,7 +68,7 @@ def equipamentos():
         cursor.execute("""SELECT p.*, c.categoria FROM perifericos p
         JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1 AND p.inativo != 1""")
         perifericos = cursor.fetchall()
-        cursor.execute("SELECT * FROM categorias")
+        cursor.execute("SELECT * FROM categorias WHERE excluido !=1")
         categorias = cursor.fetchall()
         conexao.close()
         return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, name=session.get("usuario_name"))
@@ -114,7 +114,7 @@ def equipamentos():
         cursor.execute(sql, paramentros)
         perifericos = cursor.fetchall()
 
-        cursor.execute ("SELECT * FROM categorias")
+        cursor.execute ("SELECT * FROM categorias WHERE excluido !=1")
         categorias = cursor.fetchall()
         
         conexao.close()

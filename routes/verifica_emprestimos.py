@@ -18,7 +18,7 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("""SELECT * FROM categorias""")
+        cursor.execute("""SELECT * FROM categorias WHERE excluido !=1""")
         categorias = cursor.fetchall()
         # Consulta com JOIN para combinar dados do empréstimo aos detalhes do periférico
         cursor.execute("""
@@ -40,7 +40,7 @@ def verificar_emprestimos():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        cursor.execute("""SELECT * FROM categorias""")
+        cursor.execute("""SELECT * FROM categorias WHERE excluido !=1""")
         categorias = cursor.fetchall()
         
         # Captura os campos de filtro do formulário HTML
