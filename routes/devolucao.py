@@ -22,11 +22,14 @@ def devolucao():
     
     # Obtém a data atual do sistema (AAAA-MM-DD) para registrar a data de devolução
     data_devolucao = date.today()
+    data_formatada = data_devolucao.strftime('%d/%m/%Y')
+
 
     # 1. Atualiza a tabela 'emprestimos': marca como devolvido (1) e salva a data de devolução
     cursor.execute(
         "UPDATE emprestimos SET devolvido = 1, data_devolucao = ? WHERE id_emprestimo = ?", 
-        (data_devolucao, id_emprestimo)
+        (data_formatada, id_emprestimo)
+        
     )
 
     # 2. Atualiza a tabela 'perifericos': torna o equipamento disponível novamente para novos empréstimos
