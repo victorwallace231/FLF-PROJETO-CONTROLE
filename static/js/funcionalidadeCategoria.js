@@ -33,14 +33,16 @@ async function deletarCategoria(categorias){
     
     <h3>Selecione a Categoria que quer excluir</h3>
     <form action="/delete_categoria" method="POST">
-    <div class="input-group mb-3">
+    <div class="w-100 mb-3">
+        <label for="createInput" class="form-label">Categoria</label>
+        <div class="input-group">
         <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
 
-        <select class="input-group mb-3 form-select border-icon" name="id_categoria" required>
+        <select class="input-group form-select border-icon" name="id_categoria" required>
             <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
             ${opcoesHTML}
         </select>
-
+        </div>
         <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Editar</button>
         <button type="button" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-1 rounded-pill" onclick="voltar()">Voltar</button>
     </div>
@@ -61,17 +63,20 @@ async function modificarCategoria(categorias){
     }
     container.innerHTML = `
     
-    <h3>Selecione a Categoria que quer excluir</h3>
+    <h3>Selecione a Categoria que quer editar</h3>
     <form action="/update_categoria" method="POST">
-    <div class="input-group mb-3">
+    <div class="w-100 mb-4">
+        <label for="createInput" class="form-label">Categoria</label>
+        <div class="input-group">
         <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
 
-        <select class="input-group mb-3 form-select border-icon" name="id_categoria" required>
+        <select class="input-group form-select border-icon" name="id_categoria" required>
             <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
             ${opcoesHTML}
         </select>
+        </div>
 
-        <div class="w-100">
+        <div class="w-100 mt-2">
             <label for="createInput" class="form-label">Marca</label>
             <div class="input-group">
                 <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
@@ -98,3 +103,14 @@ async function voltar(){
 
     `
 }
+
+const forms = document.querySelectorAll('.needs-validation')
+Array.from(forms).forEach(form => {
+  form.addEventListener('submit', event => {
+    if (!form.checkValidity()) { // <-- ISSO DAQUI FORÇA O BALÃO A APARECER
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    form.classList.add('was-validated')
+  }, false)
+})  
