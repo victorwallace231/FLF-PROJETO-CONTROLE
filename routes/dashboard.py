@@ -1,5 +1,9 @@
 from flask import Blueprint, render_template, request, session, redirect
-from banco import conectar_banco
+from banco import conectar_banco, listar_icones
+
+# Colunas explícitas: [0]id [1]categoria [2]marca [3]nº série [4]disponível [5]manutenção [6]inativo [7]nome da categoria [8]ícone
+SELECT_EQUIPAMENTOS = """SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone
+        FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1"""
 
 # Definição dos Blueprints para o Painel Principal (Dashboard) e Gestão de Equipamentos
 route_dashboard = Blueprint('dashboard', __name__)
@@ -65,13 +69,12 @@ def equipamentos():
     if request.method == 'GET':
         conexao = conectar_banco()
         cursor = conexao.cursor()
-        cursor.execute("""SELECT p.*, c.categoria FROM perifericos p
-        JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1 AND p.inativo != 1""")
+        cursor.execute(SELECT_EQUIPAMENTOS + " AND p.inativo != 1")
         perifericos = cursor.fetchall()
         cursor.execute("SELECT * FROM categorias WHERE excluido !=1")
         categorias = cursor.fetchall()
         conexao.close()
-        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, name=session.get("usuario_name"))
+        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), name=session.get("usuario_name"))
 
     # Requisição POST: Aplicação de filtros combinados (categoria, marca/modelo e status)
     if request.method == 'POST':
@@ -84,8 +87,7 @@ def equipamentos():
         marca = request.form["filtro_marca"].strip().lower()
 
         # Estrutura inicial da instrução SQL dinâmica
-        sql = """SELECT p.*, c.categoria FROM perifericos p
-        JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1"""
+        sql = SELECT_EQUIPAMENTOS
         paramentros = []
 
         # Adiciona cláusula para filtro por categoria
@@ -120,4 +122,4 @@ def equipamentos():
         conexao.close()
 
         # Recarrega a página exibindo a tabela refinada pelos filtros
-        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, categoria = categoria, status = status,name=session.get("usuario_name"))
+        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), categoria = categoria, status = status, name=session.get("usuario_name"))

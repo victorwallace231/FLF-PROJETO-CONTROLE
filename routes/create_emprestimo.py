@@ -1,5 +1,5 @@
 import re
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, session, flash
 from banco import conectar_banco
 from datetime import date
 
@@ -19,8 +19,9 @@ def create():
 
         # Busca apenas os equipamentos que estão atualmente disponíveis (disponivel = 1)
         # para preencher a caixa de seleção (select) no formulário
-        cursor.execute("""SELECT p.*, c.categoria FROM perifericos p
-        JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1 AND p.disponivel = 1""")
+        # Colunas explícitas: [0]id [1]categoria [2]marca [3]nº série [4]disponível [5]manutenção [6]inativo [7]nome da categoria [8]ícone
+        cursor.execute("""SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone
+        FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE p.disponivel = 1""")
         perifericos = cursor.fetchall()
         conexao.close()
 
@@ -61,5 +62,6 @@ def create():
         conexao.commit()
         conexao.close()
 
+        flash("Empréstimo registrado com sucesso!", "success")
         # Redireciona o usuário de volta para a lista geral de movimentações
         return redirect("/verifica_emprestimos")

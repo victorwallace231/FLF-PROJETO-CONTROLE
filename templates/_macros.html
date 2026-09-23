@@ -1,0 +1,79 @@
+{# ==========================================================================
+   MACROS — pedaços de HTML reutilizados em várias telas.
+   Uso:  {% from "_macros.html" import badge_status, ... %}
+   ========================================================================== #}
+
+{# Descobre o "slug" do status a partir das colunas do banco: 4 disponível, 5 manutenção, 6 inativo #}
+{% macro slug_status(p) -%}
+{%- if p[4] == 1 -%}disponivel{%- elif p[6] == 1 -%}inativo{%- elif p[5] == 1 -%}manutencao{%- else -%}emuso{%- endif -%}
+{%- endmacro %}
+
+{% set TEXTO_STATUS = {'disponivel': 'Disponível', 'emuso': 'Em Uso', 'manutencao': 'Em Manutenção', 'inativo': 'Inativo'} %}
+
+{% macro texto_status(slug) -%}{{ TEXTO_STATUS[slug] }}{%- endmacro %}
+
+{% macro badge_status(slug) -%}
+<span class="badge-status status-{{ slug }}">{{ TEXTO_STATUS[slug] }}</span>
+{%- endmacro %}
+
+{# Selo Devolvido / Pendente das movimentações #}
+{% macro badge_movimentacao(devolvido) -%}
+{%- if devolvido == 1 -%}<span class="badge-status status-disponivel">Devolvido</span>{%- else -%}<span class="badge-status status-emuso">Pendente</span>{%- endif -%}
+{%- endmacro %}
+
+{# Alerta de erro vindo do servidor (variável `erro` das rotas de login/cadastro etc.) #}
+{% macro alerta_erro(erro) %}
+    {% if erro %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro:</strong> {{ erro }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{# Campo com ícone à esquerda + label. Todos os formulários usam este mesmo bloco. #}
+{% macro campo(id, rotulo, nome, icone, tipo='text', placeholder='', obrigatorio=True, extras='', valor='') %}
+    <div class="w-100 mb-3">
+        <label for="{{ id }}" class="form-label">{{ rotulo }}</label>
+        <div class="input-group">
+            <span class="input-group-text border-icon"><i class="bi {{ icone }}"></i></span>
+            <input type="{{ tipo }}" id="{{ id }}" class="form-control" name="{{ nome }}" placeholder="{{ placeholder }}" value="{{ valor }}" {% if obrigatorio %}required{% endif %} {{ extras|safe }}>
+        </div>
+    </div>
+{% endmacro %}
+
+{# Seletor de ícones (Bootstrap Icons).
+   selecionado: classe marcada no início. dinamico: True nas janelas de edição (o JS marca o ícone da linha).
+   permitir_novo: mostra o bloco para adicionar um ícone que ainda não está na lista. #}
+{% macro seletor_icone(icones, selecionado='', dinamico=False, permitir_novo=False) %}
+    <div class="seletor-icones">
+        <div class="seletor-icones__grade" id="grade-icones" role="radiogroup" aria-label="Ícone do equipamento">
+            {% for classe, nome in icones %}
+                <input type="radio" class="btn-check" name="icone" id="icone-{{ classe }}" value="{{ classe }}" autocomplete="off"
+                       {% if dinamico %}data-campo-radio="icone"{% elif classe == selecionado %}checked{% endif %}>
+                <label class="btn btn-outline-primary seletor-icones__item" for="icone-{{ classe }}" title="{{ nome }}">
+                    <i class="bi {{ classe }}"></i><span>{{ nome }}</span>
+                </label>
+            {% endfor %}
+        </div>
+
+        {% if permitir_novo %}
+            <div class="seletor-icones__novo" id="icone-novo">
+                <p class="small fw-semibold mb-2">Não achou o ícone? Adicione outro do
+                    <a href="https://icons.getbootstrap.com/" target="_blank" rel="noopener">Bootstrap Icons</a>:
+                </p>
+                <div class="d-flex gap-2 align-items-start">
+                    <div class="seletor-icones__previa" id="icone-novo-previa" aria-hidden="true"></div>
+                    <div class="flex-grow-1">
+                        <input type="text" id="icone-novo-classe" data-sem-validacao class="form-control form-control-sm mb-2" placeholder="Nome do ícone (ex.: bi-mouse2)" autocomplete="off">
+                        <input type="text" id="icone-novo-nome" data-sem-validacao class="form-control form-control-sm" placeholder="Nome de exibição (ex.: Mouse sem fio)" maxlength="40" autocomplete="off">
+                        <div class="mensagem-campo d-none" id="icone-novo-erro" role="alert"></div>
+                    </div>
+                </div>
+                <button type="button" id="icone-novo-botao" class="btn btn-outline-primary btn-sm w-100 mt-2 mb-0">
+                    <i class="bi bi-plus-circle me-1"></i>Adicionar ícone à lista
+                </button>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

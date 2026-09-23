@@ -1,129 +1,22 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <title>Atualizar Perfil - FLF</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="icon" type="image/png" href="../static/img/flflogoshort.png">
-        <link rel="stylesheet" href="../static/css/global.css">
-        <link rel="stylesheet" href="../static/css/variables.css">
-        <link rel="stylesheet" href="../static/css/class.css">
-        <link rel="stylesheet" href="../static/css/style1.css">
-        <link rel="stylesheet" href="../static/css/createitem.css"> <!-- Usado para manter o padrão visual do card -->
-        <link rel="stylesheet" href="../static/css/responsivo.css">
-        <link rel="stylesheet" href="../static/css/animacoes.css">
-        <script src="../static/js/script.js" defer></script>
-</head>
-<body class="w-100">
+{% extends "base_app.html" %}
+{% from "_macros.html" import campo %}
+{% block titulo %}Meus Dados{% endblock %}
 
-    <div class="d-flex app-layout">
-        <!-- Sidebar Baseada no Padrão do Projeto -->
-        <nav class="p-2 navbar_dashboard sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item mb-3 d-flex justify-content-center ">
-                    <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt="Faculdade Luciano Feijão - ir para o Início"></a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('dashboard.dashboard') }}">Início</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair">
-                        <button type="submit" class="nav-link text-white hover-black btn-nav">Sair</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-        
-        <div class="w-100 app-content">
-            <!-- Cabeçalho Baseado no Padrão do Projeto -->
-            <header>
-                <div>
-                    <h3 class="fw-bold p-4 h2-dashboard text-white">Seja bem-vindo, {{ session.get('usuario_name') }}!</h3>
-                </div> 
-                <div class="part-header">
-                    <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
-                    <div class="icon-container">
-                        <button id="btn-icon" type="button" class="icon-btn logo-user p-3" aria-label="Menu do usuário" aria-haspopup="true" aria-expanded="false">
-                            <i class="bi bi-person-circle" aria-hidden="true"></i>
-                        </button>
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>                
-                        
-                        <!-- ✅ Form apontando para a rota do updateuser.py -->
-                        <form action="{{ url_for('updateuser.update') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Perfil</button>
-                        </form>
+{% block conteudo %}
+<section class="main-content">
+    <div class="d-flex justify-content-center align-items-center p-4">
+        <div class="card-form">
+            <h3 class="fw-bold text-center mb-4">Atualizar Meus Dados</h3>
 
-                        <form action="{{ url_for('user_historico.historico') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Histórico</button>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <form action="{{ url_for('logout.logout') }}" method="POST">
-                            <button type="submit" class="dropdown-item danger">Sair da Conta</button>
-                        </form>
-                    </div>
-                    </div>
-                </div>
-            </header>
+            <form id="form-updateuser" action="{{ url_for('updateuser.update') }}" method="POST" data-validar>
+                {{ campo('inputNome', 'Nome Completo', 'nome', 'bi-person', placeholder='Seu nome', valor=session.get('usuario_name'), extras='data-msg="O nome não pode ficar vazio."') }}
+                {{ campo('inputEmail', 'Endereço de E-mail', 'email', 'bi-envelope', tipo='email', placeholder='seu@email.com', valor=session.get('usuario_email'), extras='data-msg="O e-mail não pode ficar vazio."') }}
+                {{ campo('inputTelefone', 'Telefone', 'telefone', 'bi-telephone', placeholder='(00) 00000-0000', valor=session.get('usuario_telefone'),
+                         extras='inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" data-somente-numeros data-msg="O telefone não pode ficar vazio."') }}
 
-            <main class="d-flex justify-content-center gap-4 p-4">
-                <section class="main-content">
-                    <div class="d-flex justify-content-center align-items-center p-4">
-                        
-                        <!-- Card do Formulário (Utilizando a mesma classe de criar item) -->
-                        <div class="createitem-card">
-                            <h3 class="fw-bold text-center mb-4">Atualizar Meus Dados</h3>
-                            
-                            <!-- O form aponta para a rota definida no updateuser.py -->
-                            <form id="form-updateuser" action="{{ url_for('updateuser.update') }}" method="POST">
-                                
-                                <div class="w-100 mb-3">
-                                    <label for="inputNome" class="form-label">Nome Completo</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text border-icon"><i class="bi bi-person"></i></span>
-                                        <!-- Value já traz o dado atual da sessão -->
-                                        <input type="text" id="inputNome" class="form-control" name="nome" value="{{ session.get('usuario_name') }}" placeholder="Seu nome" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="w-100 mb-3">
-                                    <label for="inputEmail" class="form-label">Endereço de E-mail</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text border-icon"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" id="inputEmail" class="form-control" name="email" value="{{ session.get('usuario_email') }}" placeholder="seu@email.com" required>
-                                    </div>
-                                </div>
-
-                                <div class="w-100 mb-4">
-                                    <label for="inputTelefone" class="form-label">Telefone</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text border-icon"><i class="bi bi-telephone"></i></span>
-                                        <!-- Expressão Regex no front-end para evitar sujeira -->
-                                        <input type="text" id="inputTelefone" class="form-control" name="telefone" value="{{ session.get('usuario_telefone') }}" placeholder="(00) 00000-0000" oninput="this.value = this.value.replace(/\D/g, '')" maxlength="11" required>
-                                    </div>
-                                </div>
-                                
-                                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2">Salvar Alterações</button>
-                            </form>
-                        </div>
-
-                    </div>
-                </section>
-            </main>
+                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold py-2">Salvar Alterações</button>
+            </form>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-</body>
-</html>
+</section>
+{% endblock %}

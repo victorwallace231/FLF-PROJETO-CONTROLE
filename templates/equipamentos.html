@@ -1,270 +1,170 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <title>Equipamentos - FLF</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="icon" type="image/png" href="../static/img/flflogoshort.png">
-        <link rel="stylesheet" href="../static/css/global.css">
-        <link rel="stylesheet" href="../static/css/variables.css">
-        <link rel="stylesheet" href="../static/css/style1.css">
-        <link rel="stylesheet" href="../static/css/class.css">
-        <link rel="stylesheet" href="../static/css/equipamentos.css">
-        <link rel="stylesheet" href="../static/css/responsivo.css">
-        <link rel="stylesheet" href="../static/css/animacoes.css">
-        <script src="../static/js/script.js" defer></script>
-</head>
-<body class="w-100">
+{% extends "base_app.html" %}
+{% from "_macros.html" import slug_status, texto_status, badge_status, seletor_icone %}
+{% block titulo %}Equipamentos{% endblock %}
 
-    <div class="d-flex app-layout">
-        <nav class="p-2 navbar_dashboard sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item mb-3 d-flex justify-content-center ">
-                    <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt="Faculdade Luciano Feijão - ir para o Início"></a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('dashboard.dashboard') }}">Início</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <!-- Logout altera a sessão e a rota só aceita POST: por isso é <button> dentro de <form>, não <a> -->
-                    <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair">
-                        <button type="submit" class="nav-link text-white hover-black btn-nav">Sair</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-        <div class="w-100 app-content">
-            <header>
-                <div>
-                <h3 class="fw-bold p-4 h2-dashboard text-white">Seja bem-vindo, {{ session.get('usuario_name') }}!</h3>
-            </div> 
-             <!--Usuário Principal-->
-            <div class="part-header">
-                <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
-                <div class="icon-container">
-                    <button id="btn-icon" type="button" class="icon-btn logo-user p-3" aria-label="Menu do usuário" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-person-circle" aria-hidden="true"></i>
-                    </button>
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>                
-                        
-                        <!-- ✅ Form apontando para a rota do updateuser.py -->
-                        <form action="{{ url_for('updateuser.update') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Perfil</button>
-                        </form>
+{% block conteudo %}
+<section class="main-content">
+    <h2>Gerenciamento de Inventário de Equipamentos</h2>
 
-                        <form action="{{ url_for('user_historico.historico') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Histórico</button>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <form action="{{ url_for('logout.logout') }}" method="POST">
-                            <button type="submit" class="dropdown-item danger">Sair da Conta</button>
-                        </form>
-                    </div>
-                </div>
-            </header>
-        
+    {# Formulário de filtro e busca #}
+    <form action="{{ url_for('equipamentos.equipamentos') }}" method="POST">
+        <div class="barra-pesquisa">
+            <input type="text" name="filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
 
-        <!-- <div class="p-4 flex-grow-1">
-        <h1>Bem-vindo ao Dashboard</h1>
-        </div> -->
+            <select class="filter-select" name="filtro_categoria">
+                <option value="todos" {% if categoria == 'todos' %}selected{% endif %}>todos</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat[0] }}" {% if categoria|string == cat[0]|string %}selected{% endif %}>{{ cat[1] }}</option>
+                {% endfor %}
+            </select>
 
-        <main class="d-flex justify-content-center gap-4 p-4">
-            
-            <section class="main-content">
-                <h2>Gerenciamento de Inventário de Equipamentos</h2>
-                
-                <!-- Formulário de Filtro e Busca -->
-                <form action="{{ url_for('equipamentos.equipamentos') }}" method="POST">
-                    <div class="barra-pesquisa">
-                        <!-- Campo de busca por texto livre -->
-                        <input type="text" name="filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
+            <select class="filter-select" name="filtro_status">
+                <option value="todos" {% if status == 'todos' %}selected{% endif %}>Todos os status</option>
+                <option value="disponivel" {% if status == 'disponivel' %}selected{% endif %}>Disponíveis</option>
+                <option value="emuso" {% if status == 'emuso' %}selected{% endif %}>Em Uso</option>
+                <option value="manutencao" {% if status == 'manutencao' %}selected{% endif %}>Em Manutenção</option>
+                <option value="inativo" {% if status == 'inativo' %}selected{% endif %}>Inativo</option>
+            </select>
 
-                        <!-- Seleção por Categoria -->
-                        <select class="filter-select" name="filtro_categoria">
-                                <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>todos</option>
-                                    {% for cat in categorias %}
-                                        <option value="{{ cat [0] }}" {% if categoria|string == cat [0]|string %} selected {% endif %}>{{ cat[1] }}</option>
-                                    {% endfor %}
-                        </select>
+            <button type="submit" class="btn btn-primary fw-semibold text-black">Filtrar</button>
+        </div>
+    </form>
 
-                        <!-- Seleção por Status do Equipamento -->
-                        <select class="filter-select" name="filtro_status">
-                            <option value="todos" {% if status == 'todos' %} selected {% endif %}>Todos os status</option>
-                            <option value="disponivel" {% if status == 'disponivel' %} selected {% endif %}>Disponíveis</option>
-                            <option value="emuso" {% if status == 'emuso' %} selected {% endif %}>Em Uso</option>
-                            <option value="manutencao" {% if status == 'manutencao' %} selected {% endif %}>Em Manutenção</option>
-                            <option value="inativo" {% if status == 'inativo' %} selected {% endif %}>Inativo</option>
-                        </select>
-                        
-                        <button type="submit" class="btn btn-primary fw-semibold text-black mb-0">Filtrar</button>
-                    </div>
-                </form>
+    <a class="btn btn-primary fw-semibold text-black" href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a>
 
-                <!-- Botão de Ação para Cadastrar Novo Equipamento -->
-                <div>
-                    <a class="btn btn-primary fw-semibold text-black text-decoration-none" href="{{ url_for('create_item.create') }}">+ Adicionar Equipamento</a>
-                </div>
-
-                <!-- Tabela de Listagem dos Equipamentos -->
-                <div class="tabela-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Miniatura</th>
-                                <th>Número de Série</th>
-                                <th>Marca</th>
-                                <th>Categoria</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            <!-- Loop Jinja2: Percorre a lista de periféricos vinda do backend -->
-                            {% for periferico in perifericos %}
-                                <tr name="{{ periferico[1] }}">
-                                    <!-- Imagem do item -->
-                                    <td>
-                                        <img src="../static/img/monitor_dell.webp" class="thumb" alt="Miniatura">
-                                    </td>
-                                    
-                                    <!-- Dados do Equipamento da Tupla SQLite -->
-                                    <td>{{ periferico[3] }}</td> <!-- Número de Série -->
-                                    <td>{{ periferico[2] }}</td> <!-- Marca -->
-                                    <td>{{ periferico[7] }}</td> <!-- Categoria -->
-                                    
-                                    <!-- Renderização Condicional da Badge de Status -->
-                                    {% if periferico[4] == 1 %}
-                                        <td><span class="badge" id="disponivel">Disponível</span></td>
-                                    {% elif periferico[4] == 0 and periferico[5] == 0 and periferico[6] == 0 %}
-                                        <td><span class="badge" id="emuso">Em Uso</span></td>
-                                    {% elif periferico[4] == 0 and periferico[5] == 1 and periferico[6] == 0 %}
-                                        <td><span class="badge" id="manutencao">Em Manutenção</span></td>
-                                    {% elif periferico[6] == 1 %}
-                                        <td><span class="badge" id="emuso">Inativo</span></td>
-                                    {% endif %}
-
-                                    <!-- Menu de Ações Individuais (Dropdown por Item) -->
-                                    <td class="action-cell">
-                                        <div class="action-menu">
-                                            <button type="button" class="btn-icon" aria-label="Ações do equipamento" aria-haspopup="true" onclick="toggleMenu(event)">⋮</button>
-                                            
-                                            <div class="dropdown-menu">
-                                                <!-- Botões para abrir os respectivos modais pelo ID dinâmico -->
-                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').showModal()">Visualizar</button>
-                                                <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').showModal()">Editar</button>
-                                                <button type="button" class="dropdown-item" onclick="carregarEmprestimos('{{ periferico[0] }}')">Histórico</button>
-
-                                                <div class="dropdown-divider"></div>
-                                                
-                                                <!-- Form para exclusão direta do periférico -->
-                                                <form method="POST" action="{{ url_for('deleteitem.delete') }}">
-                                                    <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
-                                                    <button class="dropdown-item danger">Excluir</button>
-                                                </form>
-                                            </div>
-                                        </div>
-
-                                        <!-- MODAL 1: Exibição Rápida de Informações do Item -->
-                                        <dialog id="modal-vizualizar-{{ periferico [0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
-                                                
-                                                <form method="GET" style="display: flex; flex-direction: column; gap: 12px;">
-                                                    <p>Categoria: {{ periferico[7] }}</p>
-                                                    <p>Marca: {{ periferico[2] }}</p>
-                                                    <p>Número de Série: {{ periferico[3] }}</p>
-                                                    
-                                                    <!-- Status exibido na visualização rápida -->
-                                                    {% if periferico[4] == 1 %}
-                                                        <p>Status: <span class="badge" id="disponivel">Disponível</span></p>
-                                                    {% elif periferico[4] == 0 and periferico[5] == 0 and periferico[6] == 0 %}
-                                                        <p>Status: <span class="badge" id="emuso">Em uso</span></p>
-                                                    {% elif periferico[4] == 0 and periferico[5] == 1 and periferico[6] == 0 %}
-                                                        <p>Status: <span class="badge" id="manutencao">Manutenção</span></p>
-                                                    {% elif periferico[6] == 1 %}
-                                                        <p>Status: <span class="badge" id="emuso">Inativo</span></p>
-                                                    {% endif %}
-                                                    <button type="button" onclick="document.getElementById('modal-vizualizar-{{ periferico [0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
-                                                </form>
-                                            </div>
-                                        </dialog>
-
-                                        <!-- MODAL 2: Form de Edição/Atualização do Item (ID dinâmico com periferico[0]) -->
-                                        <dialog id="modal-editar-{{ periferico[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
-                                                
-                                                <form action="{{ url_for('update_item.update') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
-                                                    <select class="input-box" name="categoria">
-                                                        <option value="{{ periferico[1] }}" disabled selected>Selecione a Categoria do Equipamento</option>
-                                                        {% for cat in categorias %}
-                                                            <option value="{{ cat [0] }}" {% if categoria == cat [1] %} selected {% endif %}>{{ cat[1] }}</option>
-                                                        {% endfor %}
-                                                    </select>   
-                                                    
-                                                    <select class="filter-select" name="filtro_status">
-                                                        <option value="todos">Todos os status</option>
-                                                        <option value="disponivel">Disponíveis</option>
-                                                        <option value="emuso">Em Uso</option>
-                                                        <option value="manutencao">Em Manutenção</option>
-                                                        <option value="inativo">Inativo</option>
-                                                    </select>
-                                                    
-                                                    <input type="text" name="marca" placeholder="Marca" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                    <input type="text" name="num_serie" placeholder="Número de Série" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                    
-                                                    <!-- ID oculto enviado para atualizar a linha correta no BD -->
-                                                    <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
-                                                    
-                                                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-                                                        <button type="button" onclick="document.getElementById('modal-editar-{{ periferico[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
-                                                        <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </dialog>
-
-                                        
-
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                                        <!-- MODAL 3: Histórico de Movimentações do Item -->
-                                        <dialog id="modal-historico" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">HISTÓRICO DE MOVIMENTAÇÕES</h2>
-                                                
-                                                <!-- O JS injetará os cards de empréstimo dentro desta div -->
-                                                <div id="lista-emprestimos" style="max-height: 300px; overflow-y: auto;"></div>
-
-                                                <button type="button" onclick="fecharModal()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer; align-self: flex-end;">Fechar</button>
-                                            </div>
-                                        </dialog>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </main>
-
-
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ícone</th>
+                    <th>Número de Série</th>
+                    <th>Marca</th>
+                    <th>Categoria</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Colunas: [0]id [1]id da categoria [2]marca [3]nº série [7]nome da categoria [8]ícone #}
+                {% for periferico in perifericos %}
+                    {% set st = slug_status(periferico)|trim %}
+                    <tr data-id="{{ periferico[0] }}" data-marca="{{ periferico[2] }}" data-serie="{{ periferico[3] }}"
+                        data-categoria="{{ periferico[7] }}" data-categoria-id="{{ periferico[1] }}"
+                        data-icone="{{ periferico[8] }}" data-status="{{ st }}" data-status-texto="{{ texto_status(st) }}">
+                        <td><i class="bi {{ periferico[8] }} icone-item" aria-hidden="true"></i></td>
+                        <td>{{ periferico[3] }}</td>
+                        <td>{{ periferico[2] }}</td>
+                        <td>{{ periferico[7] }}</td>
+                        <td>{{ badge_status(st) }}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn-acoes" data-bs-toggle="dropdown" data-bs-strategy="fixed" aria-expanded="false" aria-label="Ações do equipamento"><i class="bi bi-three-dots-vertical"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalVisualizar">Visualizar</button></li>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar</button></li>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalHistorico">Histórico</button></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form method="POST" action="{{ url_for('deleteitem.delete') }}"
+                                              data-confirmar="Deseja realmente excluir o equipamento {{ periferico[3] }}? O histórico de movimentações dele será mantido."
+                                              data-confirmar-titulo="Excluir equipamento" data-confirmar-botao="Excluir" data-confirmar-cor="danger">
+                                            <input type="hidden" name="periferico_id" value="{{ periferico[0] }}">
+                                            <button type="submit" class="dropdown-item text-danger">Excluir</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</section>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="../static/js/busca_emprestimo.js">
-    </script>
-</body>
-</html>
+{% block janelas %}
+{# Uma janela de cada tipo para a tabela toda: os dados vêm dos data-* da linha clicada (static/js/modais.js) #}
+<div class="modal fade" id="modalVisualizar" tabindex="-1" aria-labelledby="titulo-visualizar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-visualizar">Informações do item</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center mb-3"><i class="icone-item" style="font-size: 3rem;" data-campo-icone="icone"></i></p>
+                <p><strong>Categoria:</strong> <span data-campo="categoria"></span></p>
+                <p><strong>Marca:</strong> <span data-campo="marca"></span></p>
+                <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Status:</strong> <span data-campo-status></span></p>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="titulo-editar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content" action="{{ url_for('update_item.update') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-editar">Editar equipamento</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_periferico" data-campo="id">
+
+                <div class="mb-3">
+                    <label for="editar-categoria" class="form-label">Categoria</label>
+                    <select id="editar-categoria" name="categoria" class="form-select" data-campo="categoriaId" required data-msg="Selecione a categoria.">
+                        {% for cat in categorias %}<option value="{{ cat[0] }}">{{ cat[1] }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="editar-status" class="form-label">Status</label>
+                    <select id="editar-status" name="filtro_status" class="form-select">
+                        <option value="todos" selected>Manter status atual</option>
+                        <option value="disponivel">Disponível</option>
+                        <option value="emuso">Em Uso</option>
+                        <option value="manutencao">Em Manutenção</option>
+                        <option value="inativo">Inativo</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="editar-marca" class="form-label">Marca</label>
+                    <input type="text" id="editar-marca" name="marca" class="form-control" data-campo="marca" required data-msg="Informe a marca do equipamento.">
+                </div>
+                <div class="mb-3">
+                    <label for="editar-serie" class="form-label">Número de série</label>
+                    <input type="text" id="editar-serie" name="num_serie" class="form-control" data-campo="serie" required data-msg="Informe o número de série.">
+                </div>
+                <div class="mb-1">
+                    <span class="form-label d-block">Ícone</span>
+                    {{ seletor_icone(icones, dinamico=True) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalHistorico" tabindex="-1" aria-labelledby="titulo-historico" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-historico">Histórico de movimentações</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body"><div id="lista-emprestimos"></div></div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/historico_item.js') }}"></script>
+{% endblock %}

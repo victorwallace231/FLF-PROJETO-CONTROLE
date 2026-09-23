@@ -42,4 +42,12 @@
 * `./static/js` Contem os arquivos que contribuem para escrever a busca de emprestimos no banco.
 * `./templates` É a pasta que contem o `HTML` do projeto.
 
+## Front-end (atualizado na rodada 2)
 
+* `./templates/base_app.html` Layout das telas logadas (sidebar, cabeçalho, pop-ups). As outras telas usam `{% extends "base_app.html" %}`.
+* `./templates/base_auth.html` Layout de login, cadastro, recuperar e redefinir senha.
+* `./templates/_macros.html` Pedaços reutilizáveis (campo com ícone, badges de status, seletor de ícones).
+* `./templates/_feedback.html` Toasts e janela de confirmação (Bootstrap 5).
+* `./static/css` Apenas 4 arquivos: `variables.css`, `base.css` (todas as telas), `app.css` (telas logadas) e `animacoes.css`.
+* `./static/js` `validacao.js` (erros nos formulários), `feedback.js` (toasts e "tem certeza?"), `modais.js` (janelas reutilizáveis), `icones.js` (adicionar ícones), `historico_item.js` e `animacoes.js`.
+* `./Test/_legado` Cópia dos CSS/JS antigos, usada só pelos protótipos de `Test/`.

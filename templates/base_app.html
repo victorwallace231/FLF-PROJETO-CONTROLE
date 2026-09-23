@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{# Base de todas as telas logadas: sidebar + cabeçalho + pop-ups.
+   Cada tela só preenche os blocos: titulo, conteudo, janelas (modais) e scripts. #}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}FLF{% endblock %} - FLF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/flflogoshort.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animacoes.css') }}">
+</head>
+<body class="pagina-app w-100">
+
+    <div class="d-flex app-layout">
+        <nav class="p-2 sidebar" aria-label="Menu principal">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-3 d-flex justify-content-center">
+                    <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2 logo-sidebar" src="{{ url_for('static', filename='img/Marca-FLF-2022-Todo-Branco.png') }}" alt="Faculdade Luciano Feijão - ir para o Início"></a>
+                </li>
+                <li class="nav-item sidebar-li">
+                    <a class="nav-link text-white" href="{{ url_for('dashboard.dashboard') }}">Início</a>
+                </li>
+                <li class="nav-item sidebar-li">
+                    <a class="nav-link text-white" href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a>
+                </li>
+                <li class="nav-item sidebar-li">
+                    <a class="nav-link text-white" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
+                </li>
+                <li class="nav-item sidebar-li">
+                    {# Logout altera a sessão e a rota só aceita POST: por isso é <button> dentro de <form>, não <a> #}
+                    <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair"
+                          data-confirmar="Deseja realmente sair da sua conta?" data-confirmar-titulo="Sair da conta" data-confirmar-botao="Sair">
+                        <button type="submit" class="nav-link text-white btn-nav">Sair</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="w-100 app-content">
+            <header>
+                <h3 class="fw-bold p-4 text-white">Seja bem-vindo, {{ session.get('usuario_name') }}!</h3>
+
+                {# Menu do usuário: dropdown do Bootstrap (não precisa de JavaScript próprio) #}
+                <div class="part-header">
+                    <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
+                    <div class="dropdown">
+                        <button type="button" class="icon-btn p-3" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menu do usuário">
+                            <i class="bi bi-person-circle" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">{{ session.get('usuario_name') }}</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('updateuser.update') }}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('user_historico.historico') }}">Histórico</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ url_for('logout.logout') }}" method="POST"
+                                      data-confirmar="Deseja realmente sair da sua conta?" data-confirmar-titulo="Sair da conta" data-confirmar-botao="Sair">
+                                    <button type="submit" class="dropdown-item text-danger">Sair da Conta</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <main class="d-flex justify-content-center gap-4 p-4">
+                {% block conteudo %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    {% block janelas %}{% endblock %}
+    {% include "_feedback.html" %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/validacao.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modais.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

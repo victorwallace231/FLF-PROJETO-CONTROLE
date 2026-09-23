@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect
 from datetime import timedelta
+from banco import iniciar_banco
 app = Flask(__name__)
 app.secret_key = '14082017'
 
@@ -27,6 +28,7 @@ from routes.recuperar_senha import recuperar_senha
 from routes.redefinir_senha import redefinir_senha
 from routes.delete_categoria import delete_categoria
 from routes.update_categoria import update_categoria
+from routes.create_icone import route_create_icone
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -50,6 +52,10 @@ app.register_blueprint(recuperar_senha)
 app.register_blueprint(redefinir_senha)
 app.register_blueprint(delete_categoria)
 app.register_blueprint(update_categoria)
+app.register_blueprint(route_create_icone)
+
+# Garante a coluna/tabela de ícones no banco (só cria o que ainda não existe)
+iniciar_banco()
 
 #Rota principal do sistema
 @app.route('/')

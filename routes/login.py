@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, session, flash
 from banco import conectar_banco
 from werkzeug.security import check_password_hash
 
@@ -58,6 +58,7 @@ def login():
 def logout():
     # Limpa todas as variáveis armazenadas na sessão ativa
     session.clear()
-    
+    flash("Você saiu da conta com sucesso.", "success")
+
     # Redireciona o usuário de volta para a tela de login
     return redirect('/login')

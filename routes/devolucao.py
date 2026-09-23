@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, session
+from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco
 from datetime import date
 
@@ -42,5 +42,6 @@ def devolucao():
     conexao.commit()
     conexao.close()
 
+    flash("Devolução registrada com sucesso!", "success")
     # Redireciona para a tela de histórico de movimentações atualizada
     return redirect('/verifica_emprestimos')

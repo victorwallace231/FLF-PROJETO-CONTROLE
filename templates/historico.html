@@ -1,166 +1,74 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <title>Histórico - FLF</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="icon" type="image/png" href="../static/img/flflogoshort.png">
-        <link rel="stylesheet" href="../static/css/global.css">
-        <link rel="stylesheet" href="../static/css/variables.css">
-        <link rel="stylesheet" href="../static/css/style1.css">
-        <link rel="stylesheet" href="../static/css/class.css">
-        <link rel="stylesheet" href="../static/css/equipamentos.css">
-        <link rel="stylesheet" href="../static/css/responsivo.css">
-        <link rel="stylesheet" href="../static/css/animacoes.css">
-        <script src="../static/js/script.js" defer></script>
-</head>
-<body class="w-100">
+{% extends "base_app.html" %}
+{% from "_macros.html" import badge_movimentacao %}
+{% block titulo %}Histórico{% endblock %}
 
-    <div class="d-flex app-layout">
-        <nav class="p-2 navbar_dashboard sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item mb-3 d-flex justify-content-center ">
-                    <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt="Faculdade Luciano Feijão - ir para o Início"></a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('dashboard.dashboard') }}">Início</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <!-- Logout altera a sessão e a rota só aceita POST: por isso é <button> dentro de <form>, não <a> -->
-                    <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair">
-                        <button type="submit" class="nav-link text-white hover-black btn-nav">Sair</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-        <div class="w-100 app-content">
-            <header>
-                <div>
-                <h3 class="fw-bold p-4 h2-dashboard text-white">Seja bem-vindo, {{ session.get('usuario_name') }}!</h3>
-            </div> 
-             <!--Usuário Principal-->
-            <div class="part-header">
-                <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
-                <div class="icon-container">
-                    <button id="btn-icon" type="button" class="icon-btn logo-user p-3" aria-label="Menu do usuário" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-person-circle" aria-hidden="true"></i>
-                    </button>
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>                
-                        
-                        <!-- ✅ Form apontando para a rota do updateuser.py -->
-                        <form action="{{ url_for('updateuser.update') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Perfil</button>
-                        </form>
+{% block conteudo %}
+<section class="main-content">
+    <h2>Meu Histórico de Movimentações</h2>
 
-                        <form action="{{ url_for('user_historico.historico') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Histórico</button>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <form action="{{ url_for('logout.logout') }}" method="POST">
-                            <button type="submit" class="dropdown-item danger">Sair da Conta</button>
-                        </form>
-                    </div>
-                </div>
-            </header>
-        
-
-        <!-- <div class="p-4 flex-grow-1">
-        <h1>Bem-vindo ao Dashboard</h1>
-        </div> -->
-
-        <main class="d-flex justify-content-center gap-4 p-4">
-            
-            <section class="main-content">
-                <h2>Meu Histórico de Movimentações</h2>
-
-                <!-- Tabela de Histórico de Empréstimos -->
-                <div class="tabela-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data / Hora Saída</th>
-                                <th>Data / Hora Devolução</th>
-                                <th>Responsável</th>
-                                <th>Telefone</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            {% if emprestimos %}
-                                {% for emprestimo in emprestimos %}
-                                    <tr>
-                                        <td>{{ emprestimo[2] }}</td> <!-- Data de Saída -->
-                                        <td>{{ emprestimo[3] if emprestimo[3] else '-' }}</td> <!-- Data de Devolução -->
-                                        <td>{{ emprestimo[1] }}</td> <!-- Responsável -->
-                                        <td>{{ emprestimo[5] if emprestimo[5] else '-' }}</td> <!-- Telefone -->
-                                        
-                                        <!-- Renderização da Badge de Status -->
-                                        <td>
-                                            {% if emprestimo[8] == 1 %}
-                                                <span class="badge" id="disponivel">Devolvido</span>
-                                            {% else %}
-                                                <span class="badge" id="emuso">Pendente</span>
-                                            {% endif %}
-                                        </td>
-
-                                        <!-- Menu de Ação por Registro -->
-                                        <td class="action-cell">
-                                            <div class="action-menu">
-                                                <button type="button" class="btn-icon" aria-label="Ações do registro" aria-haspopup="true" onclick="toggleMenu(event)">⋮</button>
-                                                <div class="dropdown-menu">
-                                                    <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ emprestimo[0] }}').showModal()">Visualizar</button>
-                                                </div>
-                                            </div>
-
-                                            <!-- Modal de Visualização Detalhada do Registro -->
-                                            <dialog id="modal-vizualizar-{{ emprestimo[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                                <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                    <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">DETALHES DA MOVIMENTAÇÃO</h2>
-                                                    
-                                                    <div style="display: flex; flex-direction: column; gap: 10px; color: #444; text-align: left;">
-                                                        <p><strong>Responsável:</strong> {{ emprestimo[1] }}</p>
-                                                        <p><strong>Data de Saída:</strong> {{ emprestimo[2] }}</p>
-                                                        <p><strong>Data de Devolução:</strong> {{ emprestimo[3] if emprestimo[3] else 'Ainda não devolvido' }}</p>
-                                                        <p><strong>Telefone:</strong> {{ emprestimo[5] if emprestimo[5] else 'Não informado' }}</p>
-                                                        <p><strong>Observação:</strong> {{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}</p>
-                                                        <p><strong>Status:</strong> {{ 'Devolvido' if emprestimo[8] == 1 else 'Pendente' }}</p>
-                                                    </div>
-
-                                                    <button type="button" onclick="document.getElementById('modal-vizualizar-{{ emprestimo[0] }}').close()" style="margin-top: 10px; padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer; align-self: flex-end;">Fechar</button>
-                                                </div>
-                                            </dialog>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="6" style="text-align: center; padding: 20px;">Nenhum histórico de empréstimo encontrado para este usuário.</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </main>
-
-
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data / Hora Saída</th>
+                    <th>Data / Hora Devolução</th>
+                    <th>Responsável</th>
+                    <th>Telefone</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                    {# Colunas: [1]responsável [2]saída [3]devolução [5]telefone [7]observação [8]devolvido #}
+                    <tr data-responsavel="{{ emprestimo[1] }}" data-saida="{{ emprestimo[2] }}"
+                        data-devolucao="{{ emprestimo[3] if emprestimo[3] else 'Ainda não devolvido' }}"
+                        data-tel="{{ emprestimo[5] if emprestimo[5] else 'Não informado' }}"
+                        data-obs="{{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}"
+                        data-situacao="{{ 'Devolvido' if emprestimo[8] == 1 else 'Pendente' }}">
+                        <td>{{ emprestimo[2] }}</td>
+                        <td>{{ emprestimo[3] if emprestimo[3] else '-' }}</td>
+                        <td>{{ emprestimo[1] }}</td>
+                        <td>{{ emprestimo[5] if emprestimo[5] else '-' }}</td>
+                        <td>{{ badge_movimentacao(emprestimo[8]) }}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn-acoes" data-bs-toggle="dropdown" data-bs-strategy="fixed" aria-expanded="false" aria-label="Ações do registro"><i class="bi bi-three-dots-vertical"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalVisualizar">Visualizar</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center p-4">Nenhum histórico de empréstimo encontrado para este usuário.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</section>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-</body>
-</html>
+{% block janelas %}
+<div class="modal fade" id="modalVisualizar" tabindex="-1" aria-labelledby="titulo-visualizar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-visualizar">Detalhes da movimentação</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Responsável:</strong> <span data-campo="responsavel"></span></p>
+                <p><strong>Data de saída:</strong> <span data-campo="saida"></span></p>
+                <p><strong>Data de devolução:</strong> <span data-campo="devolucao"></span></p>
+                <p><strong>Telefone:</strong> <span data-campo="tel"></span></p>
+                <p><strong>Observação:</strong> <span data-campo="obs"></span></p>
+                <p><strong>Status:</strong> <span data-campo="situacao"></span></p>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

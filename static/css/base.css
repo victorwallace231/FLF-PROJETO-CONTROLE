@@ -1,0 +1,106 @@
+/* ==========================================================================
+   BASE — estilos compartilhados por TODAS as telas (login, cadastro e sistema)
+   ========================================================================== */
+
+body {
+    font-family: "Poppins", sans-serif;
+    color: var(--black-color);
+    background-size: cover;
+}
+
+/* Fundo azul animado das telas de login/cadastro/recuperação */
+.bg-linear {
+    background-image: linear-gradient(to right, #1e64b4, #4ef9ff);
+    background-size: 200% 200%;
+    animation: fluido 10s ease infinite;
+}
+
+@keyframes fluido {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Cartão branco dos formulários (antes eram 3 cópias: login-card, createitem-card e cadastro-card) */
+.card-form {
+    max-width: 420px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    border-radius: 22px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+}
+
+.card-form--larga { max-width: 550px; }
+.card-form--media { max-width: 520px; }
+
+.card-form .btn { margin-bottom: .5rem; }
+
+/* Logo das telas de autenticação */
+.logo-auth {
+    display: flex;
+    margin: 0 auto;
+    width: 50%;
+}
+
+.logo-auth--menor { width: 40%; }
+
+/* Campos */
+.border-icon {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    color: #000;
+}
+
+.form-control {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    color: #000;
+}
+
+.form-control::placeholder { color: rgba(0, 0, 0, 0.643); }
+
+.form-control:focus {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.btn { border-radius: 999px; padding: 0.7rem; }
+
+/* ==========================================================================
+   VALIDAÇÃO DE FORMULÁRIOS (usado por static/js/validacao.js)
+   ========================================================================== */
+
+/* Campo com erro: borda vermelha (o Bootstrap já cuida do resto via .is-invalid) */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--cor-erro);
+    background-color: #fff5f5;
+}
+
+/* O ícone à esquerda do campo também fica vermelho */
+.input-group:has(.is-invalid) .border-icon {
+    border-color: var(--cor-erro);
+    color: var(--cor-erro);
+}
+
+/* Mensagem individual embaixo de cada campo */
+.mensagem-campo {
+    display: block;
+    margin-top: .25rem;
+    font-size: .8rem;
+    color: var(--cor-erro);
+    font-weight: 500;
+}
+
+/* Efeito de "tremida" quando o erro aparece (a classe é colocada/removida pelo JS) */
+.campo-erro,
+.alerta-geral {
+    animation: tremer .4s ease;
+}
+
+/* Alerta geral no topo do formulário */
+.alerta-geral {
+    font-size: .9rem;
+    margin-bottom: 1rem;
+}
