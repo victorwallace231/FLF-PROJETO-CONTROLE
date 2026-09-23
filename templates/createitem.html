@@ -79,7 +79,7 @@
         <main class="d-flex justify-content-center gap-4 p-4">
             
             <section class="main-content">
-                <div class="d-flex justify-content-center align-items-center p-4">
+                <div class="d-flex justify-content-center align-items-center p-4"> 
                     <div class="createitem-card">
                         <h3 class="fw-bold text-center mb-4">Adicionar Novo Equipamento</h3>
                         <form id="form-createitem" action="{{ url_for('create_item.create') }}" method="POST">
@@ -88,14 +88,14 @@
                                 <label for="createInput" class="form-label">Número de Série</label>
                                 <div class="input-group">
                                     <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
-                                    <input type="text" id="createInput" class="form-control" name="num_serie" placeholder="Digite o número de série do equipamento" required>
+                                    <input type="text" id="createInput" class="form-control" name="num_serie" placeholder="Digite o número de série do equipamento">
                                 </div>
                             </div>
                             <div class="w-100">
                                 <label for="createInput" class="form-label">Marca</label>
                                 <div class="input-group">
                                     <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
-                                    <input type="text" id="createInput" class="form-control" name="marca" placeholder="Digite a marca do equipamento" required>
+                                    <input type="text" id="createInput" class="form-control" name="marca" placeholder="Digite a marca do equipamento">
                                 </div>
                             </div>
 
@@ -121,10 +121,11 @@
                     <div class="createitem-card">
                         
                         <div id="container">
+                            <h3 id="msg-erro">{{ erro }}</h3>
                             <h3 class="mb-3">Opções de Categorias</h3>
                             <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="adicionarCategoria()">Adicionar Categoria</button>
-                            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="deletarCategoria('{{ categorias }}')">Deletar Categoria</button>
-                            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="modificarCategoria()">Modificar Categoria</button>
+                            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="deletarCategoria(listaCategorias)">Deletar Categoria</button>
+                            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="modificarCategoria(listaCategorias)">Modificar Categoria</button>
                             
                         </div>
 

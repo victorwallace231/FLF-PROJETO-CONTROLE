@@ -41,7 +41,7 @@ async function deletarCategoria(categorias){
             ${opcoesHTML}
         </select>
 
-        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Editar</button>
         <button type="button" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-1 rounded-pill" onclick="voltar()">Voltar</button>
     </div>
     </form>
@@ -60,11 +60,30 @@ async function modificarCategoria(categorias){
         }
     }
     container.innerHTML = `
+    
+    <h3>Selecione a Categoria que quer excluir</h3>
+    <form action="/update_categoria" method="POST">
+    <div class="input-group mb-3">
+        <span class="input-group-text border-icon"><i class="bi bi-hash"></i></span>
 
-        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Adicionar</button>
+        <select class="input-group mb-3 form-select border-icon" name="id_categoria" required>
+            <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
+            ${opcoesHTML}
+        </select>
+
+        <div class="w-100">
+            <label for="createInput" class="form-label">Marca</label>
+            <div class="input-group">
+                <span class="input-group-text border-icon"><i class="bi bi-box-seam"></i></span>
+                    <input type="text" id="createInput" class="form-control" name="nome_categoria" placeholder="Digite o nome da nova categoria" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-3 rounded-pill">Editar</button>
         <button type="button" class="btn btn-primary w-100 text-black fw-semibold d-flex justify-content-center align-content-center py-2 mt-1 rounded-pill" onclick="voltar()">Voltar</button>
     </div>
     </form>
+
 
     `
 }
@@ -74,8 +93,8 @@ async function voltar(){
     container.innerHTML = `              
         <h3 class="mb-3">Opções de Categorias</h3>
             <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="adicionarCategoria()">Adicionar Categoria</button>
-            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="deletarCategoria('{{ categorias }}')">Deletar Categoria</button>
-            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="modificarCategoria()">Modificar Categoria</button>
+            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="deletarCategoria(listaCategorias)">Deletar Categoria</button>
+            <button type="button" class="btn btn-primary w-100 text-black text-dark fw-semibold d-flex justify-content-center align-content-center py-2 mb-3" onclick="modificarCategoria(listaCategorias)">Modificar Categoria</button>
 
     `
 }

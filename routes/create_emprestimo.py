@@ -33,6 +33,7 @@ def create():
 
         # Registra automaticamente a data atual do sistema como data de saída
         data_saida = date.today()
+        data_formatada = data_saida.strftime('%d/%m/%Y')
 
         # Captura as informações digitadas no formulário
         responsavel = request.form["responsavel"]
@@ -51,7 +52,7 @@ def create():
             """INSERT INTO emprestimos 
                (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao) 
                VALUES (?, ?, ?, ?, ?, ?)""", 
-            (responsavel, data_saida, id_periferico, tel_responsavel, session.get("usuario_id"), observacao)
+            (responsavel, data_formatada, id_periferico, tel_responsavel, session.get("usuario_id"), observacao)
         )
 
         # Efetiva a gravação da transação no banco de dados e fecha a conexão
