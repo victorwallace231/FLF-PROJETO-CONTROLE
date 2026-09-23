@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, render_template, request, redirect, session
 from banco import conectar_banco
 from datetime import date
@@ -38,7 +39,8 @@ def create():
         # Captura as informações digitadas no formulário
         responsavel = request.form["responsavel"]
         id_periferico = request.form["id_periferico"]
-        tel_responsavel = request.form["tel_responsavel"]
+        # Remove qualquer caractere que não seja dígito antes de gravar no banco
+        tel_responsavel = re.sub(r"\D", "", request.form["tel_responsavel"])
         observacao = request.form["observacao"]
 
         # 1. Atualiza a tabela 'perifericos': altera o status do equipamento para indisponível (disponivel = 0)

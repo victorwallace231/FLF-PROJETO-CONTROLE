@@ -60,7 +60,12 @@
                     </button>
                     <div id="modal-suspensao" class="modal-popover"> 
                         <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>                
-                        <button type="button" class="dropdown-item">Perfil</button>
+                        
+                        <!-- ✅ Form apontando para a rota do updateuser.py -->
+                        <form action="{{ url_for('updateuser.update') }}" method="GET">
+                            <button type="submit" class="dropdown-item">Perfil</button>
+                        </form>
+
                         <form action="{{ url_for('user_historico.historico') }}" method="GET">
                             <button type="submit" class="dropdown-item">Histórico</button>
                         </form>
@@ -68,7 +73,6 @@
                         <form action="{{ url_for('logout.logout') }}" method="POST">
                             <button type="submit" class="dropdown-item danger">Sair da Conta</button>
                         </form>
-                        </div>
                     </div>
                 </div>
             </header>
@@ -124,7 +128,7 @@
                                                                 
                                                                 <form action="{{ url_for('create_emprestimo.create') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
                                                                     <input type="text" name="responsavel" placeholder="Nome do responsável" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                                    <input type="text" name="tel_responsavel" placeholder="Telefone do responsável" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                                                                    <input type="text" name="tel_responsavel" placeholder="Telefone do responsável" inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" oninput="this.value = this.value.replace(/\D/g, '')" required style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                                     <input type="text" name="observacao" placeholder="Setor ou evento" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                                                                     <input type="hidden" name="id_periferico" value="{{ periferico[0] }}">
                                                                     

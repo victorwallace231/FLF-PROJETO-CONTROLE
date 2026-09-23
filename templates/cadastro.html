@@ -41,7 +41,7 @@
                     <label for="cadTelefone" class="form-label">Telefone</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text border-icon"><i class="bi bi-telephone-fill"></i></span>
-                        <input type="tel" id="cadTelefone" class="form-control" name="telefone" placeholder="Digite seu telefone" required>
+                        <input type="tel" id="cadTelefone" class="form-control" name="telefone" placeholder="Digite seu telefone" inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" oninput="this.value = this.value.replace(/\D/g, '')" required>
                     </div>
                 </div>
                 

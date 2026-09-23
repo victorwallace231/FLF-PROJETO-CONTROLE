@@ -36,7 +36,7 @@
                     <label for="telefone" class="form-label">Telefone</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text border-icon"><i class="bi bi-telephone-fill"></i></span>
-                        <input type="tel" class="form-control" placeholder="Telefone com DDD" name="telefone" value="{{ telefone if telefone else '' }}" required>
+                        <input type="tel" class="form-control" placeholder="Telefone com DDD" name="telefone" value="{{ telefone if telefone else '' }}" inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" oninput="this.value = this.value.replace(/\D/g, '')" required>
                     </div>
                 </div>
 

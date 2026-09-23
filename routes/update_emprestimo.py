@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, render_template, request, redirect, session
 from banco import conectar_banco
 
@@ -11,7 +12,8 @@ def update():
 
         responsavel = request.form.get('responsavel')
         id_emprestimo = request.form.get('id_emprestimo')
-        tel_responsavel = request.form.get('tel_responsavel')
+        # Remove qualquer caractere que não seja dígito antes de gravar no banco
+        tel_responsavel = re.sub(r"\D", "", request.form.get('tel_responsavel') or "")
         parametros = []
 
         sql = """UPDATE emprestimos SET id_emprestimo = id_emprestimo"""

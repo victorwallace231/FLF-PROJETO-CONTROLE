@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, render_template, request, redirect
 from banco import conectar_banco
 from werkzeug.security import generate_password_hash
@@ -17,9 +18,14 @@ def cadastrar   ():
         # Captura e higieniza os dados do formulário (remove espaços extras e padroniza e-mail/nome em minúsculas)
         name = request.form["nome"].strip().lower()
         email = request.form["email"].strip().lower()
-        number = request.form["telefone"].strip()
+        # Remove qualquer caractere que não seja dígito (espaços, parênteses, traços, letras etc.)
+        number = re.sub(r"\D", "", request.form["telefone"].strip())
         password = request.form["senha"].strip()
         confirm_password = request.form["confirmar_senha"].strip()
+
+        # Validação: garante que sobraram só números e que o telefone tem um tamanho plausível (DDD + número)
+        if not number.isdigit() or not (10 <= len(number) <= 11):
+            return render_template("cadastro.html", erro="Telefone inválido. Digite apenas números, com DDD (10 ou 11 dígitos).")
 
         # Validação: interrompe o fluxo e exibe aviso se as senhas informadas forem diferentes
         if password != confirm_password:

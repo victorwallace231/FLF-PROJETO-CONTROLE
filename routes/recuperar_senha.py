@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from banco import conectar_banco
 
@@ -10,7 +11,8 @@ def verificar():
 
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
-        telefone = request.form.get('telefone', '').strip()
+        # Remove qualquer caractere que não seja dígito, para comparar corretamente com o que está salvo no banco
+        telefone = re.sub(r"\D", "", request.form.get('telefone', ''))
 
         conexao = conectar_banco()
         cursor = conexao.cursor()

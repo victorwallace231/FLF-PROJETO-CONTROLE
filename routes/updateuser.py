@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, render_template, request, redirect, session
 from banco import conectar_banco
 
@@ -23,7 +24,8 @@ def update():
         # Captura os novos valores digitados pelo usuário no formulário
         email = request.form['email']
         nome = request.form['nome']
-        telefone = request.form['telefone']
+        # Remove qualquer caractere que não seja dígito antes de gravar no banco
+        telefone = re.sub(r"\D", "", request.form['telefone'])
 
         # Executa a atualização no SQLite usando o e-mail atual armazenado na sessão como chave de busca
         # Nota: Ajustado de 'user_email' para 'email_user' para corresponder ao nome real da coluna no banco
