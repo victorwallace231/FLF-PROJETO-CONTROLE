@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/animacoes.css') }}">
 </head>
-<body class="pagina-app w-100">
+<body class="pagina-app pagina-light w-100">
 
     <div class="d-flex app-layout">
         <nav class="p-2 sidebar" aria-label="Menu principal">
@@ -50,6 +50,9 @@
 
                 {# Menu do usuário: dropdown do Bootstrap (não precisa de JavaScript próprio) #}
                 <div class="part-header">
+                    <button class="btn">
+                        <i class="bi bi-cloud-sun-fill"></i>
+                    </button>
                     <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
                     <div class="dropdown">
                         <button type="button" class="icon-btn p-3" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menu do usuário">
@@ -79,11 +82,12 @@
 
     {% block janelas %}{% endblock %}
     {% include "_feedback.html" %}
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/validacao.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modais.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <noscript>You need to enable JavaScript to view the full site.</noscript>
     {% block scripts %}{% endblock %}
 </body>
 </html>

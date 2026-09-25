@@ -12,7 +12,16 @@ body.pagina-app {
     width: 100%;
     max-width: 100%;
     overflow-x: clip;
+}
+
+.pagina-light{
+    color: var(--black-color);
     background-color: #f4f6f8;
+}
+
+.pagina-dark{
+    background-color: #1e293b;
+    color: #fff;
 }
 
 .pagina-app p {
