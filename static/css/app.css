@@ -24,12 +24,15 @@ html.pagina-white{
     background-color: #f4f6f8;
     --nav-color: var(--black-color);
     --cor-navegacao: var(--cor-primaria);
-    
     --ballon-red:  #960000;;
     --ballon-green: #24a344;
     --ballon-yellow: goldenrod;
     --ballon-blue: #033b77;
-    
+}
+
+html.pagina-white input::placeholder {
+    color: #757575; /* Um cinza médio para ficar legível no fundo branco */
+    opacity: 1;    /* Garante que o Firefox aplique a cor total */
 }
 
 html.pagina-white body {
@@ -50,12 +53,23 @@ html.pagina-black{
     --ballon-yellow: rgb(185, 133, 0);
     --ballon-blue: #003572;
 }
+
+html.pagina-black input::placeholder {
+    color: #a0a0a0; /* Um cinza mais claro para dar contraste no fundo escuro */
+    opacity: 1;
+}
     
 html.pagina-black body {
     --theme-background: #121212;
     background-color: #121212; /* Sua cor do modo escuro */
     --theme-border: #292929;
     color: #fff;
+}
+
+input, select,.form-control, .form-select, .form-check-input, .seletor-icones__previa, td {
+    background-color: var(--theme-background);
+    color: var(--nav-color);
+    
 }
 
 html.animar-transicao body,
@@ -367,11 +381,12 @@ html.animar-transicao body * {
     font-size: 1.6rem;
     border: 1px solid rgba(0, 0, 0, 0.35);
     border-radius: 12px;
-    background: #fff;
     color: var(--cor-primaria-escura);
 }
 
 /* ---------- Janelas (Bootstrap Modal) ---------- */
+
+.modal-content { background-color: var(--theme-background); color: var(--theme-color); }
 
 .modal-title { font-size: 1.1rem; font-weight: 600; }
 
