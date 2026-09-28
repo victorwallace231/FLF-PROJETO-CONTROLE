@@ -3,7 +3,7 @@
 {% block titulo %}Login - FLF{% endblock %}
 
 {% block conteudo %}
-<div class="card-form">
+<div class="card-form bg-white">
     <img src="{{ url_for('static', filename='img/logo-removebg-preview.png') }}" alt="Logo FLF" class="logo-auth">
     <h2 class="fw-bold text-center mb-2">Login</h2>
     <form id="form-login" method="POST" action="{{ url_for('login.login') }}" data-validar>
