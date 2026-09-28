@@ -24,6 +24,9 @@ def create():
     marca = request.form.get("marca", "").strip().lower()
     num_serie = request.form.get("num_serie", "").strip().lower()
     icone = request.form.get("icone", "").strip()
+    setor_origem = request.form.get("setor_origem", "").upper().strip()
+    unidade_origem = request.form.get("unidade_origem", "").upper().strip()
+
 
     # Segunda barreira de validação (a primeira é feita no navegador, em validacao.js)
     if not (id_categoria and marca and num_serie):
@@ -35,8 +38,8 @@ def create():
 
     # Todo item novo é cadastrado automaticamente com: disponivel = 1, manutencao = 0 e inativo = 0
     cursor.execute(
-        "INSERT INTO perifericos (categoria, marca, num_serie, disponivel, manutencao, inativo, icone) VALUES (?, ?, ?, 1, 0, 0, ?)",
-        (id_categoria, marca, num_serie, icone_valido(icone))
+        "INSERT INTO perifericos (categoria, marca, num_serie, disponivel, manutencao, inativo, icone,unid_origem,setor_origem,unid_atual,setor_atual,transferido) VALUES (?, ?, ?, 1, 0, 0, ?,?,?,?,?,0)",
+        (id_categoria, marca, num_serie, icone_valido(icone),unidade_origem,setor_origem,unidade_origem,setor_origem)
     )
     conexao.commit()
     conexao.close()
