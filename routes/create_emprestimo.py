@@ -43,6 +43,8 @@ def create():
         # Remove qualquer caractere que não seja dígito antes de gravar no banco
         tel_responsavel = re.sub(r"\D", "", request.form["tel_responsavel"])
         observacao = request.form["observacao"]
+        setor_dest = request.form.get("setor_dest").upper().strip()
+        unid_dest = request.form.get("unid_dest").upper().strip()
 
         # 1. Atualiza a tabela 'perifericos': altera o status do equipamento para indisponível (disponivel = 0)
         cursor.execute(
@@ -53,9 +55,9 @@ def create():
         # 2. Insere o registro na tabela 'emprestimos', vinculando ao ID do usuário autenticado na sessão
         cursor.execute(
             """INSERT INTO emprestimos 
-               (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao) 
+               (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao,setor_dest,unid_dest) 
                VALUES (?, ?, ?, ?, ?, ?)""", 
-            (responsavel, data_formatada, id_periferico, tel_responsavel, session.get("usuario_id"), observacao)
+            (responsavel, data_formatada, id_periferico, tel_responsavel, session.get("usuario_id"), observacao,setor_dest,unid_dest,)
         )
 
         # Efetiva a gravação da transação no banco de dados e fecha a conexão
