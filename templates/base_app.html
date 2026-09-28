@@ -5,6 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        (function() {
+            const modoEscuroSalvo = localStorage.getItem('dark-mode');
+            if (modoEscuroSalvo === 'ativo') {
+                document.documentElement.classList.add('pagina-black');
+            } else {
+                document.documentElement.classList.add('pagina-white');
+            }
+        })();
+    </script>
+
     <title>{% block titulo %}FLF{% endblock %} - FLF</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +28,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/animacoes.css') }}">
+
 </head>
-<body class="pagina-app pagina-light w-100">
+<body class="pagina-app pagina-white w-100">
 
     <div class="d-flex app-layout">
         <nav class="p-2 sidebar" aria-label="Menu principal">
@@ -50,8 +63,8 @@
 
                 {# Menu do usuário: dropdown do Bootstrap (não precisa de JavaScript próprio) #}
                 <div class="part-header">
-                    <button class="btn">
-                        <i class="bi bi-cloud-sun-fill"></i>
+                    <button class="btn-acoes" id="btn-mudar-tema" aria-label="Mudar tema do site">
+                        <i class="bi bi-cloud-sun-fill"></i> Light
                     </button>
                     <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
                     <div class="dropdown">
