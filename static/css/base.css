@@ -24,8 +24,8 @@ body {
 /* Cartão branco dos formulários (antes eram 3 cópias: login-card, createitem-card e cadastro-card) */
 .card-form {
     max-width: 420px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.587);
+    background-color: var(--theme-background);
+    border: 1px solid var(--theme-border);
     border-radius: 22px;
     padding: 2rem;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);

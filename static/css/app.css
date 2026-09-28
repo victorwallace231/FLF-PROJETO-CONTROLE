@@ -14,19 +14,17 @@ body.pagina-app {
     overflow-x: clip;
 }
 
-.sem-transicao, 
-.sem-transicao *, 
-body.sem-transicao, 
-body.sem-transicao * {
-    transition: none !important;
+.btn-acoes i, 
+.btn-acoes {
+    transition: color 0.5s ease, background-color 0.5s ease, opacity 0.2s ease;
 }
 
-body.pagina-white{
+html.pagina-white{
     color: var(--black-color);
     background-color: #f4f6f8;
     --nav-color: var(--black-color);
     --cor-navegacao: var(--cor-primaria);
-
+    
     --ballon-red:  #960000;;
     --ballon-green: #24a344;
     --ballon-yellow: goldenrod;
@@ -34,7 +32,14 @@ body.pagina-white{
     
 }
 
-body.pagina-black{
+html.pagina-white body {
+    --theme-background: #f4f6f8;
+    --theme-border: #19191a;
+    background-color: #f4f6f8; /* Sua cor do modo claro */
+    color: var(--black-color);
+}
+
+html.pagina-black{
     background-color: #121212;
     color: #fff;
     --nav-color: var(--white-color);
@@ -44,6 +49,18 @@ body.pagina-black{
     --ballon-green: #007e1f;
     --ballon-yellow: rgb(185, 133, 0);
     --ballon-blue: #003572;
+}
+    
+html.pagina-black body {
+    --theme-background: #121212;
+    background-color: #121212; /* Sua cor do modo escuro */
+    --theme-border: #292929;
+    color: #fff;
+}
+
+html.animar-transicao body,
+html.animar-transicao body * {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, opacity 0.3s ease !important;
 }
 
 .pagina-app p {
@@ -57,10 +74,6 @@ body.pagina-black{
 .app-layout {
     min-height: 100vh;
     min-height: 100dvh;      /* dvh acompanha a barra do navegador no celular */
-}
-
-body, .sidebar, .app-content > header {
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar {
@@ -339,9 +352,9 @@ body, .sidebar, .app-content > header {
 .seletor-icones__novo {
     margin-top: .75rem;
     padding: .75rem;
-    border: 1px dashed rgba(0, 0, 0, 0.35);
+    border: 1px dashed var(--theme-border);
     border-radius: 12px;
-    background: #f8fafc;
+    background: var(--theme-background);
 }
 
 .seletor-icones__previa {

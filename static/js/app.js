@@ -2,33 +2,39 @@
 
 const switcher = document.querySelector('.btn-acoes');
 
-
-const modoEscuroSalvo = localStorage.getItem('dark-mode');
-
-if (modoEscuroSalvo === 'ativo') {
-    document.body.classList.add('pagina-black');
-    document.body.classList.remove('pagina-white');
-
-    if (switcher) switcher.innerHTML = "<i class=\"bi bi-cloud-moon-fill\"></i> Light";
-} else {
-    document.body.classList.add('pagina-white');
-    document.body.classList.remove('pagina-black');
-
-    if (switcher) switcher.innerHTML = "<i class=\"bi bi-cloud-sun-fill\"></i> Dark";
+// 1. Apenas atualiza o texto do botão baseado na classe que o HTML já tem
+if (switcher) {
+    if (document.documentElement.classList.contains('pagina-black')) {
+        switcher.innerHTML = "<i class=\"bi bi-cloud-moon-fill\"></i> Light";
+    } else {
+        switcher.innerHTML = "<i class=\"bi bi-cloud-sun-fill\"></i> Dark";
+    }
 }
 
+// 2. Evento do clique com transição temporária
 if (switcher) {
     switcher.addEventListener('click', function() {
-        document.body.classList.toggle('pagina-black');
-        document.body.classList.toggle('pagina-white');
+        // Adiciona a animação no elemento raiz (HTML)
+        document.documentElement.classList.add('animar-transicao');
 
-        // Verifica se o modo escuro acabou de ser ativado com o clique
-        if (document.body.classList.contains('pagina-black')) {
+        // Alterna as classes
+        document.documentElement.classList.toggle('pagina-black');
+        document.documentElement.classList.toggle('pagina-white');
+
+        // Atualiza texto e LocalStorage
+        if (document.documentElement.classList.contains('pagina-black')) {
             this.innerHTML = "<i class=\"bi bi-cloud-moon-fill\"></i> Light";
-            localStorage.setItem('dark-mode', 'ativo'); // Salva a escolha no navegador
+            localStorage.setItem('dark-mode', 'ativo');
         } else {
             this.innerHTML = "<i class=\"bi bi-cloud-sun-fill\"></i> Dark";
-            localStorage.setItem('dark-mode', 'inativo'); // Salva que foi desativado
+            localStorage.setItem('dark-mode', 'inativo');
         }
     });
 }
+
+// 3. Remove a classe de animação após o término
+document.documentElement.addEventListener('transitionend', function(e) {
+    if (e.target === document.body) {
+        document.documentElement.classList.remove('animar-transicao');
+    }
+});
