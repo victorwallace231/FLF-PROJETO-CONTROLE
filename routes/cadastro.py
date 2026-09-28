@@ -1,5 +1,6 @@
 import re
-from flask import Blueprint, render_template, request, redirect
+import sqlite3
+from flask import Blueprint, render_template, request, redirect, flash
 from banco import conectar_banco
 from werkzeug.security import generate_password_hash
 
@@ -38,15 +39,20 @@ def cadastrar   ():
         conexao = conectar_banco()
         cursor = conexao.cursor()
 
-        # Insere o novo usuário na tabela 'usuario' protegendo contra SQL Injection
-        cursor.execute(
-            "INSERT INTO usuario (name_user, email_user, senha_user, tel_user) VALUES (?, ?, ?, ?)", 
-            (name, email, password_hash, number)
-        )
+        # Insere o novo usuário (e-mail e telefone são únicos: se já existirem, avisa em vez de dar erro 500)
+        try:
+            cursor.execute(
+                "INSERT INTO usuario (name_user, email_user, senha_user, tel_user) VALUES (?, ?, ?, ?)",
+                (name, email, password_hash, number)
+            )
+        except sqlite3.IntegrityError:
+            conexao.close()
+            return render_template("cadastro.html", erro="Já existe uma conta com esse e-mail ou telefone.")
 
         # Efetiva a gravação na base de dados e encerra a conexão
         conexao.commit()
         conexao.close()
 
+        flash("Conta criada com sucesso! Faça login para continuar.", "success")
         # Redireciona o novo usuário para a página de login
         return redirect("/login")

@@ -1,11 +1,14 @@
 import re
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco
 
 update_emprestimo = Blueprint('update_emprestimo', __name__)
 
 @update_emprestimo.route('/update_emprestimo', methods = ['POST'])
 def update():
+    if not session.get("usuario_email"):
+        return redirect('/login')
+
     if request.method == 'POST':
         conexao = conectar_banco()
         cursor = conexao.cursor()
@@ -23,7 +26,7 @@ def update():
             parametros.append(responsavel)
         if tel_responsavel:
             sql+=", tel_responsavel = ?"
-            parametros.append(responsavel)
+            parametros.append(tel_responsavel)
 
         sql+=" WHERE id_emprestimo = ?"
         parametros.append(id_emprestimo)
@@ -32,4 +35,5 @@ def update():
         conexao.commit()
         conexao.close()
 
+        flash("Movimentação atualizada com sucesso!", "success")
         return redirect('/verifica_emprestimos')

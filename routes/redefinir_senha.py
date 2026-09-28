@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from banco import conectar_banco
 from werkzeug.security import generate_password_hash
 
@@ -36,4 +36,5 @@ def nova_senha():
         # Limpa o ID da sessão após a redefinição
         session.pop('reset_user_id', None)
 
+        flash("Senha redefinida com sucesso! Entre com a nova senha.", "success")
         return redirect(url_for('login.login'))

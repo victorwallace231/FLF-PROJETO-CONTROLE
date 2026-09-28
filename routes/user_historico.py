@@ -5,6 +5,9 @@ user_historico = Blueprint('user_historico', __name__)
 
 @user_historico.route('/user_historico', methods = ['GET','POST'])
 def historico():
+    if not session.get("usuario_email"):
+        return redirect('/login')
+
     if request.method == 'GET':
         conexao = conectar_banco()
         cursor = conexao.cursor()

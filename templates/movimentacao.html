@@ -1,214 +1,135 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <title>Movimentações - FLF</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="icon" type="image/png" href="../static/img/flflogoshort.png">
-        <link rel="stylesheet" href="../static/css/global.css">
-        <link rel="stylesheet" href="../static/css/variables.css">
-        <link rel="stylesheet" href="../static/css/style1.css">
-        <link rel="stylesheet" href="../static/css/class.css">
-        <link rel="stylesheet" href="../static/css/equipamentos.css">
-        <link rel="stylesheet" href="../static/css/responsivo.css">
-        <link rel="stylesheet" href="../static/css/animacoes.css">
-        <script src="../static/js/script.js" defer></script>
-</head>
-<body class="h-100">
+{% extends "base_app.html" %}
+{% from "_macros.html" import badge_movimentacao %}
+{% block titulo %}Movimentações{% endblock %}
 
-    <div class="d-flex app-layout">
-        <nav class="p-2 navbar_dashboard sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item mb-3 d-flex justify-content-center ">
-                    <a href="{{ url_for('dashboard.dashboard') }}"><img class="mt-2" src="../static/img/Marca-FLF-2022-Todo-Branco.png" alt="Faculdade Luciano Feijão - ir para o Início"></a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('dashboard.dashboard') }}">Início</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('equipamentos.equipamentos') }}">Equipamentos</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <a class="nav-link text-white hover-black" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
-                </li>
-                <li class="nav-item sidebar-li">
-                    <!-- Logout altera a sessão e a rota só aceita POST: por isso é <button> dentro de <form>, não <a> -->
-                    <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair">
-                        <button type="submit" class="nav-link text-white hover-black btn-nav">Sair</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-        <div class="w-100 app-content">
-            <header>
-                <div>
-                <h3 class="fw-bold p-4 h2-dashboard text-white">Seja bem-vindo, {{ session.get('usuario_name') }}!</h3>
-            </div> 
-             <!--Usuário Principal-->
-            <div class="part-header">
-                <p class="text-white">Usuário: {{ session.get('usuario_name') }}</p>
-                <div class="icon-container">
-                    <button id="btn-icon" type="button" class="icon-btn logo-user p-3" aria-label="Menu do usuário" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-person-circle" aria-hidden="true"></i>
-                    </button>
-                    <div id="modal-suspensao" class="modal-popover"> 
-                        <h3 class="dropdown-item">{{ session.get('usuario_name') }}</h3>                
-                        
-                        <!-- ✅ Form apontando para a rota do updateuser.py -->
-                        <form action="{{ url_for('updateuser.update') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Perfil</button>
-                        </form>
+{% block conteudo %}
+<section class="main-content">
+    <h2>Movimentações</h2>
 
-                        <form action="{{ url_for('user_historico.historico') }}" method="GET">
-                            <button type="submit" class="dropdown-item">Histórico</button>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <form action="{{ url_for('logout.logout') }}" method="POST">
-                            <button type="submit" class="dropdown-item danger">Sair da Conta</button>
-                        </form>
-                    </div>
-                </div>
-            </header>
-        
+    <form action="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}" method="POST">
+        <div class="barra-pesquisa">
+            <input type="text" name="filtro_responsavel" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
 
-        <!-- <div class="p-4 flex-grow-1">
-        <h1>Bem-vindo ao Dashboard</h1>
-        </div> -->
+            <select class="filter-select" name="filtro_status">
+                <option value="todos" {% if status|string == 'todos' %}selected{% endif %}>Todos</option>
+                <option value="pendente" {% if status|string == 'pendente' %}selected{% endif %}>Pendente</option>
+                <option value="devolvido" {% if status|string == 'devolvido' %}selected{% endif %}>Devolvido</option>
+            </select>
 
-        <main class="d-flex justify-content-center gap-4 p-4">
-            
-             <section class="main-content">
-                <h2>Movimentações</h2>
-                <form action="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}" method="POST">
-                        <div class="barra-pesquisa">
-                    
-                            <input type="text" name = "filtro_responsavel" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
+            <select class="filter-select" name="filtro_categoria">
+                <option value="todos" {% if categoria == 'todos' %}selected{% endif %}>todos</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat[0] }}" {% if categoria|string == cat[0]|string %}selected{% endif %}>{{ cat[1] }}</option>
+                {% endfor %}
+            </select>
 
-                            <select class="filter-select" name = "filtro_status">
-                                <option value="todos" {% if status|string == 'todos' %} selected {% endif %}>Todos</option>
-                                <option value="pendente" {% if status|string == 'pendente' %} selected {% endif %}>Pendente</option>
-                                <option value="devolvido" {% if status|string == 'devolvido' %} selected {% endif %}>Devolvido</option>
-                            </select>
+            <button type="submit" class="btn btn-primary fw-semibold text-black">Filtrar</button>
+        </div>
+    </form>
 
-                        <select class="filter-select" name="filtro_categoria">
-                                <option value="todos" {% if categoria == 'todos' %} selected {% endif %}>todos</option>
-                                    {% for cat in categorias %}
-                                        <option value="{{ cat[0] }}" {% if categoria|string == cat[0]|string %} selected {% endif %}>{{ cat[1] }}</option>
-                                    {% endfor %}
-                        </select>
-                            <button type="submit" class="btn btn-primary fw-semibold text-black mb-0">Filtrar</button>
+    <a class="btn btn-primary fw-semibold text-black" href="{{ url_for('create_emprestimo.create') }}">+ Nova Movimentação</a>
 
-                            
-                        </div>
-                </form>
-                <a class="btn btn-primary fw-semibold text-black text-decoration-none" href="{{ url_for('create_emprestimo.create') }}">+ Nova Movimentação</a>
-
-                <div class="tabela-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data / Hora</th>
-                                <th>Status</th>
-                                <th>N° Série</th>
-                                <th>Categoria</th>
-                                <th>Responsável</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            {% for emprestimo in movimentacoes %}
-                                        <tr>
-                                            {% if emprestimo [8] == 1%}
-                                                <td>{{ emprestimo [3] }}</td>
-                                                <td><span class="badge" id="disponivel">Devolvido</span></td>
-                                                <td>{{ emprestimo [10] }}</td>
-                                                <td>{{ emprestimo [9] }}</td>
-                                                <td>{{ emprestimo [1] }}</td>
-                                            {% else %}
-                                                <td>{{ emprestimo [2] }}</td>
-                                                <td><span class="badge" id="emuso">Pendente</span></td>
-                                                <td>{{ emprestimo [10] }}</td>
-                                                <td>{{ emprestimo [9] }}</td>
-                                                <td>{{ emprestimo [1] }}</td>
-                                            {% endif %}
-                                            <td class="action-cell">
-                                                <div class="action-menu">
-                                                    <button type="button" class="btn-icon" aria-label="Ações da movimentação" aria-haspopup="true" onclick="toggleMenu(event)">⋮</button>
-                                                    <div class="dropdown-menu">
-                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-vizualizar-{{ emprestimo [0] }}').showModal()">Visualizar</button>
-                                                        <button type="button" class="dropdown-item" onclick="document.getElementById('modal-editar-{{ emprestimo[0] }}').showModal()">Editar</button>
-                                                        <form method="POST" action="{{ url_for('devolucao.devolucao') }}">
-                                                            <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
-                                                            <input type="hidden" name="id_periferico" value = "{{ emprestimo [11] }}">
-                                                            <button class="dropdown-item danger">Devolver</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                                                                <!-- MODAL 1: Exibição Rápida de Informações do Item -->
-                                        <dialog id="modal-vizualizar-{{ emprestimo [0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">VEJA AS INFORMAÇÕES DO ITEM</h2>
-                                                
-                                                <form method="GET" style="display: flex; flex-direction: column; gap: 12px;">
-                                                 
-                                                    <p>Responsável:  {{ emprestimo [1] }} </p>
-                                                    <p>Data de Saída: {{ emprestimo [2] }} </p>
-                                                    <p>Data de Devolução: {{ emprestimo [3] }}</p>
-                                                    <p>Telefone do Responsável: {{ emprestimo [5] }} </p>
-                                                    <p>Setor/Evento: {{ emprestimo [7] }} </p>
-                                                    <p>Categoria do Item: {{ emprestimo [9] }}</p>
-                                                    <p>Número de Série: {{ emprestimo [10] }}</p>
-                                                    
-                                                    <!-- Status exibido na visualização rápida -->
-                                                    {% if emprestimo [8] == 1%}
-                                                        <p>Status: Devolvido</p>
-                                                    {% else %}
-                                                        <p>Status: Pendente</p>
-                                                    {% endif %}
-                                                        <button type="button" onclick="document.getElementById('modal-vizualizar-{{ emprestimo [0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
-                                                </form>
-                                            </div>
-                                        </dialog>
-
-                                        <!-- MODAL 2: Form de Edição/Atualização do Item (ID dinâmico com emprestimo[0]) -->
-                                        <dialog id="modal-editar-{{ emprestimo[0] }}" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #ffffff; z-index: 9999; width: 90%; max-width: 400px;">
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <h2 style="font-size: 18px; text-align: center; margin-bottom: 8px; color: #333;">Preencha as informações abaixo</h2>
-                                                
-                                                <form action="{{ url_for('update_emprestimo.update') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">         
-                                                    <input type="text" name="responsavel" placeholder="Edite o nome do Responsável" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                    <input type="text" name="tel_responsavel" placeholder="Número de Telefone do Responsável" inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" oninput="this.value = this.value.replace(/\D/g, '')" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                                                    
-                                                    <!-- ID oculto enviado para atualizar a linha correta no BD -->
-                                                    <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
-                                                    
-                                                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-                                                        <button type="button" onclick="document.getElementById('modal-editar-{{ emprestimo[0] }}').close()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #6c757d; color: #fff; cursor: pointer;">Fechar</button>
-                                                        <button type="submit" style="padding: 8px 16px; border: none; border-radius: 6px; background: #0d6efd; color: #fff; cursor: pointer;">Enviar</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </dialog>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </main>
-
-
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data / Hora</th>
+                    <th>Status</th>
+                    <th>N° Série</th>
+                    <th>Categoria</th>
+                    <th>Responsável</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Colunas: [0]id [1]responsável [2]saída [3]devolução [5]telefone [7]observação [8]devolvido [9]categoria [10]nº série [11]id do periférico #}
+                {% for emprestimo in movimentacoes %}
+                    <tr data-id="{{ emprestimo[0] }}" data-responsavel="{{ emprestimo[1] }}" data-saida="{{ emprestimo[2] }}"
+                        data-devolucao="{{ emprestimo[3] if emprestimo[3] else 'Ainda não devolvido' }}"
+                        data-tel="{{ emprestimo[5] }}" data-obs="{{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}"
+                        data-categoria="{{ emprestimo[9] }}" data-serie="{{ emprestimo[10] }}"
+                        data-situacao="{{ 'Devolvido' if emprestimo[8] == 1 else 'Pendente' }}">
+                        <td>{{ emprestimo[3] if emprestimo[8] == 1 else emprestimo[2] }}</td>
+                        <td>{{ badge_movimentacao(emprestimo[8]) }}</td>
+                        <td>{{ emprestimo[10] }}</td>
+                        <td>{{ emprestimo[9] }}</td>
+                        <td>{{ emprestimo[1] }}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn-acoes" data-bs-toggle="dropdown" data-bs-strategy="fixed" aria-expanded="false" aria-label="Ações da movimentação"><i class="bi bi-three-dots-vertical"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalVisualizar">Visualizar</button></li>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar</button></li>
+                                    {% if emprestimo[8] != 1 %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <form method="POST" action="{{ url_for('devolucao.devolucao') }}"
+                                                  data-confirmar="Confirmar a devolução do equipamento {{ emprestimo[10] }}?" data-confirmar-titulo="Registrar devolução" data-confirmar-botao="Devolver">
+                                                <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
+                                                <input type="hidden" name="id_periferico" value="{{ emprestimo[11] }}">
+                                                <button type="submit" class="dropdown-item text-danger">Devolver</button>
+                                            </form>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</section>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-</body>
-</html>
+{% block janelas %}
+{# Uma janela de cada tipo para a tabela toda: os dados vêm dos data-* da linha clicada (static/js/modais.js) #}
+<div class="modal fade" id="modalVisualizar" tabindex="-1" aria-labelledby="titulo-visualizar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-visualizar">Informações da movimentação</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Responsável:</strong> <span data-campo="responsavel"></span></p>
+                <p><strong>Data de saída:</strong> <span data-campo="saida"></span></p>
+                <p><strong>Data de devolução:</strong> <span data-campo="devolucao"></span></p>
+                <p><strong>Telefone do responsável:</strong> <span data-campo="tel"></span></p>
+                <p><strong>Setor/Evento:</strong> <span data-campo="obs"></span></p>
+                <p><strong>Categoria do item:</strong> <span data-campo="categoria"></span></p>
+                <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Status:</strong> <span data-campo="situacao"></span></p>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="titulo-editar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('update_emprestimo.update') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-editar">Editar movimentação</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_emprestimo" data-campo="id">
+                <div class="mb-3">
+                    <label for="editar-responsavel" class="form-label">Responsável</label>
+                    <input type="text" id="editar-responsavel" name="responsavel" class="form-control" data-campo="responsavel" required data-msg="Informe o nome do responsável.">
+                </div>
+                <div class="mb-1">
+                    <label for="editar-tel" class="form-label">Telefone do responsável</label>
+                    <input type="text" id="editar-tel" name="tel_responsavel" class="form-control" data-campo="tel" inputmode="numeric" pattern="[0-9]{10,11}"
+                           title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" data-somente-numeros required data-msg="Informe o telefone com DDD.">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,84 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Cadastro - FLF</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="icon" type="image/png" href="../static/img/flflogoshort.png">
-    <link rel="stylesheet" href="../static/css/style.css">
-</head>
-<body class="bg-linear">
+{% extends "base_auth.html" %}
+{% from "_macros.html" import campo, alerta_erro %}
+{% block titulo %}Cadastro - FLF{% endblock %}
+{% block altura %}{% endblock %}
 
-    <div class="d-flex justify-content-center align-items-center p-3">
-        <div class="cadastro-card">
-            <img src="../static/img/logo-removebg-preview.png" alt="Logo" class="img-cadastro">
-            <h2 class="fw-bold text-center mt-1">Cadastro</h2>
-            <p class="text-center mb-1">Insira suas informações abaixo.</p>
+{% block conteudo %}
+<div class="card-form card-form--larga">
+    <img src="{{ url_for('static', filename='img/logo-removebg-preview.png') }}" alt="Logo FLF" class="logo-auth logo-auth--menor">
+    <h2 class="fw-bold text-center mt-1">Cadastro</h2>
+    <p class="text-center mb-1">Insira suas informações abaixo.</p>
 
-            <form id="form-cad" action="{{ url_for('cadastro.cadastrar') }}" method="POST">
-                <div class="w-100">
-                    <label for="cadNome" class="form-label">Nome</label>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text border-icon"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" id="cadNome" class="form-control" name="nome" placeholder="Digite seu nome" required>
-                    </div>
-                </div>
-                
-                <div class="w-100">
-                    <label for="cadEmail" class="form-label">E-mail</label>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text border-icon"><i class="bi bi-envelope-fill"></i></span>
-                        <input type="email" id="cadEmail" class="form-control" name="email" placeholder="Digite seu e-mail" required>
-                    </div>
-                </div>
-                
-                <div class="w-100">
-                    <label for="cadTelefone" class="form-label">Telefone</label>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text border-icon"><i class="bi bi-telephone-fill"></i></span>
-                        <input type="tel" id="cadTelefone" class="form-control" name="telefone" placeholder="Digite seu telefone" inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" oninput="this.value = this.value.replace(/\D/g, '')" required>
-                    </div>
-                </div>
-                
-                <div class="w-100">
-                    <label for="cadSenha" class="form-label">Senha</label>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                        <input type="password" id="cadSenha" class="form-control" name="senha" placeholder="Digite sua senha" required>
-                    </div>
-                </div>
-                
-                <div class="w-100">
-                    <label for="cadConfirmarSenha" class="form-label">Confirmar Senha</label>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text border-icon"><i class="bi bi-lock-fill"></i></span>
-                        <input type="password" id="cadConfirmarSenha" class="form-control" name="confirmar_senha" placeholder="Confirme sua senha" required>
-                    </div>
-                </div>
+    <form id="form-cad" action="{{ url_for('cadastro.cadastrar') }}" method="POST" data-validar>
+        {{ campo('cadNome', 'Nome', 'nome', 'bi-person-fill', placeholder='Digite seu nome', extras='data-msg="Informe o seu nome."') }}
+        {{ campo('cadEmail', 'E-mail', 'email', 'bi-envelope-fill', tipo='email', placeholder='Digite seu e-mail', extras='data-msg="Informe o seu e-mail."') }}
+        {{ campo('cadTelefone', 'Telefone', 'telefone', 'bi-telephone-fill', tipo='tel', placeholder='Digite seu telefone',
+                 extras='inputmode="numeric" pattern="[0-9]{10,11}" title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" data-somente-numeros data-msg="Informe o seu telefone com DDD."') }}
+        {{ campo('cadSenha', 'Senha', 'senha', 'bi-lock-fill', tipo='password', placeholder='Digite sua senha', extras='data-msg="Crie uma senha."') }}
+        {{ campo('cadConfirmarSenha', 'Confirmar Senha', 'confirmar_senha', 'bi-lock-fill', tipo='password', placeholder='Confirme sua senha', extras='data-msg="Confirme a sua senha."') }}
 
-                <button type="submit" class="btn btn-primary w-100 text-black fw-semibold">Cadastrar</button>
+        <button type="submit" class="btn btn-primary w-100 text-black fw-semibold">Cadastrar</button>
 
-                {% if erro %}
-                    <div id="msg-erro" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                        <strong>Erro:</strong> {{ erro }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endif %} 
-                
-                <p class="text-center mt-3"> 
-                    Já possui uma conta? 
-                    <a href="{{ url_for('login.login') }}" class="text-b fw-semibold text-decoration-none">Entrar</a>
-                </p>
-            </form>
-        </div>
-    </div>
-        
-    <!-- Script do Bootstrap necessário para o botão de fechar o alerta funcionar -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <div class="mt-3">{{ alerta_erro(erro) }}</div>
+
+        <p class="text-center mt-3">
+            Já possui uma conta?
+            <a href="{{ url_for('login.login') }}" class="fw-semibold text-decoration-none">Entrar</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

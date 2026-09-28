@@ -253,3 +253,36 @@ Vale para este projeto (Flask) e serve de base para o projeto em **C#** que vem 
 - **Leia código dos outros** e faça code review nos colegas.
 - **Monte portfólio:** este projeto, bem documentado, com prints e README, já é um ótimo começo.
 - Fontes confiáveis (confira se os links seguem ativos): MDN (`developer.mozilla.org/pt-BR`), web.dev/learn, documentação oficial do Flask e do Bootstrap 5, `learn.microsoft.com/pt-br/dotnet` (C#), `roadmap.sh` (mapas de estudo por carreira).
+
+---
+
+## 9. Rodada 2 — limpeza do front, ícones, validação e pop-ups
+
+### O que mudou
+
+| Pedido | Como foi feito |
+|---|---|
+| Tirar o que é desnecessário / duplicado | 16 arquivos CSS viraram 4 (`variables.css`, `base.css`, `app.css`, `animacoes.css`). Sidebar + cabeçalho, que estavam copiados em 7 telas, agora ficam em **um** `templates/base_app.html` (as telas só preenchem o conteúdo). Login/cadastro/recuperar/redefinir usam `base_auth.html`. Estilos `style.css`/`style1.css` (duplicados), `elements.css`, `relatorios.css`, `login.css` (vazava regras para o sistema todo) e o JS `script.js` saíram. Dezenas de `style="..."` viraram classes/Bootstrap. |
+| Miniatura de monitor → ícone escolhido | Cada equipamento tem um ícone do **Bootstrap Icons**. No cadastro há uma grade de ícones (mouse, passador de slide, adaptador HDMI, projetor...). Para adicionar outro, digite o nome (ex.: `bi-mouse2`), veja a prévia e clique em "Adicionar ícone à lista". |
+| Efeito de erro nas caixas | `static/js/validacao.js`: basta `data-validar` no `<form>` e `required` nos campos. Campo vazio ganha borda vermelha + tremida + mensagem individual, e um alerta geral aparece no topo ("Todos os itens estão vazios..." ou "2 itens não foram preenchidos corretamente: Marca, Categoria"). |
+| Pop-ups com Bootstrap 5 | **Toasts** de sucesso/erro (criou, editou, excluiu, devolveu, saiu...) e **janela de confirmação** ("Tem certeza?") para excluir equipamento, excluir categoria, devolver item e sair da conta. Para confirmar qualquer formulário: `data-confirmar="mensagem"`. |
+
+### Mudanças que passam pelo back-end (necessárias para essas funções)
+
+- `banco.py`: caminho absoluto do banco, `iniciar_banco()` (cria a tabela `icones` e a coluna `perifericos.icone` sozinho, sem apagar dados) e ícones iniciais.
+- `routes/create_icone.py` (novo): salva o ícone novo (chamado por `fetch`, sem recarregar).
+- Rotas de criar/editar/excluir/devolver/login/cadastro: só ganharam `flash("mensagem", "success")` para alimentar os toasts.
+- `create_item.py` e `updateitem.py` gravam o ícone; `dashboard.py` e `create_emprestimo.py` passaram a listar as colunas explicitamente (o ícone é a coluna `[8]`, o nome da categoria continua em `[7]`).
+- Pequenas correções: `update_emprestimo.py` gravava o **nome** no campo telefone; `user_historico.py` não exigia login; cadastro com e-mail/telefone repetido dava erro 500 (agora mostra aviso).
+
+### Boas práticas que valem guardar
+
+- **Uma janela por ação, não uma por linha.** Antes, cada linha da tabela tinha 3 `<dialog>` com HTML repetido. Agora existe uma janela de cada tipo e ela lê os `data-*` da linha clicada (`static/js/modais.js`).
+- **Nunca coloque texto digitado pelo usuário em `innerHTML`.** O histórico do equipamento agora usa `textContent`.
+- **`id` é único na página.** Vários `id="disponivel"` viraram classes (`.status-disponivel`).
+- **Deixe o Bootstrap fazer o que ele já faz** (dropdown, modal, toast, validação): menos JavaScript próprio para manter.
+- Ao alterar um CSS, tire print antes e depois de cada tela para comparar.
+
+### Pasta `Test/`
+
+Os protótipos de `Test/` usavam os CSS/JS antigos. Para não quebrarem, os arquivos antigos foram copiados para `Test/_legado/` e os caminhos dos HTML de teste foram ajustados. Se não precisar mais dos protótipos, pode apagar `Test/` inteira.

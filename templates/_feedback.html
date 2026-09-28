@@ -1,0 +1,33 @@
+{# Pop-ups (Bootstrap 5): toasts de sucesso/erro + janela de confirmação "Tem certeza?".
+   Incluído no final de todas as páginas. A lógica está em static/js/feedback.js #}
+
+<div class="toast-container position-fixed top-0 end-0 p-3" id="toast-area" style="z-index: 1100;">
+    {% set icones_toast = {'success': 'bi-check-circle-fill', 'danger': 'bi-exclamation-octagon-fill', 'warning': 'bi-exclamation-triangle-fill', 'info': 'bi-info-circle-fill'} %}
+    {% for tipo, mensagem in get_flashed_messages(with_categories=true) %}
+        {% set tipo = tipo if tipo in icones_toast else 'info' %}
+        <div class="toast align-items-center text-bg-{{ tipo }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi {{ icones_toast[tipo] }}"></i><span>{{ mensagem }}</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="modal fade" id="modalConfirmar" tabindex="-1" aria-labelledby="confirmar-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="confirmar-titulo">Tem certeza?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body"><p id="confirmar-mensagem"></p></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmar-botao">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

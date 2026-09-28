@@ -1,5 +1,5 @@
 import re
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, session, flash
 from banco import conectar_banco
 
 # Definição do Blueprint para o módulo de atualização de cadastro de usuário
@@ -43,5 +43,6 @@ def update():
         session['usuario_telefone'] = telefone
         session['usuario_email'] = email
 
+        flash("Seus dados foram atualizados com sucesso!", "success")
         # Redireciona o usuário de volta para o painel principal após salvar
         return redirect('/dashboard')
