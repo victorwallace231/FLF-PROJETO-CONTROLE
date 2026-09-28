@@ -1,1 +1,8 @@
+# Logs
+*.log
+
+# Arquivos de ambiente
+.env
+
+# Bancos de dados
 database_controle.db
