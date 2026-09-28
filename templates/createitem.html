@@ -12,6 +12,8 @@
             <form id="form-createitem" action="{{ url_for('create_item.create') }}" method="POST" data-validar>
                 {{ campo('serialInput', 'Número de Série', 'num_serie', 'bi-hash', placeholder='Digite o número de série do equipamento', extras='data-msg="Informe o número de série."') }}
                 {{ campo('marcaInput', 'Marca', 'marca', 'bi-box-seam', placeholder='Digite a marca do equipamento', extras='data-msg="Informe a marca do equipamento."') }}
+                {{ campo('unidadeOrigemInput', 'Unidade de Origem', 'unidade_origem', 'bi-box-seam', placeholder='Digite a Unidade de Origem do equipamento', extras='data-msg="Informe a a unidade de origemdo equipamento."') }}
+                {{ campo('setorOrigemInput', 'Setor de Origem', 'setor_origem', 'bi-box-seam', placeholder='Digite o Setor de Origem do Equipamento', extras='data-msg="Informe o setor de origem do equipamento."') }}
 
                 <div class="mb-3">
                     <label for="categoriaSelect" class="form-label">Categoria</label>

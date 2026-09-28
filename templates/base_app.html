@@ -5,6 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        (function() {
+            const modoEscuroSalvo = localStorage.getItem('dark-mode');
+            if (modoEscuroSalvo === 'ativo') {
+                document.documentElement.classList.add('pagina-black');
+            } else {
+                document.documentElement.classList.add('pagina-white');
+            }
+        })();
+    </script>
+
     <title>{% block titulo %}FLF{% endblock %} - FLF</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +30,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/animacoes.css') }}">
 
 </head>
-<body class="pagina-app pagina-white sem-transicao w-100">
+<body class="pagina-app pagina-white w-100">
 
     <div class="d-flex app-layout">
         <nav class="p-2 sidebar" aria-label="Menu principal">

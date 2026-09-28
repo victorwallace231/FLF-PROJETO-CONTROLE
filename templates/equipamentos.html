@@ -48,9 +48,18 @@
                 {# Colunas: [0]id [1]id da categoria [2]marca [3]nº série [7]nome da categoria [8]ícone #}
                 {% for periferico in perifericos %}
                     {% set st = slug_status(periferico)|trim %}
-                    <tr data-id="{{ periferico[0] }}" data-marca="{{ periferico[2] }}" data-serie="{{ periferico[3] }}"
-                        data-categoria="{{ periferico[7] }}" data-categoria-id="{{ periferico[1] }}"
-                        data-icone="{{ periferico[8] }}" data-status="{{ st }}" data-status-texto="{{ texto_status(st) }}">
+                    <tr data-id="{{ periferico[0] }}" 
+                        data-marca="{{ periferico[2] }}" 
+                        data-serie="{{ periferico[3] }}"
+                        data-categoria="{{ periferico[7] }}" 
+                        data-categoria-id="{{ periferico[1] }}"
+                        data-icone="{{ periferico[8] }}" 
+                        data-status="{{ st }}" 
+                        data-status-texto="{{ texto_status(st) }}" 
+                        data-unidade-origem="{{ periferico[9] }}" 
+                        data-setor-origem="{{ periferico[10] }}" 
+                        data-unidade-atual="{{ periferico[11] }}" 
+                        data-setor-atual="{{ periferico[12] }}">
                         <td><i class="bi {{ periferico[8] }} icone-item" aria-hidden="true"></i></td>
                         <td>{{ periferico[3] }}</td>
                         <td>{{ periferico[2] }}</td>
@@ -95,8 +104,12 @@
             <div class="modal-body">
                 <p class="text-center mb-3"><i class="icone-item" style="font-size: 3rem;" data-campo-icone="icone"></i></p>
                 <p><strong>Categoria:</strong> <span data-campo="categoria"></span></p>
-                <p><strong>Marca:</strong> <span data-campo="marca"></span></p>
-                <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Marca: </strong> <span data-campo="marca"></span></p>
+                <p><strong>Número de série: </strong> <span data-campo="serie"></span></p>
+                <p><strong>Unidade de Origem: </strong><span data-campo="unidadeOrigem"></span></p>
+                <p><strong>Setor de Origem: </strong><span data-campo="setorOrigem"></span></p>
+                <p><strong>Unidade Atual: </strong><span data-campo="unidadeAtual"></span></p>
+                <p><strong>Setor Atual: </strong><span data-campo="setorAtual"></span></p>
                 <p><strong>Status:</strong> <span data-campo-status></span></p>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>

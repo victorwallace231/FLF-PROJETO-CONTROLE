@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect
 from banco import conectar_banco, listar_icones
 
 # Colunas explícitas: [0]id [1]categoria [2]marca [3]nº série [4]disponível [5]manutenção [6]inativo [7]nome da categoria [8]ícone
-SELECT_EQUIPAMENTOS = """SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone
+SELECT_EQUIPAMENTOS = """SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone,p.unid_origem, p.setor_origem,p.unid_atual,p.setor_atual
         FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1"""
 
 # Definição dos Blueprints para o Painel Principal (Dashboard) e Gestão de Equipamentos
