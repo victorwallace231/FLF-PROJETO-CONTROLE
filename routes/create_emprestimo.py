@@ -21,7 +21,7 @@ def create():
         # para preencher a caixa de seleção (select) no formulário
         # Colunas explícitas: [0]id [1]categoria [2]marca [3]nº série [4]disponível [5]manutenção [6]inativo [7]nome da categoria [8]ícone
         cursor.execute("""SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone
-        FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE p.disponivel = 1""")
+        FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE p.inativo!= 1 """)
         perifericos = cursor.fetchall()
         conexao.close()
 
@@ -43,8 +43,9 @@ def create():
         # Remove qualquer caractere que não seja dígito antes de gravar no banco
         tel_responsavel = re.sub(r"\D", "", request.form["tel_responsavel"])
         observacao = request.form["observacao"]
-        setor_dest = request.form.get("setor_dest").upper().strip()
-        unid_dest = request.form.get("unid_dest").upper().strip()
+        setor_dest = request.form.get('setor_dest','').upper().strip()
+        unid_dest = request.form.get('unid_dest','').upper().strip()
+        tipo_transfer = request.form.get("tipo_transfer","").strip()
 
         # 1. Atualiza a tabela 'perifericos': altera o status do equipamento para indisponível (disponivel = 0)
         cursor.execute(
@@ -55,9 +56,9 @@ def create():
         # 2. Insere o registro na tabela 'emprestimos', vinculando ao ID do usuário autenticado na sessão
         cursor.execute(
             """INSERT INTO emprestimos 
-               (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao,setor_dest,unid_dest) 
-               VALUES (?, ?, ?, ?, ?, ?)""", 
-            (responsavel, data_formatada, id_periferico, tel_responsavel, session.get("usuario_id"), observacao,setor_dest,unid_dest,)
+               (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao,setor_dest,unid_dest,tipo_transfer) 
+               VALUES (?, ?, ?, ?, ?, ?,?,?,?)""", 
+            (responsavel, data_formatada, id_periferico, tel_responsavel, session.get("usuario_id"), observacao,setor_dest,unid_dest,tipo_transfer,)
         )
 
         # Efetiva a gravação da transação no banco de dados e fecha a conexão
