@@ -25,6 +25,9 @@ html.pagina-white{
     --nav-color: var(--black-color);
     --cor-navegacao: var(--cor-primaria);
     --theme-border-alt: #767676;
+    --theme-border-icon: #181818;
+    --theme-input-color : #242323; 
+    --theme-hover: #eaebec;
     --ballon-red:  #960000;;
     --ballon-green: #24a344;
     --ballon-yellow: goldenrod;
@@ -49,7 +52,9 @@ html.pagina-black{
     --nav-color: var(--white-color);
     --cor-navegacao: var(--cor-primaria-escura);
     --theme-border-alt: #767676;
-
+    --theme-input-color : #b1b1b1; 
+    --theme-border-icon: var(--theme-border-alt);
+    --theme-hover: #1e1e1e;
     --ballon-red: rgb(128, 1, 1);
     --ballon-green: #007e1f;
     --ballon-yellow: rgb(185, 133, 0);
@@ -68,9 +73,31 @@ html.pagina-black body {
     color: #fff;
 }
 
-input, select,.form-control, .form-select, .form-check-input, .seletor-icones__previa, td {
+input, select,.form-control, .form-select, .form-check-input, .seletor-icones__previa, table{
     background-color: var(--theme-background);
     color: var(--nav-color);
+    border: 1px solid var(--theme-border-alt);
+}
+
+table {
+    border: 0px;
+    /* border-radius: var(--radius); */
+}
+
+th {
+    /* border-top: 1px solid var(--theme-border-icon);     */
+    border-bottom: 1px solid var(--theme-border-icon);             
+}
+
+td {
+    /* border-top: 1px solid BLACK;     */
+    border-bottom: 1px solid var(--theme-background);             
+}
+
+th,td {
+    border-collapse: collapse;
+    border-left: none;              
+    border-right: none;             
 }
 
 html.animar-transicao body,
@@ -246,7 +273,7 @@ html.animar-transicao body * {
     max-width: 100%;
     margin: 20px;
     border-radius: var(--radius);
-    border: 1px solid var(--black-color);
+    border: 1px solid var(--theme-border-icon);
     overflow-x: auto;   /* tabela larga rola dentro do card, em vez de ser cortada */
 }
 
@@ -281,7 +308,7 @@ html.animar-transicao body * {
     transition: background-color 0.2s ease;
 }
 
-.tabela-container tbody tr:hover { background-color: #f8fafc; }
+.tabela-container tbody tr:hover { background-color: var(--theme-hover); }
 
 /* Ícone do equipamento (Bootstrap Icons) no lugar da antiga miniatura */
 .icone-item {
@@ -380,7 +407,6 @@ html.animar-transicao body * {
     align-items: center;
     justify-content: center;
     font-size: 1.6rem;
-    border: 1px solid rgba(0, 0, 0, 0.35);
     border-radius: 12px;
     color: var(--cor-primaria-escura);
 }
