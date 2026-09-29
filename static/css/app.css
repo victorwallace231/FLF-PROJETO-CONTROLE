@@ -24,6 +24,7 @@ html.pagina-white{
     background-color: #f4f6f8;
     --nav-color: var(--black-color);
     --cor-navegacao: var(--cor-primaria);
+    --theme-border-alt: #767676;
     --ballon-red:  #960000;;
     --ballon-green: #24a344;
     --ballon-yellow: goldenrod;
@@ -47,6 +48,7 @@ html.pagina-black{
     color: #fff;
     --nav-color: var(--white-color);
     --cor-navegacao: var(--cor-primaria-escura);
+    --theme-border-alt: #767676;
 
     --ballon-red: rgb(128, 1, 1);
     --ballon-green: #007e1f;
@@ -62,14 +64,13 @@ html.pagina-black input::placeholder {
 html.pagina-black body {
     --theme-background: #121212;
     background-color: #121212; /* Sua cor do modo escuro */
-    --theme-border: #292929;
+    --theme-border: #5f5f5f;
     color: #fff;
 }
 
 input, select,.form-control, .form-select, .form-check-input, .seletor-icones__previa, td {
     background-color: var(--theme-background);
     color: var(--nav-color);
-    
 }
 
 html.animar-transicao body,
@@ -227,7 +228,7 @@ html.animar-transicao body * {
     flex: 1;
     padding: 10px;
     border-radius: var(--radius);
-    border: 1px solid var(--black-color);
+    border: 1px solid var(--theme-border-alt);
 }
 
 .filter-select {
