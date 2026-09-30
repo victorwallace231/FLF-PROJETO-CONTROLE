@@ -27,7 +27,7 @@
         </div>
     </form>
 
-    <a class="btn btn-primary fw-semibold text-black" href="{{ url_for('create_emprestimo.create') }}">+ Nova Movimentação</a>
+    <a class="btn btn-primary fw-semibold text-black mt-2 mb-0" href="{{ url_for('create_emprestimo.create') }}">+ Nova Movimentação</a>
 
     <div class="tabela-container">
         <table>
@@ -35,7 +35,7 @@
                 <tr>
                     <th>Data / Hora</th>
                     <th>Status</th>
-                    <th>N° Série</th>
+                    <th>N° de Tombamento</th>
                     <th>Categoria</th>
                     <th>Responsável</th>
                     <th></th>
@@ -98,7 +98,7 @@
                 <p><strong>Telefone do responsável:</strong> <span data-campo="tel"></span></p>
                 <p><strong>Setor/Evento:</strong> <span data-campo="obs"></span></p>
                 <p><strong>Categoria do item:</strong> <span data-campo="categoria"></span></p>
-                <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Número de Tombamento:</strong> <span data-campo="serie"></span></p>
                 <p><strong>Status:</strong> <span data-campo="situacao"></span></p>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
