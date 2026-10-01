@@ -34,15 +34,20 @@
         </div>
     </form>
 
-    <a class="btn btn-primary fw-semibold text-black" href="{{ url_for('create_emprestimo.create') }}">+ Nova Movimentação</a>
+    <a class="btn btn-primary fw-semibold text-black mt-2 mb-0" href="{{ url_for('create_emprestimo.create') }}">+ Nova Movimentação</a>
 
     <div class="tabela-container">
         <table>
             <thead>
                 <tr>
                     <th>Data / Hora</th>
+<<<<<<< HEAD
                     <th>Tipo de Movimentação</th>
                     <th>N° Série</th>
+=======
+                    <th>Status</th>
+                    <th>N° de Tombamento</th>
+>>>>>>> e2ed16826f8bf9af6b8605f176a94a4cca7a926c
                     <th>Categoria</th>
                     <th>Responsável</th>
                     <th></th>
@@ -100,12 +105,17 @@
                 <p><strong>Telefone do responsável:</strong> <span data-campo="tel"></span></p>
                 <p><strong>Observações:</strong> <span data-campo="obs"></span></p>
                 <p><strong>Categoria do item:</strong> <span data-campo="categoria"></span></p>
+<<<<<<< HEAD
                 <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
                 <p><strong>Tipo de movimentação:</strong> <span data-campo="situacao"></span></p>
                 <p><strong>Unidade de origem:</strong> <span data-campo="unidOrigem"></span></p>
                 <p><strong>Setor de origem:</strong> <span data-campo="setorOrigem"></span></p>
                 <p><strong>Unidade de destino:</strong> <span data-campo="unidDestino"></span></p>
                 <p><strong>Setor de destino:</strong> <span data-campo="setorDestino"></span></p>      
+=======
+                <p><strong>Número de Tombamento:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Status:</strong> <span data-campo="situacao"></span></p>
+>>>>>>> e2ed16826f8bf9af6b8605f176a94a4cca7a926c
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
         </div>
