@@ -10,11 +10,18 @@
         <div class="barra-pesquisa">
             <input type="text" name="filtro_responsavel" placeholder="Pesquisar por responsável..." class="pesquisa-enter">
 
-            <select class="filter-select" name="filtro_status">
-                <option value="todos" {% if status|string == 'todos' %}selected{% endif %}>Todos</option>
-                <option value="pendente" {% if status|string == 'pendente' %}selected{% endif %}>Pendente</option>
-                <option value="devolvido" {% if status|string == 'devolvido' %}selected{% endif %}>Devolvido</option>
-            </select>
+                <select class="filter-select" name="filtro_transfer" id="">
+                    <option value="todos" {% if transfer == 'todos' %}selected{% endif %}>Todos</option>
+                    <option value="Transferencia de Unidade" {% if emprestimo[11] == "Transferencia de Unidade" %}selected{% endif %}>Transferência de Unidade</option>
+                    <option value="Transferência de Localização" {% if emprestimo[11] == "Transferência de Localização" %}selected{% endif %}>Transferência de Localização</option>
+                    <option value="Remessa para Concerto" {% if emprestimo[11] == "Remessa para Concerto" %}selected{% endif %}>Remessa para Concerto</option>
+                    <option value="Retorno de Concerto" {% if emprestimo[11] == "Retorno de Concerto" %}selected{% endif %}>Retorno de Concerto</option>
+                    <option value="Baixa por Defeito" {% if emprestimo[11] == "Baixa por Defeito" %}selected{% endif %}>Baixa por Defeito</option>
+                    <option value="Baixa por fora de uso/obsoleto" {% if emprestimo[11] == "Baixa por fora de uso/obsoleto" %}selected{% endif %}>Baixa por fora de uso/obsoleto</option>
+                    <option value="Empréstimo" {% if emprestimo[11] == "Empréstimo" %}selected{% endif %}>Empréstimo</option>
+                    <option value="Retorno de Empréstimo" {% if emprestimo[11] == "Retorno de Empréstimo" %}selected{% endif %}>Retorno de Empréstimo</option>
+                    <option value="Evento" {% if emprestimo[11] == "Evento" %}selected{% endif %}>Evento</option>
+                </select>
 
             <select class="filter-select" name="filtro_categoria">
                 <option value="todos" {% if categoria == 'todos' %}selected{% endif %}>todos</option>
@@ -34,7 +41,7 @@
             <thead>
                 <tr>
                     <th>Data / Hora</th>
-                    <th>Status</th>
+                    <th>Tipo de Movimentação</th>
                     <th>N° Série</th>
                     <th>Categoria</th>
                     <th>Responsável</th>
@@ -43,14 +50,16 @@
             </thead>
             <tbody>
                 {# Colunas: [0]id [1]responsável [2]saída [3]devolução [5]telefone [7]observação [8]devolvido [9]categoria [10]nº série [11]id do periférico #}
-                {% for emprestimo in movimentacoes %}
+                {% for emprestimo in emprestimo %}
                     <tr data-id="{{ emprestimo[0] }}" data-responsavel="{{ emprestimo[1] }}" data-saida="{{ emprestimo[2] }}"
-                        data-devolucao="{{ emprestimo[3] if emprestimo[3] else 'Ainda não devolvido' }}"
                         data-tel="{{ emprestimo[5] }}" data-obs="{{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}"
-                        data-categoria="{{ emprestimo[9] }}" data-serie="{{ emprestimo[10] }}"
-                        data-situacao="{{ 'Devolvido' if emprestimo[8] == 1 else 'Pendente' }}">
+                        data-categoria="{{ emprestimo[12] }}" data-serie="{{ emprestimo[13] }}"
+                        data-situacao="{{ emprestimo[11] }}" data-setor-origem="{{ emprestimo[16] }}"
+                        data-unid-origem="{{ emprestimo[15] }}"
+                        data-setor-destino="{{ emprestimo[9] }}" 
+                        data-unid-destino="{{ emprestimo[10] }}">
                         <td>{{ emprestimo[3] if emprestimo[8] == 1 else emprestimo[2] }}</td>
-                        <td>{{ badge_movimentacao(emprestimo[8]) }}</td>
+                        <td>{{ emprestimo[11] }}</td>
                         <td>{{ emprestimo[13] }}</td>
                         <td>{{ emprestimo[12] }}</td>
                         <td>{{ emprestimo[1] }}</td>
@@ -63,12 +72,6 @@
                                     {% if emprestimo[8] != 1 %}
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
-                                            <form method="POST" action="{{ url_for('devolucao.devolucao') }}"
-                                                  data-confirmar="Confirmar a devolução do equipamento {{ emprestimo[10] }}?" data-confirmar-titulo="Registrar devolução" data-confirmar-botao="Devolver">
-                                                <input type="hidden" name="id_emprestimo" value="{{ emprestimo[0] }}">
-                                                <input type="hidden" name="id_periferico" value="{{ emprestimo[11] }}">
-                                                <button type="submit" class="dropdown-item text-danger">Devolver</button>
-                                            </form>
                                         </li>
                                     {% endif %}
                                 </ul>
@@ -93,13 +96,16 @@
             </div>
             <div class="modal-body">
                 <p><strong>Responsável:</strong> <span data-campo="responsavel"></span></p>
-                <p><strong>Data de saída:</strong> <span data-campo="saida"></span></p>
-                <p><strong>Data de devolução:</strong> <span data-campo="devolucao"></span></p>
+                <p><strong>Data da movimentação:</strong> <span data-campo="saida"></span></p>
                 <p><strong>Telefone do responsável:</strong> <span data-campo="tel"></span></p>
-                <p><strong>Setor/Evento:</strong> <span data-campo="obs"></span></p>
+                <p><strong>Observações:</strong> <span data-campo="obs"></span></p>
                 <p><strong>Categoria do item:</strong> <span data-campo="categoria"></span></p>
                 <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
-                <p><strong>Status:</strong> <span data-campo="situacao"></span></p>
+                <p><strong>Tipo de movimentação:</strong> <span data-campo="situacao"></span></p>
+                <p><strong>Unidade de origem:</strong> <span data-campo="unidOrigem"></span></p>
+                <p><strong>Setor de origem:</strong> <span data-campo="setorOrigem"></span></p>
+                <p><strong>Unidade de destino:</strong> <span data-campo="unidDestino"></span></p>
+                <p><strong>Setor de destino:</strong> <span data-campo="setorDestino"></span></p>      
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
         </div>

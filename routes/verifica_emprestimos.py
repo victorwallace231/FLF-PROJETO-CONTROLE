@@ -22,18 +22,18 @@ def verificar_emprestimos():
         categorias = cursor.fetchall()
         # Consulta com JOIN para combinar dados do empréstimo aos detalhes do periférico
         cursor.execute("""
-            SELECT e.*, c.categoria, p.num_serie, p.id_periferico 
+            SELECT e.*, c.categoria, p.num_serie, p.id_periferico, p.unid_origem, p.setor_origem 
             FROM emprestimos e 
             JOIN perifericos p ON e.id_periferico = p.id_periferico
             JOIN categorias c ON p.categoria = c.id_categoria
             WHERE 1=1 ORDER BY e.id_emprestimo DESC
         """)
 
-        movimentacoes = cursor.fetchall()
+        emprestimo = cursor.fetchall()
         conexao.close()
         
         # Renderiza o HTML passando a lista completa e o nome da sessão do usuário
-        return render_template("movimentacao.html", movimentacoes=movimentacoes, categorias = categorias,name=session.get("usuario_name"))
+        return render_template("movimentacao.html", emprestimo=emprestimo, categorias = categorias,name=session.get("usuario_name"))
 
     # Requisição POST: Processa os filtros de busca enviados pelo formulário
     if request.method == 'POST':
@@ -44,7 +44,7 @@ def verificar_emprestimos():
         categorias = cursor.fetchall()
         
         # Captura os campos de filtro do formulário HTML
-        status = request.form["filtro_status"].strip()
+        transfer = request.form["filtro_transfer"].strip()
         categoria = request.form["filtro_categoria"].strip()
         responsavel = request.form["filtro_responsavel"].strip().lower()
 
@@ -65,14 +65,14 @@ def verificar_emprestimos():
              paramentros.append(categoria)
 
         # Concatena condição SQL se o status for filtrado (1 = devolvido, 0 = em uso)
-        if status != "todos":
-             status_tranlate = 1 if status == "devolvido" else 0
-             sql += " AND e.devolvido = ?"
-             paramentros.append(status_tranlate)
+        if transfer != "todos":
+             sql += " AND e.tipo_transfer = ?"
+             paramentros.append(transfer)
 
         # Concatena condição SQL se houver busca por nome do responsável
         if responsavel:
-             sql += " AND LOWER(e.responsavel) LIKE '%' || ? || '%'"
+             sql += " AND LOWER(e.responsavel) LIKE '%' || ? || '%' OR p.num_serie LIKE '%' || ? || '%'"
+             paramentros.append(responsavel)
              paramentros.append(responsavel)
 
         # Define ordenação decrescente (mais recentes primeiro)
@@ -82,11 +82,11 @@ def verificar_emprestimos():
 
 
         cursor.execute(sql, paramentros)
-        movimentacoes = cursor.fetchall()
+        emprestimo = cursor.fetchall()
         conexao.close()
 
         # Recarrega a página exibindo apenas os resultados filtrados
-        return render_template("movimentacao.html", movimentacoes = movimentacoes, categorias=categorias, categoria = categoria, status = status,name=session.get("usuario_name"))
+        return render_template("movimentacao.html", emprestimo = emprestimo, categorias=categorias, categoria = categoria, transfer = transfer,name=session.get("usuario_name"))
 
 
 # Rota da API (endpoint JSON) para consulta do histórico de um periférico individual

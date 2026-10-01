@@ -1,70 +1,150 @@
+from datetime import datetime  # <--- ALTERADO: Importa datetime em vez de date
 import re
-from flask import Blueprint, render_template, request, redirect, session, flash
 from banco import conectar_banco
-from datetime import date
+from flask import Blueprint, flash, redirect, render_template, request, session
 
 # Definição do Blueprint para as rotas de criação e registro de novos empréstimos
 create_emprestimo = Blueprint('create_emprestimo', __name__)
 
+
 @create_emprestimo.route('/create_emprestimo', methods=['GET', 'POST'])
 def create():
-    # Verificação de segurança: bloqueia o acesso se o usuário não estiver logado
-    if not session.get("usuario_email"):
-        return redirect('/login')
+  # Verificação de segurança: bloqueia o acesso se o usuário não estiver logado
+  if not session.get('usuario_email'):
+    return redirect('/login')
 
-    # Requisição GET: Carrega o formulário de cadastro de movimentação
-    if request.method == 'GET':
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
+  # Requisição GET: Carrega o formulário de cadastro de movimentação
+  if request.method == 'GET':
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
 
-        # Busca apenas os equipamentos que estão atualmente disponíveis (disponivel = 1)
-        # para preencher a caixa de seleção (select) no formulário
-        # Colunas explícitas: [0]id [1]categoria [2]marca [3]nº série [4]disponível [5]manutenção [6]inativo [7]nome da categoria [8]ícone
-        cursor.execute("""SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone
+    cursor.execute("""SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone
         FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE p.inativo!= 1 """)
-        perifericos = cursor.fetchall()
-        conexao.close()
+    perifericos = cursor.fetchall()
+    conexao.close()
 
-        # Renderiza a página passando a lista de itens disponíveis e o nome do usuário na sessão
-        return render_template("createmov.html", perifericos=perifericos, name=session.get("usuario_name"))
+    return render_template(
+        'createmov.html',
+        perifericos=perifericos,
+        name=session.get('usuario_name'),
+    )
 
-    # Requisição POST: Processa a criação do novo empréstimo no sistema
-    if request.method == 'POST':
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
+  # Requisição POST: Processa a criação do novo empréstimo no sistema
+  if request.method == 'POST':
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
 
-        # Registra automaticamente a data atual do sistema como data de saída
-        data_saida = date.today()
-        data_formatada = data_saida.strftime('%d/%m/%Y')
+    # --- ALTERAÇÃO AQUI: Registra a data e hora atual no formato 'DD/MM/AAAA HH:MM:SS' ---
+    agora = datetime.now()
+    data_formatada = agora.strftime('%d/%m/%Y %H:%M:%S')
 
-        # Captura as informações digitadas no formulário
-        responsavel = request.form["responsavel"]
-        id_periferico = request.form["id_periferico"]
-        # Remove qualquer caractere que não seja dígito antes de gravar no banco
-        tel_responsavel = re.sub(r"\D", "", request.form["tel_responsavel"])
-        observacao = request.form["observacao"]
-        setor_dest = request.form.get('setor_dest','').upper().strip()
-        unid_dest = request.form.get('unid_dest','').upper().strip()
-        tipo_transfer = request.form.get("tipo_transfer","").strip()
+    # Captura as informações digitadas no formulário
+    responsavel = request.form['responsavel']
+    id_periferico = request.form['id_periferico']
+    tel_responsavel = re.sub(r'\D', '', request.form['tel_responsavel'])
+    observacao = request.form['observacao']
+    setor_dest = request.form.get('setor_dest', '').upper().strip()
+    unid_dest = request.form.get('unid_dest', '').upper().strip()
+    tipo_transfer = request.form.get('tipo_transfer', '').strip()
+    filtro_transfer = tipo_transfer.strip().lower()
 
-        # 1. Atualiza a tabela 'perifericos': altera o status do equipamento para indisponível (disponivel = 0)
+    # 1. Atualiza a tabela 'perifericos'
+    cursor.execute(
+        'UPDATE perifericos SET disponivel = 0 WHERE id_periferico = ?',
+        (id_periferico,),
+    )
+
+    match filtro_transfer:
+      case 'transferencia de unidade' | 'transferência de localização':
         cursor.execute(
-            "UPDATE perifericos SET disponivel = 0 WHERE id_periferico = ?", 
-            (id_periferico,)
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 0, inativo = 0, transferido = 1
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
         )
 
-        # 2. Insere o registro na tabela 'emprestimos', vinculando ao ID do usuário autenticado na sessão
+      case 'remessa para concerto':
         cursor.execute(
-            """INSERT INTO emprestimos 
-               (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao,setor_dest,unid_dest,tipo_transfer) 
-               VALUES (?, ?, ?, ?, ?, ?,?,?,?)""", 
-            (responsavel, data_formatada, id_periferico, tel_responsavel, session.get("usuario_id"), observacao,setor_dest,unid_dest,tipo_transfer,)
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 1, inativo = 0, transferido = 0
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
         )
 
-        # Efetiva a gravação da transação no banco de dados e fecha a conexão
-        conexao.commit()
-        conexao.close()
+      case 'retorno de concerto':
+        cursor.execute(
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
+        )
 
-        flash("Empréstimo registrado com sucesso!", "success")
-        # Redireciona o usuário de volta para a lista geral de movimentações
-        return redirect("/verifica_emprestimos")
+      case 'baixa por defeito' | 'baixa por fora de uso/obsoleto':
+        cursor.execute(
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 0, inativo = 1, transferido = 0
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
+        )
+
+      case 'empréstimo' | 'evento':
+        cursor.execute(
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 0, inativo = 0, transferido = 0
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
+        )
+
+      case 'retorno de empréstimo':
+        cursor.execute(
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
+        )
+
+      case _:
+        cursor.execute(
+            """
+                    UPDATE perifericos 
+                    SET unid_atual = ?, setor_atual = ?, disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    WHERE id_periferico = ?
+                """,
+            (unid_dest, setor_dest, id_periferico),
+        )
+
+    # 2. Insere o registro na tabela 'emprestimos' com a data e a hora gravadas na variável 'data_formatada'
+    cursor.execute(
+        """INSERT INTO emprestimos 
+               (responsavel, data_saida, id_periferico, tel_responsavel, id_usuario, observacao, setor_dest, unid_dest, tipo_transfer) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (
+            responsavel,
+            data_formatada,
+            id_periferico,
+            tel_responsavel,
+            session.get('usuario_id'),
+            observacao,
+            setor_dest,
+            unid_dest,
+            tipo_transfer,
+        ),
+    )
+
+    conexao.commit()
+    conexao.close()
+
+    flash('Empréstimo registrado com sucesso!', 'success')
+    return redirect('/verifica_emprestimos')

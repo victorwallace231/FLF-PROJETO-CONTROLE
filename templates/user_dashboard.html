@@ -1,11 +1,30 @@
 {% extends "base_app.html" %}
-{% from "_macros.html" import badge_movimentacao %}
-{% block titulo %}Histórico{% endblock %}
+{% block titulo %}Dashboard{% endblock %}
 
 {% block conteudo %}
-<section class="main-content">
-    <h2>Meu Histórico de Movimentações</h2>
+<section class="main-content w-100">
+    <h2 class="mb-4 p-0 fs-2">Dashboard</h2>
 
+    {# Visão geral dos equipamentos #}
+    <div class="grid">
+        {% for id, titulo, valor in [('ballon1', 'Total', total_perifericos), ('ballon2', 'Disponíveis', disponiveis), ('ballon3', 'Em Uso', usados), ('ballon4', 'Em Manutenção', manutencao)] %}
+            <div id="{{ id }}" class="ballons-all p-3 shadow-sm rounded d-flex flex-column justify-content-center align-items-center text-center text-white h-100">
+                <span class="text-uppercase fw-bold small opacity-75">{{ titulo }}</span>
+                <h2 class="fw-bold mb-0 mt-1 text-truncate w-100">{{ valor }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Ações rápidas (atalhos) #}
+    <div class="tabelas-afins d-flex gap-4 justify-content-center align-content-center m-5">
+        <div id="card-acoes">
+            <h2 class="d-flex justify-content-center">Ações Rápidas</h2>
+            <a class="btn btn-primary w-100 fw-semibold text-black mb-3" href="{{ url_for('create_emprestimo.create') }}">Nova Movimentação</a>
+        </div>
+    </div>
+
+    {# Últimas movimentações #}
+    <h2 class="mb-3 p-0 fs-4">Últimas Movimentações</h2>
     <div class="tabela-container">
         <table>
             <thead>
@@ -19,7 +38,8 @@
                 </tr>
             </thead>
             <tbody>
-                {# Colunas: [0]id [1]responsável [2]saída [3]devolução [5]telefone [7]observação [8]devolvido [9]categoria [10]nº série [11]id do periférico #}
+                {# e.*: [0]id [1]responsável [2]saída [3]devolução [4]id_periferico [5]telefone [6]id_usuario [7]observação [8]devolvido [9]setor_dest [10]unid_dest [11]tipo_transfer
+                   depois do JOIN: [12]categoria [13]nº série [14]id_periferico [15]unid_origem [16]setor_origem #}
                 {% for emprestimo in emprestimos %}
                     <tr data-id="{{ emprestimo[0] }}" data-responsavel="{{ emprestimo[1] }}" data-saida="{{ emprestimo[2] }}"
                         data-tel="{{ emprestimo[5] }}" data-obs="{{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}"
@@ -38,15 +58,13 @@
                                 <button type="button" class="btn-acoes" data-bs-toggle="dropdown" data-bs-strategy="fixed" aria-expanded="false" aria-label="Ações da movimentação"><i class="bi bi-three-dots-vertical"></i></button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalVisualizar">Visualizar</button></li>
-                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar</button></li>
-                                    {% if emprestimo[8] != 1 %}
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                        </li>
-                                    {% endif %}
                                 </ul>
                             </div>
                         </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center p-4">Nenhuma movimentação registrada ainda.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -60,19 +78,26 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="titulo-visualizar">Detalhes da movimentação</h2>
+                <h2 class="modal-title" id="titulo-visualizar">Informações da movimentação</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">
                 <p><strong>Responsável:</strong> <span data-campo="responsavel"></span></p>
+                <p><strong>Tipo de movimentação:</strong> <span data-campo="situacao"></span></p>
                 <p><strong>Data de saída:</strong> <span data-campo="saida"></span></p>
-                <p><strong>Data de devolução:</strong> <span data-campo="devolucao"></span></p>
-                <p><strong>Telefone:</strong> <span data-campo="tel"></span></p>
-                <p><strong>Observação:</strong> <span data-campo="obs"></span></p>
-                <p><strong>Status:</strong> <span data-campo="situacao"></span></p>
+                <p><strong>Telefone do responsável:</strong> <span data-campo="tel"></span></p>
+                <p><strong>Setor/Evento:</strong> <span data-campo="obs"></span></p>
+                <p><strong>Categoria do item:</strong> <span data-campo="categoria"></span></p>
+                <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Origem:</strong> <span data-campo="unidOrigem"></span> / <span data-campo="setorOrigem"></span></p>
+                <p><strong>Destino:</strong> <span data-campo="unidDestino"></span> / <span data-campo="setorDestino"></span></p>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/animacoes.js') }}"></script>
 {% endblock %}

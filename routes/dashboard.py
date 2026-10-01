@@ -29,6 +29,14 @@ def dashboard():
     perifericos = cursor.fetchall()
     total_perifericos = len(perifericos)
 
+    cursor.execute("""
+            SELECT e.*, c.categoria, p.num_serie, p.id_periferico, p.unid_origem, p.setor_origem 
+            FROM emprestimos e 
+            JOIN perifericos p ON e.id_periferico = p.id_periferico
+            JOIN categorias c ON p.categoria = c.id_categoria
+            WHERE 1=1 ORDER BY e.id_emprestimo DESC LIMIT 10
+        """)
+    emprestimos = cursor.fetchall()
     # Inicializa os contadores para consolidação dos cards do dashboard
     disponiveis = 0
     usados = 0
@@ -46,17 +54,14 @@ def dashboard():
     conexao.close()
 
     # Renderiza o painel passando o usuário e as métricas calculadas
-    return render_template(
-        'dashboard.html', 
-        name=name, 
-        email=email, 
-        telefone=telefone, 
-        perifericos=perifericos, 
-        disponiveis=disponiveis, 
-        usados=usados, 
-        manutencao=manutencao, 
-        total_perifericos=total_perifericos
-    )
+    if session.get("usuario_id") == 1:
+        return render_template("dashboard.html", name=name, email=email, telefone=telefone,
+                               total_perifericos=total_perifericos, disponiveis=disponiveis, usados=usados,
+                               manutencao=manutencao, emprestimos=emprestimos)
+    else:
+        return render_template("user_dashboard.html", name=name, email=email, telefone=telefone,
+                               total_perifericos=total_perifericos, disponiveis=disponiveis, usados=usados,
+                               manutencao=manutencao, emprestimos=emprestimos)
 
 # Rota de Equipamentos: gerencia a listagem e os filtros de pesquisa do inventário
 @route_equipamentos.route('/equipamentos', methods=['GET', 'POST'])
@@ -74,7 +79,10 @@ def equipamentos():
         cursor.execute("SELECT * FROM categorias WHERE excluido !=1")
         categorias = cursor.fetchall()
         conexao.close()
-        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), name=session.get("usuario_name"))
+        if session.get("usuario_id") == 1:
+            return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(),  name=session.get("usuario_name"))
+        else:
+            return render_template("user_equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), name=session.get("usuario_name"))
 
     # Requisição POST: Aplicação de filtros combinados (categoria, marca/modelo e status)
     if request.method == 'POST':
@@ -111,6 +119,8 @@ def equipamentos():
             sql += " AND p.inativo = 1"
         elif status == "todos":
             sql += " AND p.inativo != 1"
+        elif status == "transferido":
+            sql += " AND p.disponivel = 0 AND p.manutencao = 0 AND p.inativo = 0 AND p.transferido = 1"
             
         # Executa a busca parametrizada evitando SQL Injection
         cursor.execute(sql, paramentros)
@@ -122,4 +132,7 @@ def equipamentos():
         conexao.close()
 
         # Recarrega a página exibindo a tabela refinada pelos filtros
-        return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), categoria = categoria, status = status, name=session.get("usuario_name"))
+        if session.get("usuario_id") == 1:
+            return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), categoria = categoria, status = status, name=session.get("usuario_name"))
+        else:
+            return render_template("user_equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), categoria = categoria, status = status, name=session.get("usuario_name"))

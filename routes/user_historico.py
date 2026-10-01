@@ -12,7 +12,13 @@ def historico():
         conexao = conectar_banco()
         cursor = conexao.cursor()
         id_usuario = session.get("usuario_id")
-        cursor.execute("SELECT * FROM emprestimos WHERE id_usuario = ?", (id_usuario,))
+        cursor.execute("""
+            SELECT e.*, c.categoria, p.num_serie, p.id_periferico, p.unid_origem, p.setor_origem 
+            FROM emprestimos e 
+            JOIN perifericos p ON e.id_periferico = p.id_periferico
+            JOIN categorias c ON p.categoria = c.id_categoria
+            WHERE e.id_usuario = ? ORDER BY e.id_emprestimo DESC
+        """, (id_usuario,))
         emprestimos = cursor.fetchall()
         conexao.close()
         return render_template("historico.html", emprestimos = emprestimos)

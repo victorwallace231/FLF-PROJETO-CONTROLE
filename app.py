@@ -16,7 +16,6 @@ from routes.create_item import route_create_item
 from routes.deleteitem import route_deleteitem
 from routes.updateitem import route_updateitem
 from routes.verifica_emprestimos import verifica_emprestimos
-from routes.devolucao import route_devolucao
 from routes.dashboard import route_equipamentos
 from routes.create_emprestimo import create_emprestimo
 from routes.login import route_logout
@@ -40,7 +39,6 @@ app.register_blueprint(route_create_item)
 app.register_blueprint(route_deleteitem)
 app.register_blueprint(route_updateitem)
 app.register_blueprint(verifica_emprestimos)
-app.register_blueprint(route_devolucao)
 app.register_blueprint(route_equipamentos)
 app.register_blueprint(create_emprestimo)
 app.register_blueprint(route_logout)

@@ -53,6 +53,8 @@ def update():
             sql += ", disponivel = 0, manutencao = 1, inativo = 0"
         elif status == "inativo":
             sql += ", disponivel = 0, manutencao = 0, inativo = 1"
+        elif status == "transferido":
+            sql += ", disponivel = 0, manutencao = 0, inativo = 0, transferido = 1"
 
     sql += " WHERE id_periferico = ?"
     paramentros.append(item_id)

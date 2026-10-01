@@ -5,10 +5,10 @@
 
 {# Descobre o "slug" do status a partir das colunas do banco: 4 disponível, 5 manutenção, 6 inativo #}
 {% macro slug_status(p) -%}
-{%- if p[4] == 1 -%}disponivel{%- elif p[6] == 1 -%}inativo{%- elif p[5] == 1 -%}manutencao{%- else -%}emuso{%- endif -%}
+{%- if p[4] == 1 -%}disponivel{%- elif p[6] == 1 -%}inativo{%- elif p[5] == 1 -%}manutencao{%- elif p[12] == 1 -%}transferido{%- else -%}emuso{%- endif -%}
 {%- endmacro %}
 
-{% set TEXTO_STATUS = {'disponivel': 'Disponível', 'emuso': 'Em Uso', 'manutencao': 'Em Manutenção', 'inativo': 'Inativo'} %}
+{% set TEXTO_STATUS = {'disponivel': 'Disponível', 'emuso': 'Em Uso', 'manutencao': 'Em Manutenção', 'inativo': 'Inativo', 'transferido' : 'Transferido'} %}
 
 {% macro texto_status(slug) -%}{{ TEXTO_STATUS[slug] }}{%- endmacro %}
 

@@ -23,7 +23,80 @@
             <a class="btn btn-primary w-100 fw-semibold text-black mb-3" href="{{ url_for('create_item.create') }}">Novo Equipamento</a>
         </div>
     </div>
+
+    {# Últimas movimentações #}
+    <h2 class="mb-3 p-0 fs-4">Últimas Movimentações</h2>
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data / Hora</th>
+                    <th>Tipo de Movimentação</th>
+                    <th>N° Série</th>
+                    <th>Categoria</th>
+                    <th>Responsável</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {# e.*: [0]id [1]responsável [2]saída [3]devolução [4]id_periferico [5]telefone [6]id_usuario [7]observação [8]devolvido [9]setor_dest [10]unid_dest [11]tipo_transfer
+                   depois do JOIN: [12]categoria [13]nº série [14]id_periferico [15]unid_origem [16]setor_origem #}
+                {% for emprestimo in emprestimos %}
+                    <tr data-id="{{ emprestimo[0] }}" data-responsavel="{{ emprestimo[1] }}" data-saida="{{ emprestimo[2] }}"
+                        data-tel="{{ emprestimo[5] }}" data-obs="{{ emprestimo[7] if emprestimo[7] else 'Sem observações' }}"
+                        data-categoria="{{ emprestimo[12] }}" data-serie="{{ emprestimo[13] }}"
+                        data-situacao="{{ emprestimo[11] }}" data-setor-origem="{{ emprestimo[16] }}"
+                        data-unid-origem="{{ emprestimo[15] }}"
+                        data-setor-destino="{{ emprestimo[9] }}" 
+                        data-unid-destino="{{ emprestimo[10] }}">
+                        <td>{{ emprestimo[3] if emprestimo[8] == 1 else emprestimo[2] }}</td>
+                        <td>{{ emprestimo[11] }}</td>
+                        <td>{{ emprestimo[13] }}</td>
+                        <td>{{ emprestimo[12] }}</td>
+                        <td>{{ emprestimo[1] }}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn-acoes" data-bs-toggle="dropdown" data-bs-strategy="fixed" aria-expanded="false" aria-label="Ações da movimentação"><i class="bi bi-three-dots-vertical"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalVisualizar">Visualizar</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center p-4">Nenhuma movimentação registrada ainda.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </section>
+{% endblock %}
+
+{% block janelas %}
+<div class="modal fade" id="modalVisualizar" tabindex="-1" aria-labelledby="titulo-visualizar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-visualizar">Informações da movimentação</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Responsável:</strong> <span data-campo="responsavel"></span></p>
+                <p><strong>Tipo de movimentação:</strong> <span data-campo="situacao"></span></p>
+                <p><strong>Data de saída:</strong> <span data-campo="saida"></span></p>
+                <p><strong>Telefone do responsável:</strong> <span data-campo="tel"></span></p>
+                <p><strong>Setor/Evento:</strong> <span data-campo="obs"></span></p>
+                <p><strong>Categoria do item:</strong> <span data-campo="categoria"></span></p>
+                <p><strong>Número de série:</strong> <span data-campo="serie"></span></p>
+                <p><strong>Origem:</strong> <span data-campo="unidOrigem"></span> / <span data-campo="setorOrigem"></span></p>
+                <p><strong>Destino:</strong> <span data-campo="unidDestino"></span> / <span data-campo="setorDestino"></span></p>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
