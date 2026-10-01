@@ -17,7 +17,7 @@ def cadastrar   ():
     # Requisição POST: processa o registro de uma nova conta de usuário
     if request.method == "POST":
         # Captura e higieniza os dados do formulário (remove espaços extras e padroniza e-mail/nome em minúsculas)
-        name = request.form["nome"].strip().lower()
+        name = request.form["nome"].strip()
         email = request.form["email"].strip().lower()
         # Remove qualquer caractere que não seja dígito (espaços, parênteses, traços, letras etc.)
         number = re.sub(r"\D", "", request.form["telefone"].strip())
