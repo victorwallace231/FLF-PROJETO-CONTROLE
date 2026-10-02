@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect
+from flask import Blueprint, redirect, render_template, request, session
 from banco import conectar_banco, listar_icones
 
 # Colunas explícitas: [0]id [1]categoria [2]marca [3]nº série [4]disponível [5]manutenção [6]inativo [7]nome da categoria [8]ícone
@@ -9,130 +9,153 @@ SELECT_EQUIPAMENTOS = """SELECT p.id_periferico, p.categoria, p.marca, p.num_ser
 route_dashboard = Blueprint('dashboard', __name__)
 route_equipamentos = Blueprint('equipamentos', __name__)
 
+
 # Rota do Dashboard: calcula e exibe as estatísticas gerais do estoque de periféricos
 @route_dashboard.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    # Verificação de segurança: impede o acesso e redireciona para o login caso não haja sessão ativa
-    if not session.get("usuario_email"):
-        return redirect('/login') 
+  # Verificação de segurança: impede o acesso e redireciona para o login caso não haja sessão ativa
+  if not session.get('usuario_email'):
+    return redirect('/login')
 
-    conexao = conectar_banco()
-    cursor = conexao.cursor()
+  conexao = conectar_banco()
+  cursor = conexao.cursor()
 
-    # Recupera os dados do usuário logado armazenados na sessão
-    name = session.get('usuario_name')
-    email = session.get('usuario_email')
-    telefone = session.get('usuario_telefone')
+  # Recupera os dados do usuário logado armazenados na sessão
+  name = session.get('usuario_name')
+  email = session.get('usuario_email')
+  telefone = session.get('usuario_telefone')
 
-    # Consulta todos os equipamentos cadastrados no banco de dados
-    cursor.execute("SELECT * FROM perifericos")
-    perifericos = cursor.fetchall()
-    total_perifericos = len(perifericos)
+  # Consulta todos os equipamentos cadastrados no banco de dados
+  cursor.execute('SELECT * FROM perifericos')
+  perifericos = cursor.fetchall()
+  total_perifericos = len(perifericos)
 
-    cursor.execute("""
+  cursor.execute("""
             SELECT e.*, c.categoria, p.num_serie, p.id_periferico, p.unid_origem, p.setor_origem 
             FROM emprestimos e 
             JOIN perifericos p ON e.id_periferico = p.id_periferico
             JOIN categorias c ON p.categoria = c.id_categoria
             WHERE 1=1 ORDER BY e.id_emprestimo DESC LIMIT 10
         """)
-    emprestimos = cursor.fetchall()
-    # Inicializa os contadores para consolidação dos cards do dashboard
-    disponiveis = 0
-    usados = 0
-    manutencao = 0
+  emprestimos = cursor.fetchall()
 
-    # Percorre a lista avaliando as colunas booleanas: [4] disponivel, [5] manutencao, [6] inativo
-    for periferico in perifericos:
-        if periferico[4] == True:
-            disponiveis += 1
-        elif periferico[4] == False and periferico[5] == False and periferico[6] == 0:
-            usados += 1
-        elif periferico[4] == False and periferico[5] == True and periferico[6] == 0:
-            manutencao += 1
+  # Inicializa os contadores para consolidação dos cards do dashboard
+  disponiveis = 0
+  usados = 0
+  manutencao = 0
 
-    conexao.close()
+  # Percorre a lista avaliando as colunas booleanas: [4] disponivel, [5] manutencao, [6] inativo
+  for periferico in perifericos:
+    if periferico[4] == True:
+      disponiveis += 1
+    elif periferico[4] == False and periferico[5] == False and periferico[6] == 0:
+      usados += 1
+    elif periferico[4] == False and periferico[5] == True and periferico[6] == 0:
+      manutencao += 1
 
-    # Renderiza o painel passando o usuário e as métricas calculadas
-    if session.get("usuario_id") == 1:
-        return render_template("dashboard.html", name=name, email=email, telefone=telefone,
-                               total_perifericos=total_perifericos, disponiveis=disponiveis, usados=usados,
-                               manutencao=manutencao, emprestimos=emprestimos)
-    else:
-        return render_template("user_dashboard.html", name=name, email=email, telefone=telefone,
-                               total_perifericos=total_perifericos, disponiveis=disponiveis, usados=usados,
-                               manutencao=manutencao, emprestimos=emprestimos)
+  conexao.close()
+
+  # Converte para string para garantir comparação idêntica se o ID for int ou str
+  is_admin = str(session.get('usuario_id')) == '1'
+  template_dashboard = 'dashboard.html' if is_admin else 'user_dashboard.html'
+
+  return render_template(
+      template_dashboard,
+      name=name,
+      email=email,
+      telefone=telefone,
+      total_perifericos=total_perifericos,
+      disponiveis=disponiveis,
+      usados=usados,
+      manutencao=manutencao,
+      emprestimos=emprestimos,
+  )
+
 
 # Rota de Equipamentos: gerencia a listagem e os filtros de pesquisa do inventário
 @route_equipamentos.route('/equipamentos', methods=['GET', 'POST'])
 def equipamentos():
-    # Bloqueio de acesso para usuários não autenticados
-    if not session.get("usuario_email"):
-        return redirect('/login')
+  # Bloqueio de acesso para usuários não autenticados
+  if not session.get('usuario_email'):
+    return redirect('/login')
 
-    # Requisição GET: Carregamento padrão listando apenas equipamentos que não estejam inativos (inativo != 1)
-    if request.method == 'GET':
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
-        cursor.execute(SELECT_EQUIPAMENTOS + " AND p.inativo != 1")
-        perifericos = cursor.fetchall()
-        cursor.execute("SELECT * FROM categorias WHERE excluido !=1")
-        categorias = cursor.fetchall()
-        conexao.close()
-        if session.get("usuario_id") == 1:
-            return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(),  name=session.get("usuario_name"))
-        else:
-            return render_template("user_equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), name=session.get("usuario_name"))
+  # Seleciona o template dinamicamente prevenindo falhas de tipo (int vs str)
+  is_admin = str(session.get('usuario_id')) == '1'
+  template_alvo = (
+      'equipamentos.html' if is_admin else 'user_equipamentos.html'
+  )
 
-    # Requisição POST: Aplicação de filtros combinados (categoria, marca/modelo e status)
-    if request.method == 'POST':
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
+  # Requisição GET: Carregamento padrão listando apenas equipamentos que não estejam inativos
+  if request.method == 'GET':
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+    cursor.execute(SELECT_EQUIPAMENTOS + ' AND p.inativo != 1')
+    perifericos = cursor.fetchall()
+    cursor.execute('SELECT * FROM categorias WHERE excluido != 1')
+    categorias = cursor.fetchall()
+    conexao.close()
 
-        # Normaliza as entradas do formulário
-        categoria = request.form["filtro_categoria"].strip().lower()
-        status = request.form["filtro_status"].strip().lower()
-        marca = request.form["filtro_marca"].strip().lower()
+    return render_template(
+        template_alvo,
+        perifericos=perifericos,
+        categorias=categorias,
+        icones=listar_icones(),
+        categoria='todos',
+        status='todos',
+        name=session.get('usuario_name'),
+    )
 
-        # Estrutura inicial da instrução SQL dinâmica
-        sql = SELECT_EQUIPAMENTOS
-        paramentros = []
+  # Requisição POST: Aplicação de filtros combinados
+  if request.method == 'POST':
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
 
-        # Adiciona cláusula para filtro por categoria
-        if categoria != "todos":
-            sql += " AND p.categoria = ?"
-            paramentros.append(categoria)
+    # Normaliza as entradas do formulário com fallback seguro (.get)
+    categoria = request.form.get('filtro_categoria', 'todos').strip().lower()
+    status = request.form.get('filtro_status', 'todos').strip().lower()
+    marca = request.form.get('filtro_marca', '').strip().lower()
 
-        # Adiciona cláusula para busca por texto de marca/modelo
-        if marca != "":
-            sql += " AND LOWER(p.marca) LIKE '%' || ? || '%'"
-            paramentros.append(marca)
+    # Estrutura inicial da instrução SQL dinâmica
+    sql = SELECT_EQUIPAMENTOS
+    paramentros = []
 
-        # Mapeia as combinações lógicas das colunas para os status selecionados
-        if status == "disponivel":
-            sql += " AND p.disponivel = 1"
-        elif status == "emuso":
-            sql += " AND p.disponivel = 0 AND p.manutencao = 0 AND p.inativo = 0"
-        elif status == "manutencao":
-            sql += " AND p.disponivel = 0 AND p.manutencao = 1 AND p.inativo = 0"
-        elif status == "inativo":
-            sql += " AND p.inativo = 1"
-        elif status == "todos":
-            sql += " AND p.inativo != 1"
-        elif status == "transferido":
-            sql += " AND p.disponivel = 0 AND p.manutencao = 0 AND p.inativo = 0 AND p.transferido = 1"
-            
-        # Executa a busca parametrizada evitando SQL Injection
-        cursor.execute(sql, paramentros)
-        perifericos = cursor.fetchall()
+    if categoria != 'todos':
+      sql += ' AND p.categoria = ?'
+      paramentros.append(categoria)
 
-        cursor.execute ("SELECT * FROM categorias WHERE excluido !=1")
-        categorias = cursor.fetchall()
-        
-        conexao.close()
+    if marca != '':
+      sql += " AND LOWER(p.marca) LIKE '%' || ? || '%'"
+      paramentros.append(marca)
 
-        # Recarrega a página exibindo a tabela refinada pelos filtros
-        if session.get("usuario_id") == 1:
-            return render_template("equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), categoria = categoria, status = status, name=session.get("usuario_name"))
-        else:
-            return render_template("user_equipamentos.html", perifericos=perifericos, categorias=categorias, icones=listar_icones(), categoria = categoria, status = status, name=session.get("usuario_name"))
+    if status == 'disponivel':
+      sql += ' AND p.disponivel = 1'
+    elif status == 'emuso':
+      sql += ' AND p.disponivel = 0 AND p.manutencao = 0 AND p.inativo = 0'
+    elif status == 'manutencao':
+      sql += ' AND p.disponivel = 0 AND p.manutencao = 1 AND p.inativo = 0'
+    elif status == 'inativo':
+      sql += ' AND p.inativo = 1'
+    elif status == 'todos':
+      sql += ' AND p.inativo != 1'
+    elif status == 'transferido':
+      sql += (
+          ' AND p.disponivel = 0 AND p.manutencao = 0 AND p.inativo = 0 AND'
+          ' p.transferido = 1'
+      )
+
+    cursor.execute(sql, paramentros)
+    perifericos = cursor.fetchall()
+
+    cursor.execute('SELECT * FROM categorias WHERE excluido != 1')
+    categorias = cursor.fetchall()
+    conexao.close()
+
+    return render_template(
+        template_alvo,
+        perifericos=perifericos,
+        categorias=categorias,
+        icones=listar_icones(),
+        categoria=categoria,
+        status=status,
+        name=session.get('usuario_name'),
+    )
