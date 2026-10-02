@@ -28,6 +28,8 @@ from routes.redefinir_senha import redefinir_senha
 from routes.delete_categoria import delete_categoria
 from routes.update_categoria import update_categoria
 from routes.create_icone import route_create_icone
+from routes.updateuser import route_updatetoadmin
+from routes.updateuser import route_removeadmin
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -51,6 +53,8 @@ app.register_blueprint(redefinir_senha)
 app.register_blueprint(delete_categoria)
 app.register_blueprint(update_categoria)
 app.register_blueprint(route_create_icone)
+app.register_blueprint(route_updatetoadmin)
+app.register_blueprint(route_removeadmin)
 
 # Garante a coluna/tabela de ícones no banco (só cria o que ainda não existe)
 iniciar_banco()
