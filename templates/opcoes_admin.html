@@ -1,0 +1,126 @@
+{% extends "base_app.html" %}
+{% from "_macros.html" import campo, seletor_icone %}
+
+{% block titulo %}Opções de Administrador{% endblock %}
+
+{% block conteudo %}
+<section class="main-content">
+    <h2 class="mb-4">Opções de Administrador</h2>
+
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ação</th>
+                    <th>Descrição</th>
+                    <th class="text-end">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Promover a administrador</td>
+                    <td>Concede privilégios administrativos a um usuário existente no sistema.</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalPromoverAdmin">Executar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Remover administrador</td>
+                    <td>Remove os privilégios administrativos de um usuário do sistema.</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalRemoverAdmin">Executar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Adicionar equipamento</td>
+                    <td>Cadastra um novo equipamento no inventário do sistema.</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalAddEquipamento">Executar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+{% block janelas %}
+<!-- Modal Promover a Administrador -->
+<div class="modal fade" id="modalPromoverAdmin" tabindex="-1" aria-labelledby="titulo-promover-admin" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('updatetoadmin.updatetoadmin') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-promover-admin">Promover a Administrador</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                {{ campo('emailPromover', 'E-mail do Usuário', 'email', 'bi-envelope', placeholder='Digite o e-mail do usuário a ser promovido', extras='required data-msg="Informe o e-mail do usuário."') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary text-black fw-semibold">Promover</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Remover Administrador -->
+<div class="modal fade" id="modalRemoverAdmin" tabindex="-1" aria-labelledby="titulo-remover-admin" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('removeadmin.removeadmin') }}" method="POST" data-validar onsubmit="return confirm('Tem certeza que deseja remover os privilégios de administrador deste usuário?');">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-remover-admin">Remover Administrador</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                {{ campo('emailRemover', 'E-mail do Usuário', 'email', 'bi-envelope', placeholder='Digite o e-mail do administrador', extras='required data-msg="Informe o e-mail do usuário."') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-danger text-white fw-semibold">Remover Privilégios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Adicionar Equipamento -->
+<div class="modal fade" id="modalAddEquipamento" tabindex="-1" aria-labelledby="titulo-add-equipamento" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content" action="{{ url_for('create_item.create') }}" method="POST" data-validar onsubmit="return confirm('Deseja realmente adicionar este novo equipamento ao inventário?');">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-add-equipamento">Adicionar Novo Equipamento</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                {{ campo('serialInput', 'Número de Tombamento', 'num_serie', 'bi-hash', placeholder='Digite o número de tombamento do equipamento', extras='required data-msg="Informe o número de tombamento do equipamento."') }}
+                {{ campo('marcaInput', 'Marca', 'marca', 'bi-box-seam', placeholder='Digite a marca do equipamento', extras='required data-msg="Informe a marca do equipamento."') }}
+                {{ campo('unidadeOrigemInput', 'Unidade de Origem', 'unidade_origem', 'bi-box-seam', placeholder='Digite a Unidade de Origem do equipamento', extras='required data-msg="Informe a unidade de origem do equipamento."') }}
+                {{ campo('setorOrigemInput', 'Setor de Origem', 'setor_origem', 'bi-box-seam', placeholder='Digite o Setor de Origem do equipamento', extras='required data-msg="Informe o setor de origem do equipamento."') }}
+
+                <div class="mb-3">
+                    <label for="categoriaSelect" class="form-label">Categoria</label>
+                    <select id="categoriaSelect" class="form-select border-icon" name="categoria" required data-msg="Selecione a categoria do equipamento.">
+                        <option value="" disabled selected>Selecione a Categoria do Equipamento</option>
+                        {% for cat in categorias %}
+                            <option value="{{ cat[0] }}">{{ cat[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <span class="form-label d-block">Ícone do equipamento</span>
+                    {{ seletor_icone(icones, icone_padrao, permitir_novo=True) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary text-black fw-semibold">Adicionar Equipamento</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/icones.js') }}"></script>
+{% endblock %}

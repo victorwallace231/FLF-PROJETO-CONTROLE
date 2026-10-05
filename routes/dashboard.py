@@ -56,7 +56,7 @@ def dashboard():
   conexao.close()
 
   # Converte para string para garantir comparação idêntica se o ID for int ou str
-  is_admin = str(session.get('usuario_id')) == '1'
+  is_admin = str(session.get('usuario_admin')) == '1'
   template_dashboard = 'dashboard.html' if is_admin else 'user_dashboard.html'
 
   return render_template(
@@ -80,7 +80,7 @@ def equipamentos():
     return redirect('/login')
 
   # Seleciona o template dinamicamente prevenindo falhas de tipo (int vs str)
-  is_admin = str(session.get('usuario_id')) == '1'
+  is_admin = str(session.get('usuario_admin')) == '1'
   template_alvo = (
       'equipamentos.html' if is_admin else 'user_equipamentos.html'
   )
