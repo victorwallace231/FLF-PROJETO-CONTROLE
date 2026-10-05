@@ -32,6 +32,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="fw-bold">Atualizar dados de usuário</td>
+                    <td>Altera as informações cadastrais de um usuário (nome, e-mail, telefone e/ou senha) utilizando o e-mail atual como referência.</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalAtualizarUsuario">Executar</button>
+                    </td>
+                </tr>
+                <tr>
                     <td class="fw-bold">Adicionar equipamento</td>
                     <td>Cadastra um novo equipamento no inventário do sistema.</td>
                     <td class="text-end">
@@ -78,6 +85,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-danger text-white fw-semibold">Remover Privilégios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Atualizar Dados de Usuário -->
+<div class="modal fade" id="modalAtualizarUsuario" tabindex="-1" aria-labelledby="titulo-atualizar-usuario" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content" action="{{ url_for('update_user_adm.update_user_adm') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-atualizar-usuario">Atualizar Dados de Usuário</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-3">Informe o e-mail de referência do usuário e preencha somente os dados que deseja alterar. Deixe os demais em branco.</p>
+                
+                {{ campo('emailRefInput', 'E-mail do Usuário (Referência)', 'email_ref', 'bi-envelope-check', placeholder='Digite o e-mail atual do usuário', extras='required data-msg="Informe o e-mail do usuário a ser atualizado."') }}
+                {{ campo('novoNomeInput', 'Novo Nome (Opcional)', 'nome', 'bi-person', placeholder='Deixe em branco para manter o atual', obrigatorio=false) }}
+                {{ campo('novoEmailInput', 'Novo E-mail (Opcional)', 'novo_email', 'bi-envelope', placeholder='Deixe em branco para manter o atual', obrigatorio=false) }}
+                {{ campo('novoTelInput', 'Novo Telefone (Opcional)', 'telefone', 'bi-telephone', placeholder='Deixe em branco para manter o atual', extras='inputmode="numeric" maxlength="11" data-somente-numeros', obrigatorio=false) }}
+                {{ campo('novaSenhaInput', 'Nova Senha (Opcional)', 'senha', 'bi-lock', placeholder='Deixe em branco para manter a atual', extras='type="password"', obrigatorio=false) }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary text-black fw-semibold">Salvar Alterações</button>
             </div>
         </form>
     </div>

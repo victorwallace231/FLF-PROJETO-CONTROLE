@@ -22,12 +22,30 @@ def verificar_emprestimos():
         categorias = cursor.fetchall()
         # Consulta com JOIN para combinar dados do empréstimo aos detalhes do periférico
         cursor.execute("""
-            SELECT e.*, c.categoria, p.num_serie, p.id_periferico, p.unid_origem, p.setor_origem 
-            FROM emprestimos e 
-            JOIN perifericos p ON e.id_periferico = p.id_periferico
-            JOIN categorias c ON p.categoria = c.id_categoria
-            WHERE 1=1 ORDER BY e.id_emprestimo DESC
-        """)
+    SELECT
+        e.id_emprestimo,
+        e.resp_origem,
+        e.data_saida,
+        e.id_periferico,
+        e.tel_resp_origem,
+        e.id_usuario,
+        e.observacao,
+        e.setor_dest,
+        e.unid_dest,
+        e.tipo_transfer,
+        e.resp_dest,
+        e.tel_resp_dest,
+        c.categoria AS categoria_nome,
+        p.num_serie,
+        p.id_periferico AS periferico_id,
+        p.unid_origem,
+        p.setor_origem
+    FROM emprestimos e
+    JOIN perifericos p ON e.id_periferico = p.id_periferico
+    JOIN categorias c ON p.categoria = c.id_categoria
+    WHERE 1=1
+    ORDER BY e.id_emprestimo DESC
+""")
 
         emprestimo = cursor.fetchall()
         conexao.close()
@@ -50,7 +68,7 @@ def verificar_emprestimos():
 
         # Estrutura base da query SQL
         sql = """
-            SELECT e.*, c.categoria, p.num_serie, p.id_periferico 
+            SELECT e.*, c.categoria, p.num_serie, p.id_periferico, p.unid_origem, p.setor_origem
             FROM emprestimos e 
             JOIN perifericos p ON e.id_periferico = p.id_periferico
             JOIN categorias c ON p.categoria = c.id_categoria
@@ -71,7 +89,7 @@ def verificar_emprestimos():
 
         # Concatena condição SQL se houver busca por nome do responsável
         if responsavel:
-             sql += " AND LOWER(e.responsavel) LIKE '%' || ? || '%' OR p.num_serie LIKE '%' || ? || '%'"
+             sql += " AND LOWER(e.resp_dest) LIKE '%' || ? || '%' OR p.num_serie LIKE '%' || ? || '%'"
              paramentros.append(responsavel)
              paramentros.append(responsavel)
 

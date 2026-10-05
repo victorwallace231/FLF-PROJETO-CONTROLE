@@ -23,6 +23,8 @@ def update():
     item_numero_de_serie = request.form.get('num_serie')
     item_icone = request.form.get('icone')
     status = request.form.get('filtro_status')
+    setor_origem = request.form.get('setor_origem')
+    unid_origem = request.form.get('unid_origem')
 
     paramentros = []
 
@@ -41,6 +43,12 @@ def update():
     if item_icone:
         sql += ", icone = ?"
         paramentros.append(icone_valido(item_icone))
+    if setor_origem:
+        sql += ", setor_origem = ?"
+        paramentros.append(setor_origem)
+    if unid_origem:
+        sql += ", unid_origem = ?"
+        paramentros.append(unid_origem)
 
     # "todos" (= "Manter status atual" no formulário) não altera o status
     if status and status != "todos":
