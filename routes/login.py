@@ -33,13 +33,15 @@ def login():
 
         # Validação: verifica se o usuário foi encontrado e compara o hash da senha armazenada
         # Ordem das colunas da tabela 'usuario': 0=name_user, 1=email_user, 2=senha_user, 3=tel_user, 4=id_usuario
-        if usuario and check_password_hash(usuario[3], password):
+        if usuario and check_password_hash(usuario[2], password):
             # Armazena os dados do usuário na sessão do Flask
-            session['usuario_name'] = usuario[1]
-            session['usuario_email'] = usuario[2]
-            session['usuario_telefone'] = usuario[4]
-            session["usuario_id"] = usuario[0]
-            session["usuario_admin"] = usuario[5]
+            session['usuario_name'] = usuario[0]
+            session['usuario_email'] = usuario[1]
+            session['usuario_telefone'] = usuario[3]
+            session["usuario_id"] = usuario[4]
+            session["usuario_admin"] = usuario[5] if len(usuario) > 5 else False
+
+            # session["usuario_admin"] = usuario[5] if len(usuario) > 5 else False  
 
             # Configura a duração da sessão de acordo com a checkbox "Lembrar-me"
             if request.form.get('lembrar'):
