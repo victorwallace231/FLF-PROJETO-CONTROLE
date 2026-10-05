@@ -37,11 +37,7 @@ def login():
             # Armazena os dados do usuário na sessão do Flask
             session['usuario_name'] = usuario[1]
             session['usuario_email'] = usuario[2]
-<<<<<<< HEAD
             session['usuario_telefone'] = usuario[3]
-=======
-            session['usuario_telefone'] = usuario[4]
->>>>>>> 3bceb2185f47f15afbf01c9756845e1839a1b8c6
             session["usuario_id"] = usuario[0]
             session["usuario_admin"] = usuario[5] if len(usuario) > 5 else False
 
