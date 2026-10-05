@@ -39,6 +39,7 @@ ICONES_INICIAIS = [
 # Função para conectar ao banco de dados
 def conectar_banco():
     conexao = sqlite3.connect(CAMINHO_BANCO)
+    conexao.row_factory = sqlite3.Row
     return conexao
 
 

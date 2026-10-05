@@ -153,6 +153,14 @@
                     <label for="editar-serie" class="form-label">Número de Tombamento</label>
                     <input type="text" id="editar-serie" name="num_serie" class="form-control" data-campo="serie" required data-msg="Informe o número de tombamento.">
                 </div>
+                                <div class="mb-3">
+                    <label for="editar-unidade" class="form-label">Unidade de Origem</label>
+                    <input type="text" id="editar-unidade" name="unid_origem" class="form-control" data-campo="unid_origem" required data-msg="Informe a unidade de origem.">
+                </div>
+                                <div class="mb-3">
+                    <label for="editar-setor" class="form-label">Setor de Origem</label>
+                    <input type="text" id="editar-setor" name="setor_origem" class="form-control" data-campo="setor_origem" required data-msg="Informe o setor de origem.">
+                </div>
                 <div class="mb-1">
                     <span class="form-label d-block">Ícone</span>
                     {{ seletor_icone(icones, dinamico=True) }}

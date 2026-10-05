@@ -6,6 +6,30 @@
 <section class="main-content">
     <h2 class="mb-4">Criando Nova Movimentação</h2>
 
+    <!-- Barra de Filtros -->
+    <form action="{{ url_for('create_emprestimo.create') }}" method="POST">
+        <div class="barra-pesquisa mb-4">
+            <input type="text" name="filtro_pesquisa" value="{{ pesquisa if pesquisa else '' }}" placeholder="Pesquisar por tombamento, marca..." class="pesquisa-enter">
+
+            <select class="filter-select" name="filtro_disponibilidade">
+                <option value="todos" {% if disponibilidade == 'todos' %}selected{% endif %}>Todos os Status</option>
+                <option value="disponivel" {% if disponibilidade == 'disponivel' %}selected{% endif %}>Disponível</option>
+                <option value="emprestado" {% if disponibilidade in ['emprestado', 'emuso'] %}selected{% endif %}>Emprestado / Em Uso</option>
+                <option value="manutencao" {% if disponibilidade == 'manutencao' %}selected{% endif %}>Em Manutenção</option>
+                <option value="transferido" {% if disponibilidade == 'transferido' %}selected{% endif %}>Transferido</option>
+            </select>
+
+            <select class="filter-select" name="filtro_categoria">
+                <option value="todos" {% if categoria == 'todos' %}selected{% endif %}>Todas as Categorias</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat[0] }}" {% if categoria|string == cat[0]|string %}selected{% endif %}>{{ cat[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary fw-semibold text-black">Filtrar</button>
+        </div>
+    </form>
+
     <div class="tabela-container">
         <table>
             <thead>
@@ -41,48 +65,69 @@
     <div class="modal-dialog modal-dialog-centered">
         <form class="modal-content" action="{{ url_for('create_emprestimo.create') }}" method="POST" data-validar>
             <div class="modal-header">
-                <h2 class="modal-title" id="titulo-emprestar"><i class="bi me-2" data-campo-icone="icone"></i>Emprestar <span data-campo="serie"></span></h2>
+                <h2 class="modal-title" id="titulo-emprestar">
+                    <i class="bi me-2" data-campo-icone="icone"></i>Emprestar <span data-campo="serie"></span>
+                </h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
+            
             <div class="modal-body">
                 <input type="hidden" name="id_periferico" data-campo="id">
+                
                 <div class="mb-3">
-                    <label for="emp-responsavel" class="form-label">Nome do responsável</label>
+                    <label for="emp-responsavel" class="form-label">Nome do responsável (Setor de origem)</label>
                     <input type="text" id="emp-responsavel" name="responsavel" class="form-control" placeholder="Nome do responsável" required data-msg="Informe o nome do responsável.">
                 </div>
+                
                 <div class="mb-3">
-                    <label for="emp-tel" class="form-label">Telefone do responsável</label>
+                    <label for="emp-tel" class="form-label">Telefone do responsável (Setor de origem)</label>
                     <input type="text" id="emp-tel" name="tel_responsavel" class="form-control" placeholder="Telefone com DDD" inputmode="numeric" pattern="[0-9]{10,11}"
                            title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" data-somente-numeros required data-msg="Informe o telefone com DDD.">
                 </div>
-
-                <div class="mb-1">
-                    <label for="emp-obs" class="form-label">Unidade de Destino:</label>
-                    <input type="text" id="emp-obs" name="unid_dest" class="form-control" placeholder="Insira para qual UNIDADE o item será transferido">
+                
+                <div class="mb-3">
+                    <label for="emp-responsavel-dest" class="form-label">Nome do responsável (Setor de destino)</label>
+                    <input type="text" id="emp-responsavel-dest" name="responsavel_destino" class="form-control" placeholder="Nome do responsável" required data-msg="Informe o nome do responsável.">
                 </div>
-                <div class="mb-1">
-                    <label for="emp-obs" class="form-label">Setor de Destino:</label>
-                    <input type="text" id="emp-obs" name="setor_dest" class="form-control" placeholder="Insira para qual SETOR o item será transferido">
+                
+                <div class="mb-3">
+                    <label for="emp-tel-dest" class="form-label">Telefone do responsável (Setor de destino)</label>
+                    <input type="text" id="emp-tel-dest" name="tel_responsavel_destino" class="form-control" placeholder="Telefone com DDD" inputmode="numeric" pattern="[0-9]{10,11}"
+                           title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" data-somente-numeros required data-msg="Informe o telefone com DDD.">
                 </div>
-                <div class="mb-1">
+                
+                <div class="mb-3">
+                    <label for="emp-unid" class="form-label">Unidade de Destino:</label>
+                    <input type="text" id="emp-unid" name="unid_dest" class="form-control" placeholder="Insira para qual UNIDADE o item será transferido">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="emp-setor" class="form-label">Setor de Destino:</label>
+                    <input type="text" id="emp-setor" name="setor_dest" class="form-control" placeholder="Insira para qual SETOR o item será transferido">
+                </div>
+                
+                <div class="mb-3">
                     <label for="emp-obs" class="form-label">Observação:</label>
                     <input type="text" id="emp-obs" name="observacao" class="form-control" placeholder="OBSERVAÇÃO (opcional)">
                 </div>
+
+                <div class="mb-1">
+                    <label class="form-label">Tipo de Transferência:</label>
+                    <select class="filter-select w-100" name="tipo_transfer" required>
+                        <option value="" disabled selected>Selecione o Tipo de Transferência</option>
+                        <option value="Transferencia de Unidade">Transferência de Unidade</option>
+                        <option value="Transferência de Localização">Transferência de Localização</option>
+                        <option value="Remessa para Concerto">Remessa para Concerto</option>
+                        <option value="Retorno de Concerto">Retorno de Concerto</option>
+                        <option value="Baixa por Defeito">Baixa por Defeito</option>
+                        <option value="Baixa por fora de uso/obsoleto">Baixa por fora de uso/obsoleto</option>
+                        <option value="Empréstimo">Empréstimo</option>
+                        <option value="Retorno de Empréstimo">Retorno de Empréstimo</option>
+                        <option value="Evento">Evento</option>
+                    </select>
+                </div>
             </div>
-                <select class="filter-select" name="tipo_transfer" id="" required>
-                    <option value="" disabled selected>Selecione o Tipo de Transferência</option>
-                    <option value="Transferencia de Unidade">Transferência de Unidade</option>
-                    <option value="Transferência de Localização">Transferência de Localização</option>
-                    <option value="Remessa para Concerto">Remessa para Concerto</option>
-                    <option value="Retorno de Concerto">Retorno de Concerto</option>
-                    <option value="Baixa por Defeito">Baixa por Defeito</option>
-                    <option value="Baixa por fora de uso/obsoleto">Baixa por fora de uso/obsoleto</option>
-                    <option value="Empréstimo">Empréstimo</option>
-                    <option value="Retorno de Empréstimo">Retorno de Empréstimo</option>
-                    <option value="Evento">Evento</option>
-                </select>
-                <br>
-                <br>
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 <button type="submit" class="btn btn-primary">Registrar empréstimo</button>
