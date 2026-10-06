@@ -50,6 +50,11 @@
         <div class="input-group">
             <span class="input-group-text border-icon"><i class="bi {{ icone }}"></i></span>
             <input type="{{ tipo }}" id="{{ id }}" class="form-control" name="{{ nome }}" placeholder="{{ placeholder }}" value="{{ valor }}" {% if obrigatorio %}required{% endif %} {{ extras|safe }}>
+            {% if tipo == 'password' %}
+                <button type="button" class="btn-toggle-senha" data-alvo="{{ id }}" tabindex="-1" aria-label="Mostrar senha">
+                    <i class="bi bi-eye-fill"></i>
+                </button>
+            {% endif %}
         </div>
     </div>
 {% endmacro %}

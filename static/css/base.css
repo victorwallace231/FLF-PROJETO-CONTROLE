@@ -70,6 +70,28 @@ body {
 
 .btn { border-radius: 999px; padding: 0.7rem; }
 
+/* Botão de mostrar/ocultar senha, dentro do input-group ao lado do campo (ver macro `campo`) */
+.input-group .btn-toggle-senha {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.587);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    color: rgba(0, 0, 0, 0.643);
+    padding: 0 .9rem;
+    line-height: 1;
+}
+
+.input-group .btn-toggle-senha:hover,
+.input-group .btn-toggle-senha:focus {
+    background-color: rgba(0, 0, 0, 0.12);
+    color: #000;
+    box-shadow: none;
+}
+
+.input-group:has(.is-invalid) .btn-toggle-senha {
+    border-color: var(--cor-erro);
+}
+
 /* ==========================================================================
    VALIDAÇÃO DE FORMULÁRIOS (usado por static/js/validacao.js)
    ========================================================================== */

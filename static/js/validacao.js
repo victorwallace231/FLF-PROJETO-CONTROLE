@@ -134,6 +134,20 @@
     document.addEventListener('input', aoEditar);
     document.addEventListener('change', aoEditar);
 
+    // Botão de mostrar/ocultar senha (criado pela macro `campo` quando tipo="password")
+    document.addEventListener('click', (e) => {
+        const botao = e.target.closest('.btn-toggle-senha');
+        if (!botao) return;
+
+        const campo = document.getElementById(botao.dataset.alvo);
+        if (!campo) return;
+
+        const mostrando = campo.type === 'text';
+        campo.type = mostrando ? 'password' : 'text';
+        botao.querySelector('i').className = mostrando ? 'bi bi-eye-fill' : 'bi bi-eye-slash-fill';
+        botao.setAttribute('aria-label', mostrando ? 'Mostrar senha' : 'Ocultar senha');
+    });
+
     // Fechou uma janela (modal)? Limpa os campos e os erros dos formulários dela
     document.addEventListener('hidden.bs.modal', (e) => {
         e.target.querySelectorAll('form[data-validar]').forEach((form) => {

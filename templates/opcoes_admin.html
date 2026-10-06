@@ -105,7 +105,7 @@
                 {{ campo('novoNomeInput', 'Novo Nome (Opcional)', 'nome', 'bi-person', placeholder='Deixe em branco para manter o atual', obrigatorio=false) }}
                 {{ campo('novoEmailInput', 'Novo E-mail (Opcional)', 'novo_email', 'bi-envelope', placeholder='Deixe em branco para manter o atual', obrigatorio=false) }}
                 {{ campo('novoTelInput', 'Novo Telefone (Opcional)', 'telefone', 'bi-telephone', placeholder='Deixe em branco para manter o atual', extras='inputmode="numeric" maxlength="11" data-somente-numeros', obrigatorio=false) }}
-                {{ campo('novaSenhaInput', 'Nova Senha (Opcional)', 'senha', 'bi-lock', placeholder='Deixe em branco para manter a atual', extras='type="password"', obrigatorio=false) }}
+                {{ campo('novaSenhaInput', 'Nova Senha (Opcional)', 'senha', 'bi-lock', tipo='password', placeholder='Deixe em branco para manter a atual', obrigatorio=false) }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
