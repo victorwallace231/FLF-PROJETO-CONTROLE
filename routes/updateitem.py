@@ -1,10 +1,12 @@
 from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco, icone_valido
+from auth import role_required
 
 # Definição do Blueprint para as rotas de atualização de equipamentos
 route_updateitem = Blueprint('update_item', __name__)
 
 @route_updateitem.route('/update_item', methods=['POST'])
+@role_required("admin", "gestor")
 def update():
     # Verificação de autenticação: se o usuário não estiver logado, redireciona para a tela de login
     if not session.get("usuario_email"):

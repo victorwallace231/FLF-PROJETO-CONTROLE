@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, session, flash
 from banco import conectar_banco, listar_icones, icone_valido, ICONE_PADRAO
+from auth import role_required
 
 # Definição do Blueprint para as rotas de criação/cadastro de novos equipamentos
 route_create_item = Blueprint('create_item', __name__)
 
 @route_create_item.route('/create_item', methods=['GET', 'POST'])
+@role_required("admin", "gestor")
 def create():
     # Verificação de segurança: redireciona para o login caso o usuário não esteja autenticado
     if not session.get("usuario_email"):

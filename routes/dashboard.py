@@ -66,7 +66,7 @@ def dashboard():
 
   conexao.close()
 
-  is_admin = str(session.get('usuario_admin')) == '1'
+  is_admin = session.get('usuario_role') == 'admin';
   template_dashboard = 'dashboard.html' if is_admin else 'user_dashboard.html'
 
   return render_template(
@@ -87,7 +87,7 @@ def equipamentos():
   if not session.get('usuario_email'):
     return redirect('/login')
 
-  is_admin = str(session.get('usuario_admin')) == '1'
+  is_admin = session.get('usuario_role') == 'admin';
   template_alvo = (
       'equipamentos.html' if is_admin else 'user_equipamentos.html'
   )

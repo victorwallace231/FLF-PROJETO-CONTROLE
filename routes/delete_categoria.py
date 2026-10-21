@@ -1,9 +1,11 @@
 from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco
+from auth import role_required
 
 delete_categoria = Blueprint('delete_categoria', __name__)
 
 @delete_categoria.route('/delete_categoria', methods = ['POST'])
+@role_required("admin", "gestor")
 def delete():
     if not session.get("usuario_email"):
         return redirect('/login')

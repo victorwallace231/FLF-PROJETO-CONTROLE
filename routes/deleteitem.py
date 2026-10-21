@@ -1,10 +1,12 @@
 from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco
+from auth import role_required
 
 # Definição do Blueprint para as rotas de exclusão/desativação de equipamentos
 route_deleteitem = Blueprint('deleteitem', __name__)
 
 @route_deleteitem.route('/deleteitem', methods=['POST'])
+@role_required("admin", "gestor")
 def delete():
     # Verificação de segurança: redireciona para o login caso o usuário não esteja autenticado
     if not session.get("usuario_email"):

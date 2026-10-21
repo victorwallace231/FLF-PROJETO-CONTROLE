@@ -56,7 +56,7 @@ def updatetoadmin():
     # Verificação de segurança: redireciona para a tela de login se não houver usuário ativo na sessão
     if not session.get("usuario_email"):
         return redirect('/login')
-    if str(session.get('usuario_admin')) != '1':
+    if session.get('usuario_role') != 'admin':
         flash("Acesso negado: apenas administradores podem acessar esta página.", "danger")
         return redirect('/dashboard')
 
@@ -72,7 +72,7 @@ def updatetoadmin():
         email = request.form.get("email").strip()
 
         cursor.execute(
-            "UPDATE usuario SET admin = 1 WHERE email_user = ?", (email,)
+            "UPDATE usuario SET role = 'admin' WHERE email_user = ?", (email,)
         )
         conexao.commit()
         conexao.close()
@@ -82,7 +82,7 @@ def updatetoadmin():
 @route_removeadmin.route('/removeadmin', methods=['POST'])
 def removeadmin():
 
-    if str(session.get('usuario_admin')) != '1':
+    if session.get('usuario_role') != 'admin':
         flash("Acesso negado: apenas administradores podem acessar esta página.", "danger")
         return redirect('/dashboard')
 
@@ -92,7 +92,7 @@ def removeadmin():
     cursor = conexao.cursor()
 
     cursor.execute(
-        "UPDATE usuario SET admin = 0 WHERE email_user = ?", (email,)
+        "UPDATE usuario SET role = 'user' WHERE email_user = ? AND role = 'admin'", (email,)
     )
     conexao.commit()
     conexao.close()
@@ -105,7 +105,7 @@ def update_user_adm():
     if not session.get("usuario_email"):
         return redirect('/login')
 
-    if str(session.get('usuario_admin')) != '1':
+    if session.get('usuario_role') != 'admin':
         flash("Acesso negado: apenas administradores podem aceder a esta página.", "danger")
         return redirect('/dashboard')
 

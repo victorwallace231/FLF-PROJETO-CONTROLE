@@ -11,6 +11,8 @@ route_create_icone = Blueprint('create_icone', __name__)
 def create():
     if not session.get("usuario_email"):
         return jsonify(ok=False, erro="Sua sessão expirou. Entre novamente."), 401
+    if session.get("usuario_role") not in ("admin", "gestor"):
+        return jsonify(ok=False, erro="Você não tem permissão para adicionar ícones."), 403
 
     classe = request.form.get("classe", "").strip().lower()
     nome = request.form.get("nome", "").strip()

@@ -1,10 +1,12 @@
 import re
 from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco
+from auth import role_required
 
 update_emprestimo = Blueprint('update_emprestimo', __name__)
 
 @update_emprestimo.route('/update_emprestimo', methods = ['POST'])
+@role_required("admin", "gestor")
 def update():
     if not session.get("usuario_email"):
         return redirect('/login')

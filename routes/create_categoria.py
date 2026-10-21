@@ -1,9 +1,11 @@
 from flask import Blueprint, request, redirect, session, flash
 from banco import conectar_banco
+from auth import role_required
 
 create_categoria = Blueprint('create_categoria', __name__)
 
 @create_categoria.route('/create_categoria', methods = ['POST'])
+@role_required("admin", "gestor")
 def create():
     if not session.get("usuario_email"):
         return redirect('/login')

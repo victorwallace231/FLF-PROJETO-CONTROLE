@@ -63,6 +63,11 @@ def iniciar_banco():
 
     cursor.executemany("INSERT OR IGNORE INTO icones (classe, nome) VALUES (?, ?)", ICONES_INICIAIS)
 
+    colunas_user = [linha[1] for  linha in cursor.execute("PRAGMA table_info(usuario)")]
+    if "role" not in colunas_user:
+        cursor.execute("""ALTER TABLE usuario ADD COLUMN role TEXT NOT NULL    DEFAULT 'user' CHECK (role in ('admin', 'gestor', 'user'))""")
+        cursor.execute("UPDATE usuario SET role = 'admin' WHERE admin = 1")
+
     conexao.commit()
     conexao.close()
 
