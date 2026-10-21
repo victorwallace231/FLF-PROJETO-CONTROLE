@@ -90,10 +90,12 @@ def removeadmin():
 
     conexao = conectar_banco()
     cursor = conexao.cursor()
+    if (email == 'admin@admin.com'):
+        flash("Você não pode remover essa conta de admin", "danger")
+        return redirect("/dashboard")
 
-    cursor.execute(
-        "UPDATE usuario SET role = 'user' WHERE email_user = ? AND role = 'admin'", (email,)
-    )
+    cursor.execute("UPDATE usuario SET role = 'user' WHERE email_user = ? AND role = 'admin'", (email,))
+
     conexao.commit()
     conexao.close()
 
