@@ -24,7 +24,9 @@ def create():
         observacao = request.form['observacao']
         # Destino chega como ID (vem de <select>); o nome é buscado no banco.
         # Em branco = o equipamento mantém a localização atual.
-        destino = resolver_localizacao(cursor, request.form.get("unid_dest", ""), request.form.get("setor_dest", ""))
+        id_unidade_destino = request.form.get("unid_dest", "").strip()
+        id_setor_destino = request.form.get("setor_dest", "").strip()
+        destino = resolver_localizacao(cursor, id_unidade_destino, id_setor_destino)
         if destino is None:
             conexao.close()
             flash("Unidade ou setor de destino inválido. Escolha um setor que pertença à unidade selecionada.", "danger")
@@ -41,51 +43,51 @@ def create():
             case 'transferencia de unidade' | 'transferência de localização':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 0, inativo = 0, transferido = 1
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 0, manutencao = 0, inativo = 0, transferido = 1
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
             case 'remessa para concerto':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 1, inativo = 0, transferido = 0
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 0, manutencao = 1, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
             case 'retorno de concerto':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
             case 'baixa por defeito' | 'baixa por fora de uso/obsoleto':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 0, inativo = 1, transferido = 0
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 0, manutencao = 0, inativo = 1, transferido = 0
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
             case 'empréstimo' | 'evento':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 0, inativo = 0, transferido = 0
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 0, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
             case 'retorno de empréstimo':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
             case _:
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    SET id_unidade_atual = COALESCE(NULLIF(?, ''), id_unidade_atual), id_setor_atual = COALESCE(NULLIF(?, ''), id_setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
-                """, (unid_dest, setor_dest, id_periferico))
+                """, (id_unidade_destino, id_setor_destino, id_periferico))
 
         cursor.execute("""
             INSERT INTO emprestimos 
@@ -113,11 +115,16 @@ def create():
 
     # COALESCE garante a exclusão estrita de equipamentos inativos (1 ou '1') em qualquer situação
     sql = """
-        SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone, u.nome_unidade, s.nome_setor, p.unid_atual, p.setor_atual, p.transferido, p.id_unidade_origem, p.id_setor_origem
-        FROM perifericos p 
-        JOIN categorias c ON p.categoria = c.id_categoria 
-        LEFT JOIN unidades u ON u.id_unidade = p.id_unidade_origem
-        LEFT JOIN setores s ON s.id_setor = p.id_setor_origem
+        SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone,
+               uo.nome_unidade, so.nome_setor, ua.nome_unidade, sa.nome_setor,
+               p.transferido, p.id_unidade_origem, p.id_setor_origem,
+               p.id_unidade_atual, p.id_setor_atual
+        FROM perifericos p
+        JOIN categorias c ON p.categoria = c.id_categoria
+        LEFT JOIN unidades uo ON uo.id_unidade = p.id_unidade_origem
+        LEFT JOIN setores so ON so.id_setor = p.id_setor_origem
+        LEFT JOIN unidades ua ON ua.id_unidade = p.id_unidade_atual
+        LEFT JOIN setores sa ON sa.id_setor = p.id_setor_atual
         WHERE COALESCE(p.inativo, 0) NOT IN (1, '1')
     """
     parametros = []

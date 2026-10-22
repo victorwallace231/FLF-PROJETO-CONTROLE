@@ -49,8 +49,14 @@ def create():
 
     # Todo item novo é cadastrado automaticamente com: disponivel = 1, manutencao = 0 e inativo = 0
     cursor.execute(
-        "INSERT INTO perifericos (categoria, marca, num_serie, disponivel, manutencao, inativo, icone, id_unidade_origem, id_setor_origem, unid_atual, setor_atual, transferido) VALUES (?, ?, ?, 1, 0, 0, ?, ?, ?, ?, ?, 0)",
-        (id_categoria, marca, num_serie, icone_valido(icone), id_unidade_origem, id_setor_origem, nome_unidade, nome_setor)
+        """INSERT INTO perifericos (
+               categoria, marca, num_serie, disponivel, manutencao, inativo, icone,
+               id_unidade_origem, id_setor_origem, id_unidade_atual, id_setor_atual, transferido
+           ) VALUES (?, ?, ?, 1, 0, 0, ?, ?, ?, ?, ?, 0)""",
+        (
+            id_categoria, marca, num_serie, icone_valido(icone),
+            id_unidade_origem, id_setor_origem, id_unidade_origem, id_setor_origem,
+        ),
     )
     conexao.commit()
     conexao.close()

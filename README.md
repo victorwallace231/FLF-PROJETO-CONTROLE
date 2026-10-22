@@ -10,6 +10,7 @@ O FLF Controle é um sistema web que tem a finalidade de gerir e ter controle da
 * **Gestão de Periféricos:** Consulta e verificação de status dos equipamentos.
 * **Controle de Empréstimos:** Registro de saídas e devoluções no banco de dados.
 * **Ícones por equipamento:** Cada item (mouse, passador de slide, adaptador HDMI...) usa um ícone do Bootstrap Icons, e novos ícones podem ser adicionados na tela de cadastro.
+* **Localização por unidade e setor:** A origem e a localização atual dos equipamentos são relacionadas às tabelas `unidades` e `setores` por chave estrangeira; a tela de equipamentos permite filtrar por uma unidade, um setor ou ambos.
 * **Avisos na tela:** Erros nos campos e pop-ups de sucesso/confirmação com Bootstrap 5.
 
 Para saber mais detalhe temos a [Estrutura](https://github.com/victorwallace231/FLF-PROJETO-CONTROLE/blob/main/Structure.md) do projeto

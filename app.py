@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect
 from datetime import timedelta
-from banco import iniciar_banco, listar_unidades, listar_setores
+from banco import iniciar_banco, listar_unidades, listar_setores, listar_unidades_filtro, listar_setores_filtro
 app = Flask(__name__)
 app.secret_key = '14082017'
 
@@ -64,7 +64,12 @@ app.register_blueprint(route_localizacoes)
 # localização). São funções: o banco só é consultado onde o template realmente chama.
 @app.context_processor
 def injetar_localizacoes():
-    return dict(lista_unidades=listar_unidades, lista_setores=listar_setores)
+    return dict(
+        lista_unidades=listar_unidades,
+        lista_setores=listar_setores,
+        lista_unidades_filtro=listar_unidades_filtro,
+        lista_setores_filtro=listar_setores_filtro,
+    )
 
 # Garante a coluna/tabela de ícones no banco (só cria o que ainda não existe)
 iniciar_banco()

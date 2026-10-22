@@ -94,6 +94,24 @@
     </div>
 {% endmacro %}
 
+{# Filtros independentes de unidade e setor na tela de equipamentos.
+   O setor mostra apenas as opções da unidade escolhida, mas permanece opcional
+   para permitir pesquisar todos os setores de uma unidade. #}
+{% macro filtro_localizacao(unidades, setores, unidade_selecionada='', setor_selecionado='') %}
+    <select class="filter-select" id="filtro-unidade-atual" name="filtro_unidade_atual" data-filtro-unidade aria-label="Filtrar por unidade">
+        <option value="" {% if not unidade_selecionada %}selected{% endif %}>Todas as unidades</option>
+        {% for u in unidades %}
+            <option value="{{ u['id_unidade'] }}" {% if unidade_selecionada|string == u['id_unidade']|string %}selected{% endif %}>{{ u['nome_unidade'] }}{% if u['excluido'] %} (excluída){% endif %}</option>
+        {% endfor %}
+    </select>
+    <select class="filter-select" id="filtro-setor-atual" name="filtro_setor_atual" data-filtro-setor aria-label="Filtrar por setor">
+        <option value="" {% if not setor_selecionado %}selected{% endif %}>Todos os setores</option>
+        {% for s in setores %}
+            <option value="{{ s['id_setor'] }}" data-id-unidade="{{ s['id_unidade'] }}" {% if setor_selecionado|string == s['id_setor']|string %}selected{% endif %}>{{ s['nome_setor'] }} — {{ s['nome_unidade'] }}{% if s['excluido'] %} (setor excluído){% endif %}{% if s['unidade_excluida'] %} (unidade excluída){% endif %}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
 {# Seletor de ícones (Bootstrap Icons).
    selecionado: classe marcada no início. dinamico: True nas janelas de edição (o JS marca o ícone da linha).
    permitir_novo: mostra o bloco para adicionar um ícone que ainda não está na lista. #}

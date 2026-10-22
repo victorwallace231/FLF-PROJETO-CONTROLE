@@ -1,5 +1,5 @@
 {% extends "base_app.html" %}
-{% from "_macros.html" import slug_status, texto_status, badge_status, seletor_icone, seletor_localizacao %}
+{% from "_macros.html" import slug_status, texto_status, badge_status, seletor_icone, seletor_localizacao, filtro_localizacao %}
 {% block titulo %}Equipamentos{% endblock %}
 
 {% block conteudo %}
@@ -9,7 +9,7 @@
     {# Formulário de filtro e busca #}
     <form action="{{ url_for('equipamentos.equipamentos') }}" method="POST">
         <div class="barra-pesquisa">
-            <input type="text" name="filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter">
+            <input type="text" name="filtro_marca" placeholder="Pesquisar por modelo, patrimônio..." class="pesquisa-enter" value="{{ marca }}">
 
             <select class="filter-select" name="filtro_categoria">
                 <option value="todos" {% if categoria == 'todos' %}selected{% endif %}>todos</option>
@@ -17,6 +17,8 @@
                     <option value="{{ cat[0] }}" {% if categoria|string == cat[0]|string %}selected{% endif %}>{{ cat[1] }}</option>
                 {% endfor %}
             </select>
+
+            {{ filtro_localizacao(lista_unidades_filtro(), lista_setores_filtro(), unidade_atual, setor_atual) }}
 
             <select class="filter-select" name="filtro_status">
                 <option value="todos" {% if status == 'todos' %}selected{% endif %}>Todos os status</option>
@@ -62,7 +64,9 @@
                         data-unidade-atual="{{ periferico[11] }}" 
                         data-setor-atual="{{ periferico[12] }}"
                         data-id-unidade-origem="{{ periferico[14] }}"
-                        data-id-setor-origem="{{ periferico[15] }}">
+                        data-id-setor-origem="{{ periferico[15] }}"
+                        data-id-unidade-atual="{{ periferico[16] }}"
+                        data-id-setor-atual="{{ periferico[17] }}">
                         <td><i class="bi {{ periferico[8] }} icone-item" aria-hidden="true"></i></td>
                         <td>{{ periferico[3] }}</td>
                         <td>{{ periferico[2] }}</td>

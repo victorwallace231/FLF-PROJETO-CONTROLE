@@ -28,14 +28,14 @@ def listar():
                   (SELECT COUNT(*) FROM setores s
                     WHERE s.id_unidade = u.id_unidade AND s.excluido = 0) AS total_setores,
                   (SELECT COUNT(*) FROM perifericos p
-                    WHERE p.id_unidade_origem = u.id_unidade AND p.inativo = 0) AS total_equipamentos
+                    WHERE p.id_unidade_atual = u.id_unidade AND p.inativo = 0) AS total_equipamentos
            FROM unidades u WHERE u.excluido = 0
            ORDER BY u.nome_unidade COLLATE NOCASE"""
     ).fetchall()
     setores = conexao.execute(
         """SELECT s.id_setor, s.nome_setor, s.id_unidade, u.nome_unidade,
                   (SELECT COUNT(*) FROM perifericos p
-                    WHERE p.id_setor_origem = s.id_setor AND p.inativo = 0) AS total_equipamentos
+                    WHERE p.id_setor_atual = s.id_setor AND p.inativo = 0) AS total_equipamentos
            FROM setores s JOIN unidades u ON u.id_unidade = s.id_unidade
            WHERE s.excluido = 0 AND u.excluido = 0
            ORDER BY u.nome_unidade COLLATE NOCASE, s.nome_setor COLLATE NOCASE"""
@@ -66,8 +66,6 @@ def create_unidade():
             # Já existiu e foi excluída: volta com o MESMO id (os equipamentos continuam ligados a ela)
             conexao.execute("UPDATE unidades SET excluido = 0, nome_unidade = ? WHERE id_unidade = ?",
                             (nome, existente["id_unidade"]))
-            conexao.execute("UPDATE perifericos SET unid_atual = ? WHERE unid_atual = ? COLLATE NOCASE",
-                            (nome, existente["nome_unidade"]))
             conexao.commit()
             flash("Unidade reativada: ela já existia e tinha sido excluída. Os setores dela continuam "
                   "excluídos; adicione-os de novo para reativá-los.", "success")
@@ -111,12 +109,8 @@ def update_unidade():
             return redirect(PAGINA)
 
         conexao.execute("UPDATE unidades SET nome_unidade = ? WHERE id_unidade = ?", (nome, id_unidade))
-        # A localização ATUAL do equipamento guarda o nome (não o id): acompanha o novo nome.
-        # O histórico de movimentações continua com o nome da época.
-        conexao.execute(
-            "UPDATE perifericos SET unid_atual = ? WHERE unid_atual = ? COLLATE NOCASE",
-            (nome, antiga["nome_unidade"]),
-        )
+        # Os equipamentos apontam para o ID da unidade; o nome atualizado aparece via JOIN.
+        # O histórico de movimentações continua guardando o nome da época.
         conexao.commit()
         flash("Unidade renomeada com sucesso!", "success")
     except sqlite3.IntegrityError:
@@ -186,11 +180,6 @@ def create_setor():
             # Já existiu nesta unidade e foi excluído: volta com o MESMO id
             conexao.execute("UPDATE setores SET excluido = 0, nome_setor = ? WHERE id_setor = ?",
                             (nome, existente["id_setor"]))
-            conexao.execute(
-                """UPDATE perifericos SET setor_atual = ?
-                   WHERE unid_atual = ? COLLATE NOCASE AND setor_atual = ? COLLATE NOCASE""",
-                (nome, unidade["nome_unidade"], existente["nome_setor"]),
-            )
             conexao.commit()
             flash("Setor reativado: ele já existia nesta unidade e tinha sido excluído.", "success")
         else:
@@ -254,24 +243,24 @@ def update_setor():
             (nome, destino["id_unidade"], id_setor),
         )
         acompanharam = 0
+        atuais_atualizados = 0
         if mudou_unidade:
-            # A origem do equipamento é o setor: quem era deste setor passa para a nova unidade
-            # (senão ficaria com o setor de uma unidade e a unidade de outra)
+            # A origem do equipamento é o setor: quem era deste setor passa para a nova unidade.
             acompanharam = conexao.execute(
                 "UPDATE perifericos SET id_unidade_origem = ? WHERE id_setor_origem = ?",
                 (destino["id_unidade"], id_setor),
             ).rowcount
-        # Localização ATUAL (guardada pelo nome): só quem está NESTA unidade e NESTE setor acompanha
-        conexao.execute(
-            """UPDATE perifericos SET unid_atual = ?, setor_atual = ?
-               WHERE unid_atual = ? COLLATE NOCASE AND setor_atual = ? COLLATE NOCASE""",
-            (destino["nome_unidade"], nome, antigo["nome_unidade"], antigo["nome_setor"]),
-        )
+            # Equipamentos atualmente neste setor acompanham a unidade nova pelo ID.
+            atuais_atualizados = conexao.execute(
+                "UPDATE perifericos SET id_unidade_atual = ? WHERE id_setor_atual = ?",
+                (destino["id_unidade"], id_setor),
+            ).rowcount
         conexao.commit()
 
         if mudou_unidade:
             flash(f"Setor movido para a unidade {destino['nome_unidade']}. "
-                  f"{acompanharam} equipamento(s) de origem neste setor acompanharam a mudança.", "success")
+                  f"{acompanharam} equipamento(s) de origem e {atuais_atualizados} equipamento(s) "
+                  "na localização atual acompanharam a mudança.", "success")
         else:
             flash("Setor renomeado com sucesso!", "success")
     except sqlite3.IntegrityError:

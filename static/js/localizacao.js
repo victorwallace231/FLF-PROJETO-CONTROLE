@@ -69,3 +69,45 @@
     // Estado inicial de todos os pares da página
     document.querySelectorAll('select[data-loc-unidade]').forEach((s) => preencherSetores(setorDe(s), s.value));
 })();
+
+/* ======================================================================
+   FILTRO DA TELA DE EQUIPAMENTOS
+   O setor é opcional: com uma unidade selecionada, é possível buscar todos
+   os equipamentos dessa unidade ou refinar para um setor específico.
+   ====================================================================== */
+(() => {
+    function atualizarSetoresFiltro(selUnidade, limparSetorIncompativel = false) {
+        const selSetor = document.querySelector('select[data-filtro-setor]');
+        if (!selSetor) return;
+
+        const idUnidade = selUnidade.value;
+        const opcoes = [...selSetor.options];
+
+        opcoes.forEach((opcao) => {
+            if (!opcao.value) {
+                opcao.hidden = false;
+                opcao.disabled = false;
+                return;
+            }
+
+            const compativel = !idUnidade || opcao.dataset.idUnidade === String(idUnidade);
+            opcao.hidden = !compativel;
+            opcao.disabled = !compativel;
+        });
+
+        const selecionada = selSetor.selectedOptions[0];
+        if (selecionada && selecionada.value && selecionada.disabled && limparSetorIncompativel) {
+            selSetor.value = '';
+        }
+    }
+
+    document.addEventListener('change', (evento) => {
+        const selUnidade = evento.target.closest && evento.target.closest('select[data-filtro-unidade]');
+        if (selUnidade) atualizarSetoresFiltro(selUnidade, true);
+    });
+
+    document.querySelectorAll('select[data-filtro-unidade]').forEach((selUnidade) => {
+        // Corrige a seleção visual se um setor não pertencer à unidade recebida no POST.
+        atualizarSetoresFiltro(selUnidade, true);
+    });
+})();

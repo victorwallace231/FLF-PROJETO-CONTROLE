@@ -286,3 +286,14 @@ Vale para este projeto (Flask) e serve de base para o projeto em **C#** que vem 
 ### Pasta `Test/`
 
 Os protótipos de `Test/` usavam os CSS/JS antigos. Para não quebrarem, os arquivos antigos foram copiados para `Test/_legado/` e os caminhos dos HTML de teste foram ajustados. Se não precisar mais dos protótipos, pode apagar `Test/` inteira.
+
+
+---
+
+## 10. Rodada 3 — localização atual por chaves estrangeiras
+
+- `perifericos.id_unidade_atual` e `perifericos.id_setor_atual` agora são chaves estrangeiras para `unidades` e `setores`; os campos de texto antigos são removidos depois de uma migração automática.
+- A migração preserva os IDs dos equipamentos, converte os nomes já salvos e cria registros de localização quando um valor legado ainda não existe no cadastro. Ela pode rodar novamente sem duplicar dados.
+- A listagem de equipamentos ganhou filtros de unidade e setor que consultam pelos IDs. O setor é limitado à unidade selecionada no navegador, mas pode ficar em branco para consultar todos os setores dela.
+- Cadastro e movimentação salvam os IDs da localização atual. Renomear unidades ou setores reflete automaticamente na tela, enquanto o histórico de movimentações continua guardando os nomes que foram registrados na época.
+- O SQLite passa a validar as chaves estrangeiras em cada conexão usada pela aplicação.
