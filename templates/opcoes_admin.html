@@ -1,5 +1,5 @@
 {% extends "base_app.html" %}
-{% from "_macros.html" import campo, seletor_icone %}
+{% from "_macros.html" import campo, seletor_icone, seletor_localizacao %}
 
 {% block titulo %}Opções de Administrador{% endblock %}
 
@@ -36,6 +36,13 @@
                     <td>Altera as informações cadastrais de um usuário (nome, e-mail, telefone e/ou senha) utilizando o e-mail atual como referência.</td>
                     <td class="text-end">
                         <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalAtualizarUsuario">Executar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Unidades e setores</td>
+                    <td>Cadastra e renomeia as unidades e os setores de cada unidade, usados no cadastro dos equipamentos.</td>
+                    <td class="text-end">
+                        <a class="btn btn-primary btn-sm text-black fw-semibold mb-0" href="{{ url_for('localizacoes.listar') }}">Abrir</a>
                     </td>
                 </tr>
                 <tr>
@@ -126,8 +133,7 @@
             <div class="modal-body">
                 {{ campo('serialInput', 'Número de Tombamento', 'num_serie', 'bi-hash', placeholder='Digite o número de tombamento do equipamento', extras='required data-msg="Informe o número de tombamento do equipamento."') }}
                 {{ campo('marcaInput', 'Marca', 'marca', 'bi-box-seam', placeholder='Digite a marca do equipamento', extras='required data-msg="Informe a marca do equipamento."') }}
-                {{ campo('unidadeOrigemInput', 'Unidade de Origem', 'unidade_origem', 'bi-box-seam', placeholder='Digite a Unidade de Origem do equipamento', extras='required data-msg="Informe a unidade de origem do equipamento."') }}
-                {{ campo('setorOrigemInput', 'Setor de Origem', 'setor_origem', 'bi-box-seam', placeholder='Digite o Setor de Origem do equipamento', extras='required data-msg="Informe o setor de origem do equipamento."') }}
+                {{ seletor_localizacao(lista_unidades(), lista_setores(), 'origem', 'unidade_origem', 'setor_origem', 'Unidade de Origem', 'Setor de Origem', link_cadastro=True) }}
 
                 <div class="mb-3">
                     <label for="categoriaSelect" class="form-label">Categoria</label>

@@ -1,5 +1,5 @@
 {% extends "base_app.html" %}
-{% from "_macros.html" import campo, seletor_icone %}
+{% from "_macros.html" import campo, seletor_icone, seletor_localizacao %}
 {% block titulo %}Novo Equipamento{% endblock %}
 
 {% block conteudo %}
@@ -12,8 +12,7 @@
             <form id="form-createitem" action="{{ url_for('create_item.create') }}" method="POST" data-validar>
                 {{ campo('serialInput', 'Número de Tombamento', 'num_serie', 'bi-hash', placeholder='Digite o número de tombamento do equipamento', extras='data-msg="Informe o número de tombamento do equipamento."') }}
                 {{ campo('marcaInput', 'Marca', 'marca', 'bi-box-seam', placeholder='Digite a marca do equipamento', extras='data-msg="Informe a marca do equipamento."') }}
-                {{ campo('unidadeOrigemInput', 'Unidade de Origem', 'unidade_origem', 'bi-box-seam', placeholder='Digite a Unidade de Origem do equipamento', extras='data-msg="Informe a a unidade de origemdo equipamento."') }}
-                {{ campo('setorOrigemInput', 'Setor de Origem', 'setor_origem', 'bi-box-seam', placeholder='Digite o Setor de Origem do Equipamento', extras='data-msg="Informe o setor de origem do equipamento."') }}
+                {{ seletor_localizacao(lista_unidades(), lista_setores(), 'origem', 'unidade_origem', 'setor_origem', 'Unidade de Origem', 'Setor de Origem', link_cadastro=True) }}
 
                 <div class="mb-3">
                     <label for="categoriaSelect" class="form-label">Categoria</label>

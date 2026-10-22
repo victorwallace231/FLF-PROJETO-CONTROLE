@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, session, flash
-from banco import conectar_banco
+from banco import conectar_banco, resolver_localizacao
 
 create_emprestimo = Blueprint('create_emprestimo', __name__)
 
@@ -22,8 +22,14 @@ def create():
         id_periferico = request.form['id_periferico']
         tel_responsavel = re.sub(r"\D", "", request.form['tel_responsavel'])
         observacao = request.form['observacao']
-        setor_dest = request.form.get("setor_dest", "").upper().strip()
-        unid_dest = request.form.get("unid_dest", "").upper().strip()
+        # Destino chega como ID (vem de <select>); o nome é buscado no banco.
+        # Em branco = o equipamento mantém a localização atual.
+        destino = resolver_localizacao(cursor, request.form.get("unid_dest", ""), request.form.get("setor_dest", ""))
+        if destino is None:
+            conexao.close()
+            flash("Unidade ou setor de destino inválido. Escolha um setor que pertença à unidade selecionada.", "danger")
+            return redirect('/create_emprestimo')
+        unid_dest, setor_dest = destino
         tipo_transfer = request.form.get("tipo_transfer", "").strip()
         filtro_transfer = tipo_transfer.strip().lower()
         responsavel_destino = request.form.get("responsavel_destino", "").strip()
@@ -35,49 +41,49 @@ def create():
             case 'transferencia de unidade' | 'transferência de localização':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 0, inativo = 0, transferido = 1
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 0, inativo = 0, transferido = 1
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
             case 'remessa para concerto':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 1, inativo = 0, transferido = 0
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 1, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
             case 'retorno de concerto':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
             case 'baixa por defeito' | 'baixa por fora de uso/obsoleto':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 0, inativo = 1, transferido = 0
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 0, inativo = 1, transferido = 0
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
             case 'empréstimo' | 'evento':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 0, manutencao = 0, inativo = 0, transferido = 0
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 0, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
             case 'retorno de empréstimo':
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
             case _:
                 cursor.execute("""
                     UPDATE perifericos 
-                    SET unid_atual = ?, setor_atual = ?, disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
+                    SET unid_atual = COALESCE(NULLIF(?, ''), unid_atual), setor_atual = COALESCE(NULLIF(?, ''), setor_atual), disponivel = 1, manutencao = 0, inativo = 0, transferido = 0
                     WHERE id_periferico = ?
                 """, (unid_dest, setor_dest, id_periferico))
 
@@ -107,9 +113,11 @@ def create():
 
     # COALESCE garante a exclusão estrita de equipamentos inativos (1 ou '1') em qualquer situação
     sql = """
-        SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone, p.unid_origem, p.setor_origem, p.unid_atual, p.setor_atual, p.transferido
+        SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone, u.nome_unidade, s.nome_setor, p.unid_atual, p.setor_atual, p.transferido, p.id_unidade_origem, p.id_setor_origem
         FROM perifericos p 
         JOIN categorias c ON p.categoria = c.id_categoria 
+        LEFT JOIN unidades u ON u.id_unidade = p.id_unidade_origem
+        LEFT JOIN setores s ON s.id_setor = p.id_setor_origem
         WHERE COALESCE(p.inativo, 0) NOT IN (1, '1')
     """
     parametros = []

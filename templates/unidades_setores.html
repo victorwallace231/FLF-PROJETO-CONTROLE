@@ -1,0 +1,181 @@
+{% extends "base_app.html" %}
+{% from "_macros.html" import campo %}
+
+{% block titulo %}Unidades e Setores{% endblock %}
+
+{% block conteudo %}
+<section class="main-content">
+    <h2 class="mb-2">Unidades e Setores</h2>
+    <p class="text-muted mb-4">Cada setor pertence a uma unidade, então unidades diferentes podem ter setores com o mesmo nome (ex.: Administração). Estas listas aparecem nos campos de unidade e setor do sistema.</p>
+
+    {# ---------- Unidades ---------- #}
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="h5 mb-0">Unidades</h3>
+        <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalUnidadeAdicionar">
+            <i class="bi bi-plus-circle me-1"></i>Adicionar unidade
+        </button>
+    </div>
+    <div class="tabela-container mb-5">
+        <table>
+            <thead>
+                <tr>
+                    <th>Unidade</th>
+                    <th>Setores</th>
+                    <th>Equipamentos</th>
+                    <th class="text-end">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in unidades %}
+                    <tr data-id="{{ u['id_unidade'] }}" data-nome="{{ u['nome_unidade'] }}">
+                        <td class="fw-bold">{{ u['nome_unidade'] }}</td>
+                        <td>{{ u['total_setores'] }}</td>
+                        <td>{{ u['total_equipamentos'] }}</td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalUnidadeEditar">Renomear</button>
+                            <form method="POST" action="{{ url_for('localizacoes.delete_unidade') }}" class="d-inline"
+                                  data-confirmar="Deseja realmente excluir a unidade {{ u['nome_unidade'] }}? Os {{ u['total_setores'] }} setor(es) dela também serão excluídos. Os {{ u['total_equipamentos'] }} equipamento(s) com origem nela continuam cadastrados e o histórico é mantido. Para trazê-la de volta, adicione uma unidade com o mesmo nome."
+                                  data-confirmar-titulo="Excluir unidade" data-confirmar-botao="Excluir" data-confirmar-cor="danger">
+                                <input type="hidden" name="id_unidade" value="{{ u['id_unidade'] }}">
+                                <button type="submit" class="btn btn-danger btn-sm fw-semibold mb-0">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="4" class="text-center text-muted">Nenhuma unidade cadastrada ainda. Comece adicionando uma.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# ---------- Setores ---------- #}
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="h5 mb-0">Setores</h3>
+        <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalSetorAdicionar" {% if not unidades %}disabled title="Cadastre uma unidade primeiro"{% endif %}>
+            <i class="bi bi-plus-circle me-1"></i>Adicionar setor
+        </button>
+    </div>
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Setor</th>
+                    <th>Unidade</th>
+                    <th>Equipamentos</th>
+                    <th class="text-end">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in setores %}
+                    <tr data-id="{{ s['id_setor'] }}" data-nome="{{ s['nome_setor'] }}" data-id-unidade="{{ s['id_unidade'] }}">
+                        <td class="fw-bold">{{ s['nome_setor'] }}</td>
+                        <td>{{ s['nome_unidade'] }}</td>
+                        <td>{{ s['total_equipamentos'] }}</td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-primary btn-sm text-black fw-semibold mb-0" data-bs-toggle="modal" data-bs-target="#modalSetorEditar">Editar</button>
+                            <form method="POST" action="{{ url_for('localizacoes.delete_setor') }}" class="d-inline"
+                                  data-confirmar="Deseja realmente excluir o setor {{ s['nome_setor'] }} da unidade {{ s['nome_unidade'] }}? Os {{ s['total_equipamentos'] }} equipamento(s) com origem nele continuam cadastrados e o histórico é mantido. Para trazê-lo de volta, adicione um setor com o mesmo nome nessa unidade."
+                                  data-confirmar-titulo="Excluir setor" data-confirmar-botao="Excluir" data-confirmar-cor="danger">
+                                <input type="hidden" name="id_setor" value="{{ s['id_setor'] }}">
+                                <button type="submit" class="btn btn-danger btn-sm fw-semibold mb-0">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="4" class="text-center text-muted">Nenhum setor cadastrado ainda.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+{% block janelas %}
+<div class="modal fade" id="modalUnidadeAdicionar" tabindex="-1" aria-labelledby="titulo-uni-add" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('localizacoes.create_unidade') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-uni-add">Adicionar unidade</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                {{ campo('uniAddNome', 'Nome da unidade', 'nome_unidade', 'bi-building', placeholder='Digite o nome da unidade', extras='maxlength="80" data-msg="Digite o nome da unidade."') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalUnidadeEditar" tabindex="-1" aria-labelledby="titulo-uni-mod" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('localizacoes.update_unidade') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-uni-mod">Renomear unidade</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_unidade" data-campo="id">
+                {{ campo('uniModNome', 'Novo nome da unidade', 'nome_unidade', 'bi-building', placeholder='Digite o novo nome', extras='data-campo="nome" maxlength="80" data-msg="Digite o novo nome da unidade."') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSetorAdicionar" tabindex="-1" aria-labelledby="titulo-set-add" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('localizacoes.create_setor') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-set-add">Adicionar setor</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="setAddUnidade" class="form-label">Unidade do setor</label>
+                    <select id="setAddUnidade" name="id_unidade" class="form-select" required data-msg="Selecione a unidade do setor.">
+                        <option value="" disabled selected>Selecione a unidade</option>
+                        {% for u in unidades %}<option value="{{ u['id_unidade'] }}">{{ u['nome_unidade'] }}</option>{% endfor %}
+                    </select>
+                </div>
+                {{ campo('setAddNome', 'Nome do setor', 'nome_setor', 'bi-diagram-3', placeholder='Digite o nome do setor', extras='maxlength="80" data-msg="Digite o nome do setor."') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSetorEditar" tabindex="-1" aria-labelledby="titulo-set-mod" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="{{ url_for('localizacoes.update_setor') }}" method="POST" data-validar>
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo-set-mod">Editar setor</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_setor" data-campo="id">
+                {{ campo('setModNome', 'Nome do setor', 'nome_setor', 'bi-diagram-3', placeholder='Digite o nome do setor', extras='data-campo="nome" maxlength="80" data-msg="Digite o nome do setor."') }}
+                <div class="mb-1">
+                    <label for="setModUnidade" class="form-label">Unidade do setor</label>
+                    <select id="setModUnidade" name="id_unidade" class="form-select" data-campo="idUnidade" required data-msg="Selecione a unidade do setor.">
+                        {% for u in unidades %}<option value="{{ u['id_unidade'] }}">{{ u['nome_unidade'] }}</option>{% endfor %}
+                    </select>
+                    <div class="form-text">Ao mudar a unidade, os equipamentos de origem neste setor acompanham.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

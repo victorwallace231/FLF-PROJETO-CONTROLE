@@ -1,5 +1,5 @@
 {% extends "base_app.html" %}
-{% from "_macros.html" import slug_status, badge_status %}
+{% from "_macros.html" import slug_status, badge_status, seletor_localizacao %}
 {% block titulo %}Nova Movimentação{% endblock %}
 
 {% block conteudo %}
@@ -95,16 +95,7 @@
                     <input type="text" id="emp-tel-dest" name="tel_responsavel_destino" class="form-control" placeholder="Telefone com DDD" inputmode="numeric" pattern="[0-9]{10,11}"
                            title="Digite apenas números, com DDD (10 ou 11 dígitos)" maxlength="11" data-somente-numeros required data-msg="Informe o telefone com DDD.">
                 </div>
-                
-                <div class="mb-3">
-                    <label for="emp-unid" class="form-label">Unidade de Destino:</label>
-                    <input type="text" id="emp-unid" name="unid_dest" class="form-control" placeholder="Insira para qual UNIDADE o item será transferido">
-                </div>
-                
-                <div class="mb-3">
-                    <label for="emp-setor" class="form-label">Setor de Destino:</label>
-                    <input type="text" id="emp-setor" name="setor_dest" class="form-control" placeholder="Insira para qual SETOR o item será transferido">
-                </div>
+                {{ seletor_localizacao(lista_unidades(), lista_setores(), 'emp-dest', 'unid_dest', 'setor_dest', 'Unidade de Destino:', 'Setor de Destino:', obrigatorio=False) }}
                 
                 <div class="mb-3">
                     <label for="emp-obs" class="form-label">Observação:</label>

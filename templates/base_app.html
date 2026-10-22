@@ -47,6 +47,11 @@
                 <li class="nav-item sidebar-li">
                     <a class="nav-link text-white" href="{{ url_for('verifica_emprestimos.verificar_emprestimos') }}">Movimentações</a>
                 </li>
+                {% if session.get('usuario_role') in ('admin', 'gestor') %}
+                <li class="nav-item sidebar-li">
+                    <a class="nav-link text-white" href="{{ url_for('localizacoes.listar') }}">Unidades e Setores</a>
+                </li>
+                {% endif %}
                 <li class="nav-item sidebar-li">
                     {# Logout altera a sessão e a rota só aceita POST: por isso é <button> dentro de <form>, não <a> #}
                     <form action="{{ url_for('logout.logout') }}" method="POST" class="form-sair"
@@ -99,6 +104,7 @@
     <script src="{{ url_for('static', filename='js/validacao.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modais.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/localizacao.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <noscript>You need to enable JavaScript to view the full site.</noscript>
     {% block scripts %}{% endblock %}

@@ -2,8 +2,10 @@ from flask import Blueprint, redirect, render_template, request, session
 from banco import conectar_banco, listar_icones
 
 # AQUI ESTÁ A CORREÇÃO PRINCIPAL: p.transferido foi adicionado no final do SELECT
-SELECT_EQUIPAMENTOS = """SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone, p.unid_origem, p.setor_origem, p.unid_atual, p.setor_atual, p.transferido
-        FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria WHERE 1=1"""
+SELECT_EQUIPAMENTOS = """SELECT p.id_periferico, p.categoria, p.marca, p.num_serie, p.disponivel, p.manutencao, p.inativo, c.categoria, p.icone, u.nome_unidade, s.nome_setor, p.unid_atual, p.setor_atual, p.transferido, p.id_unidade_origem, p.id_setor_origem
+        FROM perifericos p JOIN categorias c ON p.categoria = c.id_categoria
+        LEFT JOIN unidades u ON u.id_unidade = p.id_unidade_origem
+        LEFT JOIN setores s ON s.id_setor = p.id_setor_origem WHERE 1=1"""
 
 route_dashboard = Blueprint('dashboard', __name__)
 route_equipamentos = Blueprint('equipamentos', __name__)
@@ -42,11 +44,13 @@ def dashboard():
           c.categoria AS categoria_nome,
           p.num_serie,
           p.id_periferico AS periferico_id,
-          p.unid_origem,
-          p.setor_origem
+          u.nome_unidade AS unid_origem,
+          s.nome_setor AS setor_origem
       FROM emprestimos e
       JOIN perifericos p ON e.id_periferico = p.id_periferico
       JOIN categorias c ON p.categoria = c.id_categoria
+      LEFT JOIN unidades u ON u.id_unidade = p.id_unidade_origem
+      LEFT JOIN setores s ON s.id_setor = p.id_setor_origem
       WHERE 1=1
       ORDER BY e.id_emprestimo DESC
   """)

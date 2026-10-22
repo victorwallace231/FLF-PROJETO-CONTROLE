@@ -59,6 +59,41 @@
     </div>
 {% endmacro %}
 
+{# Par de <select> Unidade + Setor. O setor só mostra os setores da unidade escolhida
+   (o filtro é feito por static/js/localizacao.js a partir de data-setores).
+   id_base: prefixo dos ids (use um diferente por formulário na mesma página).
+   obrigatorio=False: os dois podem ficar vazios; se escolher a unidade, o setor passa a ser exigido.
+   chave_unidade / chave_setor: só nas janelas de edição — nomes dos data-* da linha clicada
+   que trazem os ids atuais (ex.: idUnidadeOrigem / idSetorOrigem).
+   link_cadastro: mostra o link para cadastrar quando não há unidades (só para admin/gestor).
+   texto_vazio: texto da opção em branco quando obrigatorio=False. #}
+{% macro seletor_localizacao(unidades, setores, id_base, nome_unidade, nome_setor, rotulo_unidade, rotulo_setor, obrigatorio=True, chave_unidade='', chave_setor='', link_cadastro=False, texto_vazio='Manter localização atual') %}
+    <div class="mb-3">
+        <label for="{{ id_base }}-unidade" class="form-label">{{ rotulo_unidade }}</label>
+        <select id="{{ id_base }}-unidade" name="{{ nome_unidade }}" class="form-select" autocomplete="off"
+                data-loc-unidade="{{ id_base }}"
+                {% if chave_unidade %}data-loc-chave-unidade="{{ chave_unidade }}" data-loc-chave-setor="{{ chave_setor }}"{% endif %}
+                {% if obrigatorio %}required{% endif %} data-msg="Selecione a unidade.">
+            <option value="" {% if obrigatorio %}disabled{% endif %} selected>{% if obrigatorio %}Selecione a unidade{% else %}{{ texto_vazio }}{% endif %}</option>
+            {% for u in unidades %}<option value="{{ u['id_unidade'] }}">{{ u['nome_unidade'] }}</option>{% endfor %}
+        </select>
+        {% if not unidades %}
+            <div class="form-text">Nenhuma unidade cadastrada.
+                {% if link_cadastro %}<a href="{{ url_for('localizacoes.listar') }}">Cadastre em Unidades e Setores</a>.
+                {% else %}Peça a um administrador ou gestor para cadastrar.{% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="{{ id_base }}-setor" class="form-label">{{ rotulo_setor }}</label>
+        <select id="{{ id_base }}-setor" name="{{ nome_setor }}" class="form-select" autocomplete="off"
+                data-setores='{{ setores|tojson }}' data-loc-obrigatorio="{{ 1 if obrigatorio else 0 }}" data-loc-vazio="{{ texto_vazio }}"
+                {% if obrigatorio %}required{% endif %} data-msg="Selecione o setor.">
+            <option value="" {% if obrigatorio %}disabled{% endif %} selected>{% if obrigatorio %}Selecione primeiro a unidade{% else %}{{ texto_vazio }}{% endif %}</option>
+        </select>
+    </div>
+{% endmacro %}
+
 {# Seletor de ícones (Bootstrap Icons).
    selecionado: classe marcada no início. dinamico: True nas janelas de edição (o JS marca o ícone da linha).
    permitir_novo: mostra o bloco para adicionar um ícone que ainda não está na lista. #}

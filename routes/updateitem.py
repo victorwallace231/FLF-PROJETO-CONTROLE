@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, session, flash
-from banco import conectar_banco, icone_valido
+from banco import conectar_banco, icone_valido, resolver_localizacao
 from auth import role_required
 
 # Definição do Blueprint para as rotas de atualização de equipamentos
@@ -25,8 +25,16 @@ def update():
     item_numero_de_serie = request.form.get('num_serie')
     item_icone = request.form.get('icone')
     status = request.form.get('filtro_status')
-    setor_origem = request.form.get('setor_origem')
-    unid_origem = request.form.get('unid_origem')
+    # Unidade e setor de origem chegam como ID (vêm de <select>)
+    setor_origem = request.form.get('setor_origem', '').strip()
+    unid_origem = request.form.get('unid_origem', '').strip()
+
+    # Se mexeu na origem, o setor precisa pertencer à unidade escolhida
+    if setor_origem or unid_origem:
+        if not resolver_localizacao(cursor, unid_origem, setor_origem) or not (setor_origem and unid_origem):
+            conexao.close()
+            flash("Unidade ou setor inválido. Escolha um setor que pertença à unidade selecionada.", "danger")
+            return redirect('/equipamentos')
 
     paramentros = []
 
@@ -45,12 +53,9 @@ def update():
     if item_icone:
         sql += ", icone = ?"
         paramentros.append(icone_valido(item_icone))
-    if setor_origem:
-        sql += ", setor_origem = ?"
-        paramentros.append(setor_origem)
-    if unid_origem:
-        sql += ", unid_origem = ?"
-        paramentros.append(unid_origem)
+    if setor_origem and unid_origem:
+        sql += ", id_setor_origem = ?, id_unidade_origem = ?"
+        paramentros.extend([setor_origem, unid_origem])
 
     # "todos" (= "Manter status atual" no formulário) não altera o status
     if status and status != "todos":

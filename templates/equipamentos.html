@@ -1,5 +1,5 @@
 {% extends "base_app.html" %}
-{% from "_macros.html" import slug_status, texto_status, badge_status, seletor_icone %}
+{% from "_macros.html" import slug_status, texto_status, badge_status, seletor_icone, seletor_localizacao %}
 {% block titulo %}Equipamentos{% endblock %}
 
 {% block conteudo %}
@@ -60,7 +60,9 @@
                         data-unidade-origem="{{ periferico[9] }}" 
                         data-setor-origem="{{ periferico[10] }}" 
                         data-unidade-atual="{{ periferico[11] }}" 
-                        data-setor-atual="{{ periferico[12] }}">
+                        data-setor-atual="{{ periferico[12] }}"
+                        data-id-unidade-origem="{{ periferico[14] }}"
+                        data-id-setor-origem="{{ periferico[15] }}">
                         <td><i class="bi {{ periferico[8] }} icone-item" aria-hidden="true"></i></td>
                         <td>{{ periferico[3] }}</td>
                         <td>{{ periferico[2] }}</td>
@@ -153,14 +155,7 @@
                     <label for="editar-serie" class="form-label">Número de Tombamento</label>
                     <input type="text" id="editar-serie" name="num_serie" class="form-control" data-campo="serie" required data-msg="Informe o número de tombamento.">
                 </div>
-                                <div class="mb-3">
-                    <label for="editar-unidade" class="form-label">Unidade de Origem</label>
-                    <input type="text" id="editar-unidade" name="unid_origem" class="form-control" data-campo="unid_origem" required data-msg="Informe a unidade de origem.">
-                </div>
-                                <div class="mb-3">
-                    <label for="editar-setor" class="form-label">Setor de Origem</label>
-                    <input type="text" id="editar-setor" name="setor_origem" class="form-control" data-campo="setor_origem" required data-msg="Informe o setor de origem.">
-                </div>
+                {{ seletor_localizacao(lista_unidades(), lista_setores(), 'editar-origem', 'unid_origem', 'setor_origem', 'Unidade de Origem', 'Setor de Origem', obrigatorio=False, texto_vazio='Manter origem atual', chave_unidade='idUnidadeOrigem', chave_setor='idSetorOrigem') }}
                 <div class="mb-1">
                     <span class="form-label d-block">Ícone</span>
                     {{ seletor_icone(icones, dinamico=True) }}

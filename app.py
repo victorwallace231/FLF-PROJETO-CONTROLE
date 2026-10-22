@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect
 from datetime import timedelta
-from banco import iniciar_banco
+from banco import iniciar_banco, listar_unidades, listar_setores
 app = Flask(__name__)
 app.secret_key = '14082017'
 
@@ -31,6 +31,7 @@ from routes.create_icone import route_create_icone
 from routes.updateuser import route_updatetoadmin
 from routes.updateuser import route_removeadmin
 from routes.updateuser import route_update_user_adm
+from routes.localizacoes import route_localizacoes
 
 #registrando os blueprints das rotas
 app.register_blueprint(route_login)
@@ -57,6 +58,13 @@ app.register_blueprint(route_create_icone)
 app.register_blueprint(route_updatetoadmin)
 app.register_blueprint(route_removeadmin)
 app.register_blueprint(route_update_user_adm)
+app.register_blueprint(route_localizacoes)
+
+# Deixa as listas de unidades e setores disponíveis em TODOS os templates (os <select> de
+# localização). São funções: o banco só é consultado onde o template realmente chama.
+@app.context_processor
+def injetar_localizacoes():
+    return dict(lista_unidades=listar_unidades, lista_setores=listar_setores)
 
 # Garante a coluna/tabela de ícones no banco (só cria o que ainda não existe)
 iniciar_banco()
