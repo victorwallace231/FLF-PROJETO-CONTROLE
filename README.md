@@ -23,18 +23,24 @@ Para saber mais detalhe temos a [Estrutura](https://github.com/victorwallace231/
 ## 🚀 Como executar o projeto
 
 ### Pré-requisitos
-* `Python 3.14.7`
-* `blinker 1.9.0`
-* `click 8.4.2`
-* `colorama 0.4.6`
-* `Flask 3.1.3`
-* `itsdangerous 2.2.0`
-* `Jinja2 3.1.6`
-* `MarkupSafe 3.0.3`
-* `Werkzeug 3.1.8`
+* Python 3.14.7 (versão usada na preparação desta versão).
+* As dependências declaradas em `requirements.txt`.
 
-### Passo a Passo
+### Passo a passo
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/victorwallace231/FLF-PROJETO-CONTROLE.git   
+1. Crie um ambiente virtual (recomendado):
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+2. Instale as dependências:
+   ```powershell
+   python -m pip install -r requirements.txt
+   ```
+3. Copie `.env.example` para `.env`, gere uma chave secreta e preencha `FLASK_SECRET_KEY`. Os passos completos estão em [`INSTRUCOES_CONFIGURACAO.md`](INSTRUCOES_CONFIGURACAO.md).
+4. Inicie para desenvolvimento local:
+   ```powershell
+   py app.py
+   ```
+
+Para implantação na rede interna da empresa, leia `INSTRUCOES_CONFIGURACAO.md` antes de mudar `APP_ENV` para `production`. Não substitua um banco de dados que já contenha registros recentes.

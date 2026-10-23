@@ -1,11 +1,48 @@
-from flask import Flask, render_template, redirect
+import os
+import secrets
 from datetime import timedelta
-from banco import iniciar_banco, listar_unidades, listar_setores, listar_unidades_filtro, listar_setores_filtro
+
+from dotenv import load_dotenv
+from flask import Flask, render_template, redirect
+
+# Carrega as configurações locais do arquivo .env, caso exista.
+# Em produção, as variáveis também podem ser definidas pelo servidor/Compose.
+load_dotenv()
+
+APP_ENV = os.getenv("APP_ENV", "development").strip().lower()
+SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "").strip()
+
+if not SECRET_KEY:
+    if APP_ENV == "production":
+        raise RuntimeError(
+            "FLASK_SECRET_KEY não foi definida. Configure uma chave secreta forte "
+            "nas variáveis de ambiente antes de iniciar em produção."
+        )
+
+    # Conveniência apenas para desenvolvimento local. Esta chave muda a cada
+    # inicialização; sessões locais podem ser invalidadas quando o app reiniciar.
+    SECRET_KEY = secrets.token_hex(32)
+    print(
+        "AVISO: FLASK_SECRET_KEY não definida. Foi gerada uma chave temporária "
+        "para desenvolvimento; configure-a no .env para manter as sessões entre reinícios."
+    )
+
 app = Flask(__name__)
-app.secret_key = '14082017'
+app.config.update(
+    SECRET_KEY=SECRET_KEY,
+    PERMANENT_SESSION_LIFETIME=timedelta(days=7),
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    # Secure deve ficar ligado em produção quando o site for acessado por HTTPS.
+    SESSION_COOKIE_SECURE=(
+        os.getenv("SESSION_COOKIE_SECURE", "1" if APP_ENV == "production" else "0")
+        .strip()
+        .lower()
+        in ("1", "true", "yes", "on")
+    ),
+)
 
-app.config ['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
-
+from banco import iniciar_banco, listar_unidades, listar_setores, listar_unidades_filtro, listar_setores_filtro
 #Capturando as rotas dos arquivos de rotas
 from routes.login import route_login
 from routes.cadastro import route_cadastro
@@ -79,4 +116,15 @@ iniciar_banco()
 def index():
     return redirect ('/cadastro')
 if __name__ == "__main__":
-    app.run(debug=True) 
+    port = int(os.getenv("PORT", "5000" if APP_ENV != "production" else "8080"))
+
+    if APP_ENV == "production":
+        # Servidor WSGI de produção (funciona no Windows e Linux).
+        from waitress import serve
+
+        host = os.getenv("HOST", "127.0.0.1")
+        print(f"FLF Controle iniciado pelo Waitress em {host}:{port}")
+        serve(app, host=host, port=port)
+    else:
+        # Servidor de desenvolvimento, restrito à própria máquina.
+        app.run(debug=True, host="127.0.0.1", port=port)

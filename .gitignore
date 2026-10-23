@@ -1,0 +1,15 @@
+# Segredos e configuração local
+.env
+.env.*
+!.env.example
+
+# Ambientes e arquivos temporários Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+
+# Backups locais do banco (podem conter dados reais)
+*_backup_*.db
+*backup*.db
