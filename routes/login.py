@@ -10,6 +10,10 @@ route_logout = Blueprint('logout', __name__)
 # Rota responsável por exibir o formulário e autenticar o usuário
 @route_login.route('/login', methods=['GET', 'POST'])
 def login():
+    # Se a sessão já identifica um usuário autenticado, não exibe o login novamente.
+    # A rota /dashboard escolhe o painel correto conforme usuario_role.
+    if session.get('usuario_email'):
+        return redirect('/dashboard')
 
     # Requisição GET: Renderiza a página inicial de login enviando mensagem de erro vazia
     if request.method == 'GET':

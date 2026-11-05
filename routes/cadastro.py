@@ -1,6 +1,6 @@
 import re
 import sqlite3
-from flask import Blueprint, render_template, request, redirect, flash
+from flask import Blueprint, render_template, request, redirect, flash, session
 from banco import conectar_banco
 from werkzeug.security import generate_password_hash
 
@@ -9,6 +9,11 @@ route_cadastro = Blueprint('cadastro', __name__)
 
 @route_cadastro.route("/cadastro", methods=["GET", "POST"])
 def cadastrar   ():
+    # Se já existe uma sessão autenticada, evita exibir ou processar o cadastro.
+    # A rota /dashboard encaminha o usuário ao painel correspondente ao seu perfil.
+    if session.get("usuario_email"):
+        return redirect("/dashboard")
+
     # Requisição GET: carrega o formulário HTML inicial com mensagem de erro vazia
     if request.method == "GET":
         erro = ""
